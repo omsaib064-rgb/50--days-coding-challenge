@@ -1,0 +1,261 @@
+5th Code Challange
+
+# 📊 IT Help Desk Ticket Analysis
+
+## 📌 Project Overview
+
+This project analyzes IT help desk ticket data to identify patterns, bottlenecks, and performance issues within an IT support team. The goal is to generate actionable insights that help improve efficiency and reduce recurring problems.
+
+---
+
+## 🎯 Objectives
+
+* Analyze ticket volume trends over time
+* Measure resolution time performance
+* Identify common issues and root causes
+* Evaluate analyst performance
+* Provide actionable recommendations
+
+---
+
+## 📂 Dataset
+
+The dataset contains 150 IT support tickets with the following fields:
+
+* `ticket_id`
+* `submission_date`
+* `resolution_date`
+* `category`
+* `assigned_analyst`
+* `description`
+* `priority`
+
+---
+
+## 🛠 Tools & Technologies
+
+* Python
+* Pandas
+* Matplotlib
+* Excel
+
+---
+
+## 🧮 Data Processing Steps
+
+* Converted date columns into datetime format
+* Removed missing and duplicate records
+* Created new features:
+
+  * Resolution Time in hours
+  * Day of week
+  * Month
+  * Hour of submission
+
+---
+
+## 📊 Key Analysis
+
+### 1. Ticket Volume Trends
+
+* Identified peak days and hours
+* Analyzed monthly ticket distribution
+
+### 2. Resolution Time Metrics
+
+* Calculated average resolution time
+* Compared resolution time by category and priority
+
+### 3. Top Issues
+
+* Extracted frequently occurring keywords from descriptions
+* Identified recurring problems such as login and network issues
+
+### 4. Analyst Performance
+
+* Measured average resolution time per analyst
+* Identified top performers and areas for improvement
+
+---
+
+## 📈 Dashboard
+
+The Excel dashboard includes:
+
+* Ticket distribution by category
+* Tickets by day of week
+* Average resolution time
+* Analyst performance comparison
+
+---
+
+## 💡 Key Insights
+
+* Certain categories generate the highest number of tickets
+* Peak workload occurs on specific days
+* Some issues are repetitive and can be automated
+* Performance varies across analysts
+
+---
+
+## ✅ Recommendations
+
+* Implement automated password reset system
+* Improve network infrastructure for recurring issues
+* Provide training for slower analysts
+* Increase staffing during peak hours
+
+---
+
+## 📁 Project Structure
+
+```
+IT-HelpDesk-Analysis/
+│
+├── data/
+│   └── help_desk_tickets.csv
+│
+├── notebook/
+│   └── analysis.ipynb
+│
+├── output/
+│   └── cleaned_help_desk_tickets.xlsx
+│
+├── dashboard/
+│   └── excel_dashboard.xlsx
+│
+└── README.md
+```
+
+---
+
+## 🚀 How to Run
+
+1. Clone the repository
+2. Install required libraries:
+   pip install pandas matplotlib
+3. Run the Python script or notebook
+
+---
+
+## 📌 Conclusion
+
+This project demonstrates how data analysis can be used to improve IT support operations by identifying inefficiencies and recommending data driven solutions.
+
+---
+
+## 🙌 Author
+
+Your Name G Upendrachary
+# Import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_csv("help_desk_tickets.csv")
+
+# -----------------------------
+# Step 1: Data Cleaning
+# -----------------------------
+df['submission_date'] = pd.to_datetime(df['submission_date'], errors='coerce')
+df['resolution_date'] = pd.to_datetime(df['resolution_date'], errors='coerce')
+
+# Drop invalid rows
+df = df.dropna(subset=['submission_date', 'resolution_date'])
+
+# Remove duplicates
+df = df.drop_duplicates()
+
+# -----------------------------
+# Step 2: Feature Engineering
+# -----------------------------
+df['resolution_time_hours'] = (df['resolution_date'] - df['submission_date']).dt.total_seconds() / 3600
+df['day_of_week'] = df['submission_date'].dt.day_name()
+df['month'] = df['submission_date'].dt.month_name()
+df['hour'] = df['submission_date'].dt.hour
+
+# -----------------------------
+# Step 3: Analysis
+# -----------------------------
+
+# 1. Ticket Volume Trends
+tickets_by_day = df['day_of_week'].value_counts()
+tickets_by_month = df['month'].value_counts()
+tickets_by_hour = df['hour'].value_counts()
+
+# 2. Resolution Time Metrics
+avg_resolution_time = df['resolution_time_hours'].mean()
+
+resolution_by_category = df.groupby('category')['resolution_time_hours'].mean()
+resolution_by_priority = df.groupby('priority')['resolution_time_hours'].mean()
+
+# 3. Analyst Performance
+analyst_performance = df.groupby('assigned_analyst')['resolution_time_hours'].mean().sort_values()
+
+# 4. Top Keywords (simple)
+text = " ".join(df['description'].dropna())
+words = text.lower().split()
+
+from collections import Counter
+top_words = Counter(words).most_common(10)
+
+# -----------------------------
+# Step 4: Print Insights
+# -----------------------------
+print("Average Resolution Time:", avg_resolution_time)
+print("\nTickets by Day:\n", tickets_by_day)
+print("\nResolution by Category:\n", resolution_by_category)
+print("\nResolution by Priority:\n", resolution_by_priority)
+print("\nAnalyst Performance:\n", analyst_performance)
+print("\nTop Keywords:\n", top_words)
+
+# -----------------------------
+# Step 5: Visualization
+# -----------------------------
+
+# Tickets by Category
+df['category'].value_counts().plot(kind='bar')
+plt.title("Tickets by Category")
+plt.xlabel("Category")
+plt.ylabel("Count")
+plt.show()
+
+# Tickets by Day
+tickets_by_day.plot(kind='bar')
+plt.title("Tickets by Day")
+plt.xlabel("Day")
+plt.ylabel("Count")
+plt.show()
+
+# Resolution Time by Category
+resolution_by_category.plot(kind='bar')
+plt.title("Avg Resolution Time by Category")
+plt.xlabel("Category")
+plt.ylabel("Hours")
+plt.show()
+
+# Analyst Performance
+analyst_performance.plot(kind='bar')
+plt.title("Analyst Performance")
+plt.xlabel("Analyst")
+plt.ylabel("Avg Resolution Time (Hours)")
+plt.show()
+
+# -----------------------------
+# Step 6: Export to Excel
+# -----------------------------
+df.to_excel("final_help_desk_analysis.xlsx", index=False)
+
+print("\n✅ Analysis Completed and File Saved!")
+
+
+🎯🎯LINK🎯🎯
+
+
+
+https://docs.google.com/spreadsheets/d/1dfSIbG8GJAzXOgvmNHdbuUtEOWN5ia3X/edit?usp=sharing&ouid=107125194133694085286&rtpof=true&sd=true
+
+
+
+
+
