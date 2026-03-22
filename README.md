@@ -172,6 +172,170 @@ https://docs.google.com/spreadsheets/d/1Z-V57jrW7HWpfQu4NxOdJHoym2J5VET6/edit?us
 
 
 ├── Day3/
+
+
+
+HEALTHY FUTURES – Child Nutrition & Growth Dashboard
+
+
+ 📌 Project Overview
+
+This project analyzes **child nutrition and growth patterns** using Microsoft Excel. The goal is to understand how factors like **BMI, sugar consumption, screen time, age, and region** influence children's health status.
+
+Using **data cleaning, pivot tables, and interactive dashboard visualizations**, the project provides actionable insights to monitor and improve child health outcomes.
+
+---
+
+ 🎯 Project Objectives
+
+- 📊 Analyze children's **health status (Healthy vs Underweight) ** across age groups  
+- 🍭 Evaluate the impact of **sugar drink consumption on health**  
+- 📱 Study the relationship between **screen time and child growth**  
+- 👶 Identify **age-wise nutrition trends (24–60 months) **  
+- 🌍 Compare **regional distribution of children**  
+- 📈 Build an **interactive dashboard for data-driven insights**
+
+---
+
+ 🗂 Dataset Information
+
+| Column Name            | Description                                      |
+|----------------------|--------------------------------------------------|
+| Child_ID             | Unique identifier for each child                 |
+| Age Months           | Age of child (in months)                       |
+| Gender               | Male / Female                                   |
+| Region               | Geographic region (Central, East, North, etc.)  |
+| BMI                  | Body Mass Index of child                        |
+| Health Status        | Healthy Weight / Underweight                    |
+| Daily_Sugar_Drinks   | Average sugar drinks consumed per day           |
+| Screen_Time_Hours    | Average daily screen time (hours)              |
+
+---
+
+🧹 Data Cleaning Process
+
+- 🧼 Removed duplicate records  
+- 🔍 Handled missing/null values  
+- 🔢 Converted data types  
+- 🏷 Standardized column names  
+- 📊 Created calculated metrics  
+
+---
+
+🔄 Data Transformation
+
+ Health Categories
+- Healthy Weight  
+- Underweight  
+
+ Age Groups
+- 24–36 Months  
+- 37–48 Months  
+- 49–60 Months  
+
+KPI Metrics
+- Average BMI  
+- Healthy Weight %  
+- Average Sugar Drinks/Day  
+- Average Screen Time (Hours)
+
+---
+
+ 📊 Dashboard & Visualizations
+
+📌 KPI Cards
+- 👶 Total Children: **100**  
+- ⚖ Avg BMI: **17.06**  
+- ✅ Healthy Weight %: **38.26%**  
+- 🍹 Avg Sugar Drinks/Day: **1.37**  
+- 📱 Avg Screen Time: **1.39 hrs**
+
+---
+
+ 📊 Charts
+
+ 📉 Health Status by Age Group
+- Compares Healthy vs Underweight children across age groups  
+
+ 📊 Sugar Drinks vs Screen Time
+- Compares lifestyle factors by health status  
+
+🍩 Region Distribution
+- Shows percentage distribution across regions  
+
+---
+
+🎛 Filters
+
+- Gender  
+- Region  
+- Age (Months)
+
+---
+🔎 Key Insights
+
+- ⚠ High number of underweight children in early age groups  
+- 📉 Younger children show more undernutrition  
+- 🍭 Slightly higher sugar intake in underweight group  
+- ⚖ Healthy weight % is relatively low (38.26%)  
+- 🌍 Balanced regional distribution  
+
+---
+
+🛠 Tools Used
+
+Microsoft Excel:
+- Data Cleaning  
+- Pivot Tables  
+- Dashboard Design  
+- Data Visualization  
+
+---
+
+📁 Project Files
+
+- Cleaned Dataset  
+- Excel Dashboard  
+- README Documentation  
+
+---
+ 🚀 Skills Demonstrated
+
+- Data Cleaning  
+- Data Analysis  
+- Dashboard Development  
+- Visualization  
+- Analytical Thinking  
+
+---
+
+💡 Future Improvements
+
+- Build Power BI dashboard  
+- Perform correlation analysis  
+- Apply predictive modelling  
+
+---
+
+👩‍💻 Author
+G .Upendrachary
+https://docs.google.com/spreadsheets/d/16aL0olfanpxhfV_oMyjeHEeSpQhCgGEM/edit?usp=sharing&ouid=107125194133694085286&rtpof=true&sd=true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ...
 ├── Day50/
 
