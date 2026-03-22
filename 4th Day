@@ -1,0 +1,137 @@
+4th  Day Credit-Risk-Analysis/
+│
+├── data/
+# 📊 Credit Risk Analysis and Loan Portfolio Management
+
+## 📌 Project Overview
+
+This project focuses on analyzing a bank loan dataset to understand credit risk, loan performance, and profitability. The goal is to help the bank make better lending decisions by identifying trends, risks, and future scenarios.
+
+---
+
+## 🎯 Objective
+
+* Analyze loan portfolio health
+* Identify high risk and low risk loans
+* Calculate key financial metrics
+* Perform forecasting using what if analysis
+
+---
+
+## 📂 Dataset Description
+
+The dataset includes:
+
+* Loan amount
+* Interest rate
+* Loan status
+* Loan grade
+* Borrower income
+* Loan purpose
+* Issue date
+
+---
+
+## 🧹 Data Cleaning
+
+* Removed duplicate records
+* Handled missing values
+* Standardized formats for dates and categories
+* Converted columns into correct data types
+
+---
+
+## 📊 Key Metrics Created
+
+* Loan to Value Ratio
+* Debt to Income Ratio
+* Months on Book
+* Profit or Loss per loan
+
+---
+
+## 📈 Analysis Performed
+
+### Pivot Table Analysis
+
+* Total loan amount by loan status
+* Number of loans by grade
+* Loan distribution by purpose
+
+### Visualizations
+
+* Monthly loan trend using line chart
+* Loan grade distribution using bar chart
+* Geographic analysis using map chart
+
+---
+
+## 🔮 What If Analysis
+
+### Goal Seek
+
+Calculated required interest rate to achieve target profit
+
+### Scenario Analysis
+
+* Optimistic scenario with lower default rate and higher interest
+* Pessimistic scenario with higher default rate and lower interest
+
+### Data Table
+
+Analyzed impact of:
+
+* Default rate
+* Interest rate
+  on overall profit
+
+---
+
+## 💡 Key Insights
+
+* Higher grade loans show lower default risk
+* Certain loan purposes have higher default rates
+* Profit is highly sensitive to default rate changes
+
+---
+
+## ✅ Recommendations
+
+* Increase interest rates for high risk loans
+* Focus on lending to low risk borrowers
+* Monitor regions with high default rates
+
+---
+
+## 🛠 Tools Used
+
+* Microsoft Excel
+* Pivot Tables
+* Charts and Dashboards
+* What If Analysis tools
+
+---
+
+## 📁 Project Structure
+
+* Dataset file
+* Cleaned data sheet
+* Analysis sheet
+* Dashboard
+
+---
+
+## 🚀 Conclusion
+
+This project demonstrates how data analysis can be used to manage credit risk and improve decision making in the banking sector.
+
+---
+
+🎯🎯🎯LINK🎯🎯🎯
+
+https://docs.google.com/spreadsheets/d/19nCK6qB9wn4ErlHfYs5lYkqiLRirOSVK/edit?usp=sharing&ouid=107125194133694085286&rtpof=true&sd=true
+
+
+├── analysis/
+├── dashboard/
+└── README.md
