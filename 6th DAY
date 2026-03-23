@@ -1,0 +1,120 @@
+Day-06-Banking-Sector-Analysis/
+│
+├── 📂 data
+│   # 📊 Day 6: Banking Sector Analysis (Power BI)
+
+🛩️🛩️ 🚀 Project Overview
+
+This project focuses on analyzing customer behavior, transactions, and loan performance using Power BI. The goal is to transform raw banking data into meaningful insights through data cleaning, modeling, and interactive dashboards.
+
+---
+
+🎯🎯🎯 📂 Dataset
+
+* File Name: `Banking_Data.csv`
+* Contains customer details, account types, transactions, and loan status
+
+---
+
+## 🧹 Data Cleaning & Transformation
+
+* Removed duplicate records
+* Handled missing values
+* Created **Net Transaction Impact** column
+* Categorized customers into **Age Groups**
+* Standardized account types (SAV, CUR, FD, LN)
+
+---
+
+## 🔗 Data Modeling
+
+* Created relationships using `Customer_ID`
+* Built a **Calendar Table** for date analysis
+
+---
+
+##🎯🎯 📐 DAX Measures Created
+
+* Total Deposits
+* Total Withdrawals
+* Net Balance Growth
+* Average Account Balance
+* Loan Default Rate %
+* Monthly Transaction Volume
+* Customer Profitability Score
+
+---
+
+##🛩️🛩️ 📊 Dashboard Features
+
+### 1. Customer Overview
+
+* Customers by Age Group & Gender
+* Total Customers KPI
+* Conditional formatting for low balance accounts
+
+### 🎯🎯2. Transaction Analysis
+
+* Monthly transaction trends
+* Heatmap by day and hour
+* Drill-through for customer transactions
+
+### 🎯🎯3. Loan Performance
+
+* Loan status distribution
+* Loan Default Rate KPI with color indicators
+
+###🎯🎯 4. Top Customers
+
+* Top 10 customers by transactions
+* Highlighted top performers
+* Tooltip showing average balance
+
+---
+
+## ☸️☸️⚙️ Advanced Features Used
+
+* Slicers (Age Group, Gender, Account Type)
+* Drill-through pages
+* Tooltips
+* Bookmarks for navigation
+* Date hierarchy (Year → Quarter → Month)
+* Conditional formatting
+
+---
+
+##📊📈📈 📈 Key Insights
+
+* Majority of customers fall in the 31 to 50 age group
+* Loan default rate highlights risk segments
+* Customers with lower balances show higher debit activity
+* Top customers contribute significantly to total transactions
+
+---
+
+##⚙️⚙️ 📌 Tools Used
+
+* Power BI
+* Power Query
+* DAX
+
+---
+
+## 🎯🎯📎 Output
+
+* Interactive Power BI Dashboard (.pbix file)
+* Insight summary for decision making
+
+---
+
+## 🙌 Conclusion
+
+This project demonstrates how data can be transformed into actionable insights using Power BI, helping banks improve decision making and customer understanding.
+
+│
+└── README.md
+
+🖇️🔗🔗LINK:🔗🔗
+https://docs.google.com/spreadsheets/d/14dh8HuDqGGeGRR4Udl21BnBcHj-xv4Y-/edit?usp=sharing&ouid=107125194133694085286&rtpof=true&sd=true
+
+
