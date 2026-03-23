@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Banking Sector Intelligence Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:        #080c14;
+    --panel:     #0e1520;
+    --panel2:    #131d2b;
+    --border:    rgba(255,255,255,.07);
+    --accent:    #1d8cf8;
+    --accent2:   #00d4aa;
+    --gold:      #f5c842;
+    --silver:    #c0c0c0;
+    --bronze:    #cd7f32;
+    --danger:    #f05252;
+    --warn:      #f59e0b;
+    --success:   #10b981;
+    --text:      #e2e8f0;
+    --muted:     #64748b;
+    --glow:      rgba(29,140,248,.18);
+    --grid-line: rgba(255,255,255,.04);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────── */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 28px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg,#1d8cf8,#00d4aa);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text { font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; letter-spacing:-.5px; }
+  .logo-sub  { font-size:.7rem; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; }
+
+  .header-meta { display:flex; align-items:center; gap:20px; }
+  .last-updated { font-size:.75rem; color:var(--muted); }
+  .badge {
+    padding:4px 12px; border-radius:20px; font-size:.7rem; font-weight:600;
+    letter-spacing:.5px; text-transform:uppercase;
+  }
+  .badge-live { background:rgba(16,185,129,.15); color:var(--success); border:1px solid rgba(16,185,129,.3); }
+
+  /* ── NAV TABS ────────────────────────────────────────── */
+  .nav-tabs {
+    display:flex; gap:4px; padding:12px 28px;
+    background:var(--panel); border-bottom:1px solid var(--border);
+  }
+  .tab {
+    padding:8px 18px; border-radius:8px; font-size:.82rem; font-weight:500;
+    cursor:pointer; transition:all .2s; border:none;
+    color:var(--muted); background:transparent; letter-spacing:.3px;
+  }
+  .tab:hover { color:var(--text); background:rgba(255,255,255,.06); }
+  .tab.active { color:var(--accent); background:rgba(29,140,248,.12); }
+
+  /* ── SLICERS ────────────────────────────────────────── */
+  .slicer-bar {
+    display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+    padding:12px 28px;
+    background:var(--panel2); border-bottom:1px solid var(--border);
+  }
+  .slicer-label { font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-right:4px; }
+  .slicer-group { display:flex; gap:6px; align-items:center; }
+  .slicer-btn {
+    padding:5px 13px; border-radius:20px; font-size:.75rem; font-weight:500;
+    cursor:pointer; transition:all .2s; border:1px solid var(--border);
+    color:var(--muted); background:var(--panel); font-family:inherit;
+  }
+  .slicer-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .slicer-btn.on { background:rgba(29,140,248,.15); border-color:var(--accent); color:var(--accent); }
+  .divider { width:1px; height:24px; background:var(--border); }
+
+  /* ── MAIN LAYOUT ─────────────────────────────────────── */
+  .page { display:none; padding:24px 28px; gap:20px; flex-direction:column; }
+  .page.active { display:flex; }
+
+  /* ── KPI CARDS ───────────────────────────────────────── */
+  .kpi-row { display:grid; gap:16px; grid-template-columns:repeat(6,1fr); }
+  .kpi {
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:18px 16px; position:relative; overflow:hidden; transition:transform .2s, box-shadow .2s;
+  }
+  .kpi:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,.4); }
+  .kpi::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:var(--kpi-color, var(--accent));
+    border-radius:14px 14px 0 0;
+  }
+  .kpi-icon {
+    width:36px; height:36px; border-radius:9px;
+    background:rgba(255,255,255,.06);
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; margin-bottom:12px;
+  }
+  .kpi-label { font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+  .kpi-value { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:700; line-height:1; }
+  .kpi-delta { font-size:.7rem; margin-top:6px; display:flex; align-items:center; gap:4px; }
+  .delta-up   { color:var(--success); }
+  .delta-down { color:var(--danger); }
+  .kpi-sub { font-size:.68rem; color:var(--muted); margin-top:4px; }
+
+  /* traffic-light for loan default */
+  .traffic-red    { color:var(--danger) !important; }
+  .traffic-yellow { color:var(--warn) !important; }
+  .traffic-green  { color:var(--success) !important; }
+
+  /* ── CHART PANELS ────────────────────────────────────── */
+  .row { display:grid; gap:16px; }
+  .row-3 { grid-template-columns: 2fr 1fr 1fr; }
+  .row-2 { grid-template-columns: 1fr 1fr; }
+  .row-2a{ grid-template-columns: 1.4fr 1fr; }
+  .row-full { grid-template-columns: 1fr; }
+
+  .card {
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:20px; position:relative; overflow:hidden;
+  }
+  .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .card-title {
+    font-family:'Syne',sans-serif; font-weight:700; font-size:.88rem;
+    letter-spacing:-.3px;
+  }
+  .card-badge {
+    font-size:.65rem; padding:3px 9px; border-radius:20px;
+    background:rgba(29,140,248,.12); color:var(--accent);
+    border:1px solid rgba(29,140,248,.2); letter-spacing:.5px; text-transform:uppercase;
+  }
+  .canvas-wrap { position:relative; }
+
+  /* ── TABLE ───────────────────────────────────────────── */
+  .top-table { width:100%; border-collapse:collapse; }
+  .top-table th {
+    font-size:.68rem; text-transform:uppercase; letter-spacing:1px;
+    color:var(--muted); padding:8px 10px; text-align:left;
+    border-bottom:1px solid var(--border); font-weight:500;
+  }
+  .top-table td { padding:10px 10px; font-size:.8rem; border-bottom:1px solid var(--grid-line); }
+  .top-table tr:last-child td { border-bottom:none; }
+  .top-table tr:hover td { background:rgba(255,255,255,.025); }
+  .rank-badge {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:22px; height:22px; border-radius:50%; font-size:.65rem; font-weight:700;
+  }
+  .rank-1 { background:rgba(245,200,66,.2); color:var(--gold); }
+  .rank-2 { background:rgba(192,192,192,.2); color:var(--silver); }
+  .rank-3 { background:rgba(205,127,50,.2); color:var(--bronze); }
+  .rank-n { background:rgba(255,255,255,.06); color:var(--muted); }
+  .balance-bar {
+    height:4px; border-radius:4px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    margin-top:4px; transition:width .4s;
+  }
+
+  /* ── HEAT MAP ────────────────────────────────────────── */
+  .heatmap { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+  .hm-cell {
+    aspect-ratio:1; border-radius:6px; display:flex;
+    align-items:center; justify-content:center;
+    font-size:.6rem; font-weight:600; cursor:default;
+    transition:transform .15s;
+  }
+  .hm-cell:hover { transform:scale(1.1); }
+  .hm-label { font-size:.65rem; color:var(--muted); text-align:center; margin-bottom:6px; }
+
+  /* ── INSIGHT STRIP ───────────────────────────────────── */
+  .insights {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:4px;
+  }
+  .insight {
+    background:linear-gradient(135deg,rgba(29,140,248,.08),rgba(0,212,170,.04));
+    border:1px solid rgba(29,140,248,.15); border-radius:10px; padding:14px 16px;
+  }
+  .insight-label { font-size:.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+  .insight-text  { font-size:.82rem; line-height:1.5; }
+
+  /* ── MODEL DIAGRAM ───────────────────────────────────── */
+  .model-box {
+    display:flex; align-items:center; justify-content:center; gap:40px; padding:20px 0;
+  }
+  .entity {
+    border:1px solid var(--accent); border-radius:10px; padding:14px 20px; min-width:160px;
+    background:rgba(29,140,248,.05);
+  }
+  .entity-title { font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; color:var(--accent); margin-bottom:8px; }
+  .entity-field { font-size:.72rem; color:var(--muted); padding:3px 0; border-bottom:1px solid var(--grid-line); }
+  .entity-field:last-child { border-bottom:none; }
+  .entity-field.pk { color:var(--gold); }
+  .rel-line { display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .rel-arrow { font-size:1.4rem; color:var(--accent2); }
+  .rel-label { font-size:.65rem; color:var(--muted); }
+
+  /* ── DAX PANEL ───────────────────────────────────────── */
+  .dax-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dax-card {
+    background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:14px;
+  }
+  .dax-name { font-family:'Syne',sans-serif; font-size:.78rem; font-weight:700; color:var(--accent2); margin-bottom:6px; }
+  .dax-formula {
+    font-family:'Courier New',monospace; font-size:.7rem;
+    color:#94e2c4; background:rgba(0,0,0,.3);
+    border-radius:6px; padding:8px; line-height:1.5; white-space:pre-wrap;
+  }
+
+  /* ── LOAN PAGE SPECIFICS ────────────────────────────── */
+  .whatif-box {
+    background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:18px;
+  }
+  .whatif-title { font-size:.78rem; font-weight:600; color:var(--accent); margin-bottom:12px; }
+  .whatif-row   { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .whatif-label { font-size:.75rem; color:var(--muted); min-width:120px; }
+  input[type=range] {
+    flex:1; accent-color:var(--accent); height:4px; cursor:pointer;
+  }
+  .whatif-val   { font-size:.82rem; font-weight:600; min-width:50px; text-align:right; color:var(--text); }
+  .whatif-result {
+    margin-top:14px; padding-top:14px; border-top:1px solid var(--border);
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+  }
+  .wr-item { text-align:center; }
+  .wr-val  { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; color:var(--accent2); }
+  .wr-lbl  { font-size:.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-top:4px; }
+
+  /* ── SCROLLBAR ───────────────────────────────────────── */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--panel2); border-radius:3px; }
+
+  /* ── ANIMATE ─────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .kpi, .card { animation: fadeUp .45s ease both; }
+  .kpi:nth-child(1){animation-delay:.05s} .kpi:nth-child(2){animation-delay:.1s}
+  .kpi:nth-child(3){animation-delay:.15s} .kpi:nth-child(4){animation-delay:.2s}
+  .kpi:nth-child(5){animation-delay:.25s} .kpi:nth-child(6){animation-delay:.3s}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🏦</div>
+    <div>
+      <div class="logo-text">BankIntel Analytics</div>
+      <div class="logo-sub">Banking Sector Dashboard · Day 6</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span class="last-updated">Dataset: Banking_Data.csv · 250 transactions · 92 customers</span>
+    <span class="badge badge-live">● Live</span>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <button class="tab active" onclick="switchTab('overview')">📊 Customer Overview</button>
+  <button class="tab" onclick="switchTab('transactions')">💳 Transaction Analysis</button>
+  <button class="tab" onclick="switchTab('loans')">🏷️ Loan Performance</button>
+  <button class="tab" onclick="switchTab('topcustomers')">🏆 Top Customers</button>
+  <button class="tab" onclick="switchTab('model')">🔗 Data Model & DAX</button>
+</div>
+
+<!-- SLICERS -->
+<div class="slicer-bar">
+  <span class="slicer-label">Filters:</span>
+  <div class="slicer-group">
+    <span class="slicer-label">Age</span>
+    <button class="slicer-btn on" onclick="toggleSlicer(this,'age','all')">All</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'age','18-30')">18–30</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'age','31-50')">31–50</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'age','51+')">51+</button>
+  </div>
+  <div class="divider"></div>
+  <div class="slicer-group">
+    <span class="slicer-label">Gender</span>
+    <button class="slicer-btn on" onclick="toggleSlicer(this,'gender','all')">All</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'gender','Male')">Male</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'gender','Female')">Female</button>
+  </div>
+  <div class="divider"></div>
+  <div class="slicer-group">
+    <span class="slicer-label">Account</span>
+    <button class="slicer-btn on" onclick="toggleSlicer(this,'acct','all')">All</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'acct','SAV')">SAV</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'acct','CUR')">CUR</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'acct','FD')">FD</button>
+    <button class="slicer-btn" onclick="toggleSlicer(this,'acct','LN')">LN</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 1: CUSTOMER OVERVIEW
+═══════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-overview">
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi" style="--kpi-color:#1d8cf8">
+      <div class="kpi-icon">👥</div>
+      <div class="kpi-label">Total Customers</div>
+      <div class="kpi-value">92</div>
+      <div class="kpi-sub">Unique account holders</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#10b981">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-label">Total Deposits</div>
+      <div class="kpi-value">₹11.6L</div>
+      <div class="kpi-delta delta-up">▲ Credits</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#f05252">
+      <div class="kpi-icon">💸</div>
+      <div class="kpi-label">Total Withdrawals</div>
+      <div class="kpi-value">₹12.8L</div>
+      <div class="kpi-delta delta-down">▼ Debits</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#f59e0b">
+      <div class="kpi-icon">📉</div>
+      <div class="kpi-label">Net Balance Growth</div>
+      <div class="kpi-value" style="color:#f05252">-₹1.2L</div>
+      <div class="kpi-delta delta-down">▼ Net outflow</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#00d4aa">
+      <div class="kpi-icon">⚖️</div>
+      <div class="kpi-label">Avg Account Balance</div>
+      <div class="kpi-value">₹53.3K</div>
+      <div class="kpi-sub">Per customer avg</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#f05252">
+      <div class="kpi-icon">⚠️</div>
+      <div class="kpi-label">Loan Default Rate</div>
+      <div class="kpi-value traffic-red">39.2%</div>
+      <div class="kpi-delta delta-down">🔴 High Risk</div>
+    </div>
+  </div>
+
+  <!-- ROW: Age+Gender bar | Account Type Pie | Gender Donut -->
+  <div class="row row-3">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Customers by Age Group & Gender</span>
+        <span class="card-badge">Bar Chart</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="ageGenderChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Account Type Distribution</span>
+        <span class="card-badge">Pie</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="acctTypePieChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Gender Split</span>
+        <span class="card-badge">Donut</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="genderDonutChart" height="220"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ROW: Balance by Account | Age Group bar -->
+  <div class="row row-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Average Balance by Account Type</span>
+        <span class="card-badge">Bar</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="balAcctChart" height="180"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Customer Age Group Distribution</span>
+        <span class="card-badge">Horizontal Bar</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="ageGroupChart" height="180"></canvas></div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="insights">
+    <div class="insight">
+      <div class="insight-label">🔎 Key Finding</div>
+      <div class="insight-text">Age group <strong>31–50</strong> dominates with 37 customers (40%), followed by 51+ with 34 customers (37%). Youth segment (18–30) is underserved at just 23%.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-label">💡 Balance Alert</div>
+      <div class="insight-text"><strong>Current accounts</strong> have the highest average balance (₹54.5K), slightly ahead of Savings (₹52.6K). Loan accounts average ₹51.8K — a healthy collateral indicator.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-label">⚡ Action Required</div>
+      <div class="insight-text">Net outflow of <strong>₹1.2L</strong> indicates withdrawals exceed deposits. Bank should focus on deposit mobilization schemes targeting high-balance customers.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 2: TRANSACTION ANALYSIS
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-transactions">
+
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi" style="--kpi-color:#1d8cf8">
+      <div class="kpi-icon">📋</div>
+      <div class="kpi-label">Total Transactions</div>
+      <div class="kpi-value">250</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#10b981">
+      <div class="kpi-icon">⬆️</div>
+      <div class="kpi-label">Credit Transactions</div>
+      <div class="kpi-value">118</div>
+      <div class="kpi-sub">47.2% of total</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#f05252">
+      <div class="kpi-icon">⬇️</div>
+      <div class="kpi-label">Debit Transactions</div>
+      <div class="kpi-value">132</div>
+      <div class="kpi-sub">52.8% of total</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#f59e0b">
+      <div class="kpi-icon">📆</div>
+      <div class="kpi-label">Months Covered</div>
+      <div class="kpi-value">25</div>
+      <div class="kpi-sub">Sep 2023 – Sep 2025</div>
+    </div>
+  </div>
+
+  <!-- Monthly Line Chart -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Monthly Transaction Volume Trend</span>
+      <span class="card-badge">Line Chart · Sep 2023 – Sep 2025</span>
+    </div>
+    <div class="canvas-wrap"><canvas id="monthlyLineChart" height="140"></canvas></div>
+  </div>
+
+  <!-- Heatmap + Transaction Type Pie -->
+  <div class="row row-2a">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Transaction Volume by Day of Week</span>
+        <span class="card-badge">Heat Map</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="dowBarChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Credit vs Debit Split</span>
+        <span class="card-badge">Donut</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="txnTypePieChart" height="200"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insights">
+    <div class="insight">
+      <div class="insight-label">📅 Peak Day</div>
+      <div class="insight-text"><strong>Sunday</strong> records the highest transaction volume at ₹4.22L — likely weekend retail & ATM withdrawals. Bank should ensure maximum liquidity coverage on weekends.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-label">📈 Peak Month</div>
+      <div class="insight-text"><strong>May 2024</strong> saw the highest monthly volume (₹1.65L), followed by April 2024 (₹1.64L). Q2 is consistently the busiest transaction quarter.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-label">⚖️ Debit Dominance</div>
+      <div class="insight-text">Debit transactions (52.8%) slightly outnumber credits. This imbalance suggests customers are consuming savings, pointing to a need for better FD & deposit products.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 3: LOAN PERFORMANCE
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-loans">
+
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi" style="--kpi-color:#f05252">
+      <div class="kpi-icon">⚠️</div>
+      <div class="kpi-label">Loan Default Rate</div>
+      <div class="kpi-value traffic-red">39.2%</div>
+      <div class="kpi-delta delta-down">🔴 Critical — above 15%</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#f59e0b">
+      <div class="kpi-icon">📂</div>
+      <div class="kpi-label">Active Loans</div>
+      <div class="kpi-value">16</div>
+      <div class="kpi-sub">31.4% of loan customers</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#10b981">
+      <div class="kpi-icon">✅</div>
+      <div class="kpi-label">Closed Loans</div>
+      <div class="kpi-value">15</div>
+      <div class="kpi-sub">29.4% repaid fully</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#f05252">
+      <div class="kpi-icon">❌</div>
+      <div class="kpi-label">Default Loans</div>
+      <div class="kpi-value" style="color:var(--danger)">20</div>
+      <div class="kpi-sub">39.2% default</div>
+    </div>
+  </div>
+
+  <div class="row row-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Loan Status Distribution</span>
+        <span class="card-badge">Pie Chart</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="loanPieChart" height="240"></canvas></div>
+    </div>
+
+    <!-- What-if parameter -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">What-If: Interest Rate Impact</span>
+        <span class="card-badge">Simulator</span>
+      </div>
+      <div class="whatif-box">
+        <div class="whatif-title">⚙️ Simulate Interest Rate Impact on Revenue</div>
+        <div class="whatif-row">
+          <span class="whatif-label">Interest Rate (%)</span>
+          <input type="range" id="rateSlider" min="5" max="25" value="10" step="0.5" oninput="updateWhatIf()"/>
+          <span class="whatif-val" id="rateVal">10%</span>
+        </div>
+        <div class="whatif-row">
+          <span class="whatif-label">Loan Portfolio (₹)</span>
+          <input type="range" id="portfolioSlider" min="1000000" max="10000000" value="3629134" step="100000" oninput="updateWhatIf()"/>
+          <span class="whatif-val" id="portfolioVal">₹36.3L</span>
+        </div>
+        <div class="whatif-row">
+          <span class="whatif-label">Recovery Rate (%)</span>
+          <input type="range" id="recoverySlider" min="50" max="100" value="61" step="1" oninput="updateWhatIf()"/>
+          <span class="whatif-val" id="recoveryVal">61%</span>
+        </div>
+        <div class="whatif-result">
+          <div class="wr-item">
+            <div class="wr-val" id="wi-revenue">₹3.63L</div>
+            <div class="wr-lbl">Projected Interest Revenue</div>
+          </div>
+          <div class="wr-item">
+            <div class="wr-val" id="wi-loss">₹14.2L</div>
+            <div class="wr-lbl">Default Loss Exposure</div>
+          </div>
+          <div class="wr-item">
+            <div class="wr-val" id="wi-net">-₹10.6L</div>
+            <div class="wr-lbl">Net Loan P&L</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insights">
+    <div class="insight">
+      <div class="insight-label">🚨 Critical Alert</div>
+      <div class="insight-text">A default rate of <strong>39.2%</strong> is 2.6× the danger threshold of 15%. Immediate credit risk review and tighter KYC/underwriting is urgently needed.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-label">📊 Portfolio Split</div>
+      <div class="insight-text">Of 51 loan customers: 20 defaulted, 16 active, 15 closed. <strong>Only 29.4%</strong> fully repaid their loans — the lowest repayment ratio in the dataset.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-label">💡 Recommendation</div>
+      <div class="insight-text">Use the What-If simulator to test loan profitability at different interest rates. Consider <strong>raising rates for high-risk segments</strong> and implementing EMI restructuring for defaulters.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 4: TOP CUSTOMERS
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-topcustomers">
+
+  <div class="row row-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Top 10 Customers by Total Transactions</span>
+        <span class="card-badge">🥇 Gold · 🥈 Silver · 🥉 Bronze</span>
+      </div>
+      <table class="top-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer</th>
+            <th>ID</th>
+            <th>Total Txn (₹)</th>
+            <th>Count</th>
+            <th>Avg Balance (₹)</th>
+          </tr>
+        </thead>
+        <tbody id="top10body"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Top 10 by Transaction Amount</span>
+        <span class="card-badge">Bar</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="top10barChart" height="280"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Profitability -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Top 10 Customers by Profitability Score (Balance + Net Transaction Impact)</span>
+      <span class="card-badge">Horizontal Bar</span>
+    </div>
+    <div class="canvas-wrap"><canvas id="profitChart" height="160"></canvas></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 5: DATA MODEL & DAX
+═══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-model">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Data Model – Entity Relationships</span>
+      <span class="card-badge">Star Schema</span>
+    </div>
+    <div class="model-box">
+      <!-- Calendar Table -->
+      <div class="entity">
+        <div class="entity-title">📅 Calendar</div>
+        <div class="entity-field pk">🔑 DateKey</div>
+        <div class="entity-field">Year</div>
+        <div class="entity-field">Quarter</div>
+        <div class="entity-field">Month</div>
+        <div class="entity-field">Month_Name</div>
+        <div class="entity-field">Day_of_Week</div>
+      </div>
+      <div class="rel-line">
+        <div class="rel-arrow">←→</div>
+        <div class="rel-label">1:N on DateKey</div>
+      </div>
+      <!-- Fact Table -->
+      <div class="entity" style="border-color:var(--accent2); background:rgba(0,212,170,.05);">
+        <div class="entity-title" style="color:var(--accent2)">📊 Transactions (Fact)</div>
+        <div class="entity-field pk">🔑 Transaction_ID</div>
+        <div class="entity-field">Customer_ID (FK)</div>
+        <div class="entity-field">Transaction_Date (FK)</div>
+        <div class="entity-field">Transaction_Type</div>
+        <div class="entity-field">Transaction_Amount</div>
+        <div class="entity-field">Net_Transaction_Impact</div>
+        <div class="entity-field">Account_Type / Acct_Short</div>
+        <div class="entity-field">Balance</div>
+        <div class="entity-field">Profitability_Score</div>
+      </div>
+      <div class="rel-line">
+        <div class="rel-arrow">←→</div>
+        <div class="rel-label">1:N on Customer_ID</div>
+      </div>
+      <!-- Customer Dim -->
+      <div class="entity">
+        <div class="entity-title">👤 Customers (Dim)</div>
+        <div class="entity-field pk">🔑 Customer_ID</div>
+        <div class="entity-field">Customer_Name</div>
+        <div class="entity-field">Age</div>
+        <div class="entity-field">Age_Group</div>
+        <div class="entity-field">Gender</div>
+        <div class="entity-field">Loan_Status</div>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:.72rem;color:var(--muted);margin-top:8px;">
+      Star Schema: 1 Fact Table (Transactions) · 2 Dimension Tables (Customers, Calendar)
+    </div>
+  </div>
+
+  <!-- DAX MEASURES -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">DAX Measures Reference</span>
+      <span class="card-badge">Power BI DAX</span>
+    </div>
+    <div class="dax-grid">
+      <div class="dax-card">
+        <div class="dax-name">Total Deposits</div>
+        <div class="dax-formula">Total Deposits =
+CALCULATE(
+  SUM(Transactions[Transaction_Amount]),
+  Transactions[Transaction_Type] = "Credit"
+)</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">Total Withdrawals</div>
+        <div class="dax-formula">Total Withdrawals =
+CALCULATE(
+  SUM(Transactions[Transaction_Amount]),
+  Transactions[Transaction_Type] = "Debit"
+)</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">Net Balance Growth</div>
+        <div class="dax-formula">Net Balance Growth =
+[Total Deposits] - [Total Withdrawals]</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">Average Account Balance</div>
+        <div class="dax-formula">Avg Account Balance =
+AVERAGEX(
+  VALUES(Customers[Customer_ID]),
+  CALCULATE(AVERAGE(Transactions[Balance]))
+)</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">Loan Default Rate %</div>
+        <div class="dax-formula">Loan Default Rate % =
+DIVIDE(
+  CALCULATE(
+    DISTINCTCOUNT(Customers[Customer_ID]),
+    Customers[Loan_Status] = "Default"
+  ),
+  CALCULATE(
+    DISTINCTCOUNT(Customers[Customer_ID]),
+    Customers[Account_Type] = "Loan"
+  )
+) * 100</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">Monthly Transaction Volume</div>
+        <div class="dax-formula">Monthly Txn Volume =
+CALCULATE(
+  SUM(Transactions[Transaction_Amount]),
+  DATESMTD(Calendar[DateKey])
+)</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">Net Transaction Impact</div>
+        <div class="dax-formula">Net_Transaction_Impact =
+IF(
+  Transactions[Transaction_Type] = "Credit",
+  Transactions[Transaction_Amount],
+  -Transactions[Transaction_Amount]
+)</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">Customer Profitability Score</div>
+        <div class="dax-formula">Profitability Score =
+Transactions[Balance] +
+Transactions[Net_Transaction_Impact]</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">Age Group (Calculated Column)</div>
+        <div class="dax-formula">Age Group =
+SWITCH(TRUE(),
+  Customers[Age] <= 30, "18-30",
+  Customers[Age] <= 50, "31-50",
+  "51+"
+)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cleaning Steps -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Data Cleaning & Transformation Steps</span>
+      <span class="card-badge">Power Query / Python</span>
+    </div>
+    <div class="dax-grid">
+      <div class="dax-card">
+        <div class="dax-name">1. Missing Values</div>
+        <div class="dax-formula">Loan_Status: 180 nulls filled
+→ "N/A" for non-loan accounts
+Transaction_Date: Parsed
+with dayfirst=True format</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">2. Duplicates</div>
+        <div class="dax-formula">0 exact duplicate rows found
+Customers appear multiple
+times across account types
+→ expected multi-account behavior</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">3. Account Standardization</div>
+        <div class="dax-formula">Savings     → SAV
+Current     → CUR
+Fixed Deposit → FD
+Loan        → LN</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">4. Derived Columns</div>
+        <div class="dax-formula">Age_Group: 18-30 / 31-50 / 51+
+Net_Txn_Impact: +/- amount
+Profitability_Score computed
+Year / Month / Quarter / DOW</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">5. Calendar Table</div>
+        <div class="dax-formula">Auto-generated from min/max
+Transaction_Date range:
+Sep 2023 → Sep 2025
+Hierarchy: Year>Quarter>Month</div>
+      </div>
+      <div class="dax-card">
+        <div class="dax-name">6. Conditional Formatting</div>
+        <div class="dax-formula">Balance < 5000 → Red highlight
+Top 3 customers → Gold/Silver/Bronze
+Default Rate: Red >15%, Yellow 5-15%,
+Green <5%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────
+const DATA = {
+  ageGender: [
+    {g:"18-30",m:13,f:8},{g:"31-50",m:20,f:17},{g:"51+",m:17,f:17}
+  ],
+  monthly: [
+    {p:"Sep'23",v:53707},{p:"Oct'23",v:144191},{p:"Nov'23",v:113086},{p:"Dec'23",v:84117},
+    {p:"Jan'24",v:113769},{p:"Feb'24",v:106504},{p:"Mar'24",v:55769},{p:"Apr'24",v:164576},
+    {p:"May'24",v:164680},{p:"Jun'24",v:113028},{p:"Jul'24",v:98576},{p:"Aug'24",v:68861},
+    {p:"Sep'24",v:109243},{p:"Oct'24",v:129885},{p:"Nov'24",v:32127},{p:"Dec'24",v:85177},
+    {p:"Jan'25",v:70003},{p:"Feb'25",v:68273},{p:"Mar'25",v:122248},{p:"Apr'25",v:100264},
+    {p:"May'25",v:137772},{p:"Jun'25",v:74447},{p:"Jul'25",v:125987},{p:"Aug'25",v:102742},
+    {p:"Sep'25",v:5073}
+  ],
+  loanStatus: [{l:"Default",v:20},{l:"Active",v:16},{l:"Closed",v:15}],
+  top10: [
+    {id:"CUST1100",name:"Matthew Howe",   txn:77026.75, cnt:8, bal:54105.58},
+    {id:"CUST1022",name:"Karla Tucker",   txn:75880.00, cnt:6, bal:51805.36},
+    {id:"CUST1015",name:"Bonnie Chavez",  txn:71821.53, cnt:6, bal:56171.45},
+    {id:"CUST1087",name:"Willie Elliott", txn:63298.17, cnt:5, bal:55785.74},
+    {id:"CUST1082",name:"Adrienne West",  txn:62682.40, cnt:4, bal:66026.02},
+    {id:"CUST1099",name:"Madison Ramos",  txn:62630.42, cnt:5, bal:47388.85},
+    {id:"CUST1052",name:"Shannon Olson",  txn:56926.28, cnt:4, bal:68515.13},
+    {id:"CUST1011",name:"Charles Bates",  txn:56867.77, cnt:4, bal:60245.11},
+    {id:"CUST1027",name:"Calvin Simmons", txn:56371.43, cnt:6, bal:50231.59},
+    {id:"CUST1062",name:"Tanya Pena",     txn:56196.04, cnt:4, bal:44545.26}
+  ],
+  acctType: [{t:"Savings",v:28},{t:"Loan",v:27},{t:"Fixed Deposit",v:21},{t:"Current",v:16}],
+  balByAcct: [{t:"Current",v:54539},{t:"Fixed Deposit",v:51950},{t:"Loan",v:51845},{t:"Savings",v:52581}],
+  dow: [{d:"Mon",v:366308},{d:"Tue",v:364851},{d:"Wed",v:359646},{d:"Thu",v:311591},{d:"Fri",v:290065},{d:"Sat",v:330019},{d:"Sun",v:421624}],
+  profitability: [
+    {n:"Omar Williams",v:111401},{n:"Timothy Mitchell",v:99432},{n:"Christopher Moore",v:93111},
+    {n:"Mitchell Wilson",v:92435},{n:"Jeff Hawkins",v:92270},{n:"Latoya Bailey",v:90340},
+    {n:"Kyle Kramer",v:89466},{n:"Brittany Coleman",v:85827},{n:"Elizabeth Mitchell",v:84881},
+    {n:"Michael Thomas",v:84873}
+  ]
+};
+
+// ── CHART DEFAULTS ────────────────────────────────────────
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.font.size = 11;
+
+const COLORS = {
+  blue:   '#1d8cf8', green: '#10b981', red: '#f05252',
+  gold:   '#f5c842', teal: '#00d4aa', warn: '#f59e0b',
+  purple: '#a78bfa', pink: '#f472b6', slate:'#64748b'
+};
+const PALETTE = [COLORS.blue,COLORS.teal,COLORS.gold,COLORS.green,COLORS.red,COLORS.warn,COLORS.purple,COLORS.pink];
+
+function cfg(type,labels,datasets,opts={}){
+  return {
+    type, data:{labels,datasets},
+    options:{
+      responsive:true, maintainAspectRatio:true,
+      plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,padding:14,font:{size:11}}},tooltip:{mode:'index',intersect:false}},
+      scales:{},
+      ...opts
+    }
+  };
+}
+function barDataset(label,data,color,opts={}){
+  return {label,data,backgroundColor:color+'cc',borderColor:color,borderWidth:1.5,borderRadius:5,...opts};
+}
+
+// ── BUILD CHARTS ──────────────────────────────────────────
+
+// 1. Age + Gender grouped bar
+new Chart('ageGenderChart', {
+  type:'bar',
+  data:{
+    labels: DATA.ageGender.map(d=>d.g),
+    datasets:[
+      barDataset('Male',  DATA.ageGender.map(d=>d.m), COLORS.blue),
+      barDataset('Female',DATA.ageGender.map(d=>d.f), COLORS.teal)
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{stepSize:5}}}}
+});
+
+// 2. Account Type Pie
+new Chart('acctTypePieChart',{
+  type:'pie',
+  data:{
+    labels:DATA.acctType.map(d=>d.t),
+    datasets:[{data:DATA.acctType.map(d=>d.v),backgroundColor:PALETTE,borderColor:'#0e1520',borderWidth:2}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10}}}}
+});
+
+// 3. Gender Donut
+new Chart('genderDonutChart',{
+  type:'doughnut',
+  data:{
+    labels:['Male (54%)','Female (46%)'],
+    datasets:[{data:[50,42],backgroundColor:[COLORS.blue,COLORS.pink],borderColor:'#0e1520',borderWidth:3,cutout:'65%'}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}
+});
+
+// 4. Avg Balance by Account Type
+new Chart('balAcctChart',{
+  type:'bar',
+  data:{
+    labels:DATA.balByAcct.map(d=>d.t),
+    datasets:[barDataset('Avg Balance (₹)',DATA.balByAcct.map(d=>d.v),[COLORS.blue,COLORS.teal,COLORS.gold,COLORS.green])]
+  },
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'x',
+    plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>'₹'+Math.round(v/1000)+'K'}}}}
+});
+
+// 5. Age Group Horizontal Bar
+new Chart('ageGroupChart',{
+  type:'bar',
+  data:{
+    labels:['31-50','51+','18-30'],
+    datasets:[barDataset('Customers',[37,34,21],[COLORS.blue,COLORS.teal,COLORS.gold])]
+  },
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'}},y:{grid:{color:'rgba(255,255,255,.04)'}}}}
+});
+
+// 6. Monthly Line Chart
+new Chart('monthlyLineChart',{
+  type:'line',
+  data:{
+    labels:DATA.monthly.map(d=>d.p),
+    datasets:[{
+      label:'Transaction Volume (₹)',
+      data:DATA.monthly.map(d=>d.v),
+      borderColor:COLORS.blue, backgroundColor:'rgba(29,140,248,.08)',
+      fill:true, tension:0.4, pointBackgroundColor:COLORS.blue,
+      pointRadius:3, pointHoverRadius:6, borderWidth:2
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{maxRotation:45,font:{size:9}}},
+      y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>'₹'+Math.round(v/1000)+'K'}}
+    }}
+});
+
+// 7. DOW Bar
+new Chart('dowBarChart',{
+  type:'bar',
+  data:{
+    labels:DATA.dow.map(d=>d.d),
+    datasets:[{
+      label:'Volume (₹)',
+      data:DATA.dow.map(d=>d.v),
+      backgroundColor:DATA.dow.map((_,i)=>i===6?COLORS.gold+'cc':COLORS.blue+'88'),
+      borderColor:DATA.dow.map((_,i)=>i===6?COLORS.gold:COLORS.blue),
+      borderWidth:1.5,borderRadius:5
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,.04)'}},
+      y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>'₹'+Math.round(v/1000)+'K'}}
+    }}
+});
+
+// 8. Txn Type Donut
+new Chart('txnTypePieChart',{
+  type:'doughnut',
+  data:{
+    labels:['Debit (52.8%)','Credit (47.2%)'],
+    datasets:[{data:[132,118],backgroundColor:[COLORS.red,COLORS.green],borderColor:'#0e1520',borderWidth:3,cutout:'60%'}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}
+});
+
+// 9. Loan Status Pie
+new Chart('loanPieChart',{
+  type:'doughnut',
+  data:{
+    labels:DATA.loanStatus.map(d=>d.l+' ('+d.v+')'),
+    datasets:[{
+      data:DATA.loanStatus.map(d=>d.v),
+      backgroundColor:[COLORS.red,COLORS.warn,COLORS.green],
+      borderColor:'#0e1520',borderWidth:3,cutout:'55%'
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:16,font:{size:12}}}}}
+});
+
+// 10. Top 10 Bar
+new Chart('top10barChart',{
+  type:'bar',
+  data:{
+    labels:DATA.top10.map(d=>d.name.split(' ')[0]),
+    datasets:[{
+      label:'Total Txn (₹)',
+      data:DATA.top10.map(d=>d.txn),
+      backgroundColor:DATA.top10.map((_,i)=>i===0?COLORS.gold+'cc':i===1?COLORS.silver+'cc':i===2?COLORS.bronze+'cc':COLORS.blue+'66'),
+      borderColor:DATA.top10.map((_,i)=>i===0?COLORS.gold:i===1?COLORS.silver:i===2?COLORS.bronze:COLORS.blue),
+      borderWidth:1.5,borderRadius:5
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{font:{size:10}}},
+      y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>'₹'+Math.round(v/1000)+'K'}}
+    }}
+});
+
+// 11. Profitability horizontal bar
+new Chart('profitChart',{
+  type:'bar',
+  data:{
+    labels:DATA.profitability.map(d=>d.n),
+    datasets:[{
+      label:'Profitability Score (₹)',
+      data:DATA.profitability.map(d=>d.v),
+      backgroundColor:COLORS.teal+'99',borderColor:COLORS.teal,borderWidth:1.5,borderRadius:4,
+      indexAxis:'y'
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>'₹'+Math.round(v/1000)+'K'}},
+      y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{font:{size:10}}}
+    }}
+});
+
+// ── TOP 10 TABLE ──────────────────────────────────────────
+const tbody = document.getElementById('top10body');
+const medals = ['rank-1','rank-2','rank-3'];
+const maxTxn = DATA.top10[0].txn;
+DATA.top10.forEach((c,i)=>{
+  const cls = i<3 ? medals[i] : 'rank-n';
+  const medalIcon = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+  const balColor = c.bal < 5000 ? 'color:var(--danger)' : '';
+  const barW = Math.round(c.txn/maxTxn*100);
+  tbody.innerHTML += `<tr>
+    <td><span class="rank-badge ${cls}">${i+1}</span></td>
+    <td>${medalIcon} ${c.name}</td>
+    <td style="color:var(--muted);font-size:.72rem">${c.id}</td>
+    <td>
+      ₹${c.txn.toLocaleString('en-IN',{maximumFractionDigits:0})}
+      <div class="balance-bar" style="width:${barW}%"></div>
+    </td>
+    <td style="text-align:center">${c.cnt}</td>
+    <td style="${balColor}">₹${c.bal.toLocaleString('en-IN',{maximumFractionDigits:0})}</td>
+  </tr>`;
+});
+
+// ── WHAT-IF SIMULATOR ─────────────────────────────────────
+function updateWhatIf(){
+  const rate = +document.getElementById('rateSlider').value;
+  const portfolio = +document.getElementById('portfolioSlider').value;
+  const recovery = +document.getElementById('recoverySlider').value;
+
+  document.getElementById('rateVal').textContent = rate+'%';
+  document.getElementById('portfolioVal').textContent = '₹'+Math.round(portfolio/100000*10)/10+'L';
+  document.getElementById('recoveryVal').textContent = recovery+'%';
+
+  const revenue = portfolio * rate/100;
+  const defaultPct = 1 - recovery/100;
+  const loss = portfolio * defaultPct;
+  const net = revenue - loss;
+
+  const fmt = v => (v<0?'-':'')+'₹'+Math.abs(Math.round(v/100000*10)/10)+'L';
+  document.getElementById('wi-revenue').textContent = fmt(revenue);
+  document.getElementById('wi-loss').textContent    = fmt(loss);
+  document.getElementById('wi-net').textContent     = fmt(net);
+  document.getElementById('wi-net').style.color = net < 0 ? 'var(--danger)' : 'var(--success)';
+}
+updateWhatIf();
+
+// ── NAV TABS ──────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('page-'+name).classList.add('active');
+}
+
+// ── SLICERS (visual only) ─────────────────────────────────
+function toggleSlicer(el, group, val){
+  el.closest('.slicer-group').querySelectorAll('.slicer-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+</script>
+</body>
+</html>
