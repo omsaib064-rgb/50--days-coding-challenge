@@ -1,0 +1,123 @@
+Day7_Quality_Control
+│── dataset
+#📊📊 📊 Production Dashboard using Power BI
+
+##🛩️🛩️ 🚀 Project Overview
+
+This project focuses on analyzing production data using Power BI.
+The dashboard provides clear insights into production trends, performance, and distribution across different categories.
+
+---
+
+## 🎯🎯🎯 Objectives
+
+* Analyze total production performance
+* Identify trends over time
+* Compare production across categories
+* Provide interactive insights using visuals
+
+---
+
+##🎯🎯📁📁 📂 Dataset
+
+* File Name: `production_data.csv`
+* Contains:
+
+  * Date
+  * Production Values
+  * Category / Plant / Region
+
+---
+
+## 🛠️ Tools Used
+
+* Power BI Desktop
+* Power Query (Data Cleaning)
+* DAX (Data Analysis Expressions)
+
+---
+
+## 📈 Dashboard Features
+
+### 🔹 KPI Cards
+
+* Total Production
+* Average Production
+* Maximum Production
+
+### 🔹 Visualizations
+
+* 📈 Line Chart → Production trend over time
+* 📊 Bar Chart → Category comparison
+* 🥧 Pie Chart → Contribution distribution
+
+### 🔹 Filters
+
+* Date slicer
+* Category slicer
+
+---
+
+## 🧠 DAX Measures Used
+
+```DAX
+Total Production = SUM(production_data[Production])
+Average Production = AVERAGE(production_data[Production])
+Max Production = MAX(production_data[Production])
+```
+
+---
+
+## 🎨 Dashboard Design
+
+* Clean and interactive layout
+* User friendly filters
+* Consistent color theme
+
+---
+
+## 📌 Key Insights
+
+* Identified peak production periods
+* Compared performance across categories
+* Observed overall production trends
+
+---
+
+## 📷 Dashboard Preview
+
+(Add your Power BI dashboard screenshot here)
+
+---
+
+## 📤 How to Use
+
+1. Download the `.pbix` file
+2. Open in Power BI Desktop
+3. Interact with filters and visuals
+
+---
+
+## 💡 Future Improvements
+
+* Add forecasting analysis
+* Include more KPIs
+* Improve UI design
+
+---
+
+## 🙌 Conclusion
+
+This dashboard helps in making data driven decisions by providing clear and interactive insights into production data.
+
+---
+
+⭐ If you like this project, give it a star!
+
+
+
+
+│── dashboard.pbix
+│── README.md
+
+
