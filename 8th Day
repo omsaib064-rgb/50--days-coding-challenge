@@ -1,0 +1,167 @@
+8th Day Coding Challange 
+# 🚚 Logistics Dashboard using Power BI
+
+## 📌 Project Overview
+
+This project focuses on analyzing logistics and shipment data to evaluate delivery performance, identify delays, and optimize operational efficiency. The dashboard is built using Power BI and provides interactive insights into key logistics metrics.
+
+---
+
+## 🎯 Objective
+
+To monitor and improve delivery operations by analyzing shipment data, tracking delays, and identifying region wise performance issues.
+
+---
+
+## 📊 Dataset Description
+
+The dataset contains shipment and delivery related information with the following fields:
+
+* Shipment ID
+* Order Date
+* Delivery Date
+* Expected Delivery Date
+* Delivery Status (On Time / Delayed)
+* Region
+* City
+* Shipping Cost
+* Delivery Time (Days)
+
+---
+
+## 🛠 Tasks Performed
+
+### 1. Data Cleaning
+
+* Removed duplicate records
+* Handled missing values
+* Converted date columns into proper format
+* Created calculated column:
+  Delivery Time = Delivery Date minus Order Date
+
+---
+
+### 2. DAX Measures
+
+**On Time Delivery Percentage**
+
+```DAX
+OnTime Delivery % = 
+DIVIDE(
+    CALCULATE(COUNTROWS(Data), Data[Delivery Status] = "On Time"),
+    COUNTROWS(Data),
+    0
+)
+```
+
+**Average Delivery Time**
+
+```DAX
+Avg Delivery Time = AVERAGE(Data[Delivery Time])
+```
+
+**Total Shipments**
+
+```DAX
+Total Shipments = COUNTROWS(Data)
+```
+
+**Total Cost**
+
+```DAX
+Total Cost = SUM(Data[Shipping Cost])
+```
+
+---
+
+### 3. Dashboard Visualizations
+
+* Heatmap showing delivery status by city
+* Bar chart displaying average delivery time by region
+* KPI cards:
+
+  * On Time Delivery Percentage
+  * Total Shipments
+  * Average Delivery Time
+  * Total Cost
+* Conditional formatting to highlight shipments delayed by more than 2 days
+
+---
+
+## 📈 Key Insights
+
+1. East Region has the highest average delivery time, indicating possible inefficiencies.
+2. Major cities show higher concentration of delayed shipments.
+3. On time delivery rate is below expected levels.
+4. Some regions incur higher costs without faster delivery.
+5. Delays beyond 2 days are frequent in specific zones.
+
+---
+
+## 📂 Project Structure
+
+logistics-dashboard/
+
+data/
+logistics_dashboard.xlsx
+
+images/
+dashboard.png
+
+README.md
+
+---
+
+## 📸 Dashboard Preview
+
+(Add your dashboard screenshot here)
+
+Example:\
+
+---
+
+## 🚀 How to Use
+
+1. Download the Power BI file from this repository
+2. Open using Power BI Desktop
+3. Explore visuals using filters and slicers
+
+---
+
+## 📦 Deliverables
+
+* Power BI Dashboard file (.pbix)
+* DAX measures with clear logic
+* Insights report (Word or PDF)
+
+---
+
+## 🧰 Tools Used
+
+* Power BI
+* Excel
+* Data Cleaning
+* Data Visualization
+
+---
+
+## 👤 Author
+
+Your Name :G Upendrachary
+
+---
+
+⭐ If you like this project, consider giving it a star!
+
+
+🔗🔗🔗LINK
+
+https://docs.google.com/spreadsheets/d/1CGdVQMUhEvnhhZi6F7YBRNaW3TfuASOR/edit?usp=sharing&ouid=107125194133694085286&rtpof=true&sd=true
+
+
+
+
+
+
+
+
