@@ -223,13 +223,12 @@ This project analyzes how eating out frequency impacts health indicators like BM
 * Power Query
 * DAX
 
----
+*🔗🔗🔗 LINK    🔗🔗🔗
 
-## 📸 Screenshots
+☸️☸️☸️  
+https://docs.google.com/spreadsheets/d/1dSoPqxrwmnkZXsqOPPE0s9J4SLAy_Stm/edit?usp=sharing&ouid=107125194133694085286&rtpof=true&sd=true
 
-(Add your dashboard images here)
 
----
 
 ## 🚀 Outcome
 
