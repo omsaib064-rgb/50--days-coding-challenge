@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram Engagement Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #232330;
+    --accent1: #e040fb;
+    --accent2: #7c4dff;
+    --accent3: #00e5ff;
+    --accent4: #ff6d00;
+    --accent5: #00e676;
+    --text: #f0f0ff;
+    --muted: #7a7a9a;
+    --glow1: rgba(224,64,251,0.15);
+    --glow2: rgba(124,77,255,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ambient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(124,77,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -20%;
+    right: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(ellipse, rgba(224,64,251,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+  }
+
+  /* Header */
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-left h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.1rem;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+  }
+  .header-left p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+  .ig-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .ig-dot {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  /* Filter Bar */
+  .filter-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding: 16px 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    align-items: center;
+  }
+  .filter-bar label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-right: -6px;
+  }
+  .filter-bar select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .filter-bar select:focus { border-color: var(--accent2); }
+  .filter-sep { width: 1px; height: 28px; background: var(--border); }
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    margin-left: auto;
+  }
+  .reset-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+
+  /* KPI Cards */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .kpi {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 18px 16px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .kpi:hover { transform: translateY(-2px); border-color: var(--accent2); }
+  .kpi::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--kpi-color, linear-gradient(90deg, var(--accent1), var(--accent2)));
+  }
+  .kpi-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+  .kpi-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 5px;
+  }
+  .kpi-icon {
+    position: absolute;
+    top: 14px; right: 14px;
+    font-size: 1.3rem;
+    opacity: 0.4;
+  }
+
+  /* Grid Layouts */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .grid-full { margin-bottom: 20px; }
+
+  /* Chart Cards */
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    transition: border-color 0.2s;
+  }
+  .chart-card:hover { border-color: #2a2a40; }
+  .card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .card-subtitle {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .card-badge {
+    font-size: 0.72rem;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  canvas { width: 100% !important; }
+
+  /* Top 5 Table */
+  .top5-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .top5-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    padding: 0 10px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .top5-table td {
+    padding: 11px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .top5-table tr:last-child td { border-bottom: none; }
+  .rank-badge {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .type-pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .er-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .er-bar {
+    height: 6px;
+    border-radius: 3px;
+    min-width: 4px;
+  }
+
+  /* Insights */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .insight-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+  }
+  .insight-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    opacity: 0.12;
+    position: absolute;
+    top: 10px; right: 16px;
+    line-height: 1;
+  }
+  .insight-icon { font-size: 1.4rem; margin-bottom: 10px; }
+  .insight-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .insight-text {
+    font-size: 0.81rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .insight-highlight {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Scatter Plot */
+  #scatterChart { height: 260px; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 1100px) {
+    .kpi-row { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .insights-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .insights-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <h1>Instagram Engagement<br>Analytics Dashboard</h1>
+      <p>200 Posts · Jan 2024 – Dec 2024 · Full-Year Analysis</p>
+    </div>
+    <div class="ig-logo">
+      <div class="ig-dot">📷</div>
+      <span>Brand Performance<br>Intelligence</span>
+    </div>
+  </header>
+
+  <!-- Filters -->
+  <div class="filter-bar">
+    <label>Post Type</label>
+    <select id="filterType" onchange="applyFilters()">
+      <option value="All">All Types</option>
+      <option value="Story">Story</option>
+      <option value="Reel">Reel</option>
+      <option value="Image">Image</option>
+      <option value="Video">Video</option>
+    </select>
+    <div class="filter-sep"></div>
+    <label>Month</label>
+    <select id="filterMonth" onchange="applyFilters()">
+      <option value="All">All Months</option>
+      <option value="2024-01">Jan 2024</option>
+      <option value="2024-02">Feb 2024</option>
+      <option value="2024-03">Mar 2024</option>
+      <option value="2024-04">Apr 2024</option>
+      <option value="2024-05">May 2024</option>
+      <option value="2024-06">Jun 2024</option>
+      <option value="2024-07">Jul 2024</option>
+      <option value="2024-08">Aug 2024</option>
+      <option value="2024-09">Sep 2024</option>
+      <option value="2024-10">Oct 2024</option>
+      <option value="2024-11">Nov 2024</option>
+      <option value="2024-12">Dec 2024</option>
+    </select>
+    <button class="reset-btn" onclick="resetFilters()">↺ Reset Filters</button>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+    <div class="kpi" style="--kpi-color: linear-gradient(90deg,#e040fb,#7c4dff)">
+      <div class="kpi-icon">📊</div>
+      <div class="kpi-label">Total Posts</div>
+      <div class="kpi-value" id="kpiPosts">200</div>
+      <div class="kpi-sub">Filtered dataset</div>
+    </div>
+    <div class="kpi" style="--kpi-color: linear-gradient(90deg,#ff6d00,#ffab40)">
+      <div class="kpi-icon">❤️</div>
+      <div class="kpi-label">Avg Engagement Rate</div>
+      <div class="kpi-value" id="kpiER">13.67%</div>
+      <div class="kpi-sub">(L+C+S+Sv)/Followers×100</div>
+    </div>
+    <div class="kpi" style="--kpi-color: linear-gradient(90deg,#00e5ff,#1de9b6)">
+      <div class="kpi-icon">👁️</div>
+      <div class="kpi-label">Avg Reach</div>
+      <div class="kpi-value" id="kpiReach">24.9K</div>
+      <div class="kpi-sub">Unique users per post</div>
+    </div>
+    <div class="kpi" style="--kpi-color: linear-gradient(90deg,#00e676,#69f0ae)">
+      <div class="kpi-icon">💬</div>
+      <div class="kpi-label">Total Interactions</div>
+      <div class="kpi-value" id="kpiInteractions">1.35M</div>
+      <div class="kpi-sub">Likes + Comments + Shares + Saves</div>
+    </div>
+    <div class="kpi" style="--kpi-color: linear-gradient(90deg,#f50057,#ff4081)">
+      <div class="kpi-icon">📈</div>
+      <div class="kpi-label">Avg Impressions</div>
+      <div class="kpi-value" id="kpiImpressions">40.9K</div>
+      <div class="kpi-sub">Total views per post</div>
+    </div>
+  </div>
+
+  <!-- Row 1: Trend line + Post Type Bar -->
+  <div class="grid-2">
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">📉 Trend Analysis — Reach, Impressions & Engagement Rate</div>
+          <div class="card-subtitle">Monthly averages across all post types</div>
+        </div>
+        <span class="card-badge">Time Series</span>
+      </div>
+      <canvas id="trendChart" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">🎯 Post Type Performance Comparison</div>
+          <div class="card-subtitle">Avg engagement rate by content type</div>
+        </div>
+        <span class="card-badge">Bar Chart</span>
+      </div>
+      <canvas id="typeChart" height="220"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 2: Top 5 Table + Scatter -->
+  <div class="grid-3">
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">🏆 Top 5 Posts by Engagement Rate</div>
+          <div class="card-subtitle">Highest performing content</div>
+        </div>
+        <span class="card-badge">Leaderboard</span>
+      </div>
+      <table class="top5-table" id="top5Table">
+        <thead>
+          <tr>
+            <th>#</th><th>Post ID</th><th>Type</th><th>Date</th><th>Engagement Rate</th><th>Reach</th>
+          </tr>
+        </thead>
+        <tbody id="top5Body"></tbody>
+      </table>
+    </div>
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">🔗 Follower Growth Impact</div>
+          <div class="card-subtitle">Followers vs Engagement Rate</div>
+        </div>
+        <span class="card-badge">Scatter</span>
+      </div>
+      <canvas id="scatterChart" height="260"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 3: Caption & Hashtag -->
+  <div class="grid-2">
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">📝 Caption Length vs Engagement</div>
+          <div class="card-subtitle">Short ≤30 · Medium 31–100 · Long >100 words</div>
+        </div>
+        <span class="card-badge">Grouped Bar</span>
+      </div>
+      <canvas id="captionChart" height="200"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title"># Hashtag Count vs Engagement</div>
+          <div class="card-subtitle">Low ≤10 · Medium 11–20 · High >20</div>
+        </div>
+        <span class="card-badge">Grouped Bar</span>
+      </div>
+      <canvas id="hashChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 4: Donut + Monthly Reach bar -->
+  <div class="grid-2">
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">🍩 Post Type Distribution</div>
+          <div class="card-subtitle">Content mix by volume</div>
+        </div>
+        <span class="card-badge">Donut</span>
+      </div>
+      <canvas id="donutChart" height="200"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">📅 Monthly Average Reach</div>
+          <div class="card-subtitle">Which month drove the most unique visitors?</div>
+        </div>
+        <span class="card-badge">Bar</span>
+      </div>
+      <canvas id="monthReachChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- Insights -->
+  <div class="insights-grid">
+    <div class="insight-card">
+      <div class="insight-num">01</div>
+      <div class="insight-icon">🎬</div>
+      <div class="insight-title">Stories Lead Engagement</div>
+      <div class="insight-text">
+        <span class="insight-highlight">Stories achieve the highest avg engagement rate (16.03%)</span>, narrowly ahead of Reels (15.43%). Despite Videos reaching the most users on average (26,405), their ER lags at only 9.26%.
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">02</div>
+      <div class="insight-icon">📅</div>
+      <div class="insight-title">November Peaked, April Reached</div>
+      <div class="insight-text">
+        <span class="insight-highlight">November had the highest avg ER (21.59%)</span> while <span class="insight-highlight">April drove the most reach (32,631 avg)</span> — suggesting different months serve different goals: engagement vs visibility.
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">03</div>
+      <div class="insight-icon">📝</div>
+      <div class="insight-title">Medium Captions Win</div>
+      <div class="insight-text">
+        Posts with <span class="insight-highlight">31–100 word captions scored highest (15.01% ER)</span>. Very short captions underperformed at 9.91%, suggesting that moderate storytelling in captions resonates best with audiences.
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">04</div>
+      <div class="insight-icon">#️⃣</div>
+      <div class="insight-title">More Hashtags = More Engagement</div>
+      <div class="insight-text">
+        <span class="insight-highlight">Posts with 21+ hashtags average 15.26% ER</span> vs 13.66% for low hashtag posts. However, the difference is modest — hashtag count alone is not the primary driver.
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">05</div>
+      <div class="insight-icon">👥</div>
+      <div class="insight-title">Smaller Accounts Punch Higher</div>
+      <div class="insight-text">
+        <span class="insight-highlight">Accounts with fewer followers consistently show higher engagement rates</span>. The top 5 posts all came from accounts with under 15,000 followers — micro-accounts drive disproportionate engagement.
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">06</div>
+      <div class="insight-icon">🏆</div>
+      <div class="insight-title">Reel P1049 is Champion</div>
+      <div class="insight-text">
+        The top post (<span class="insight-highlight">Reel P1049, Nov 2024, ER = 140.79%</span>) generated 7,341 likes from just 5,526 followers. This outlier illustrates how viral Reels can dramatically exceed expected performance.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Instagram Engagement Analytics Dashboard · 200 posts · Jan–Dec 2024 · Data: instagram_engagement_dataset_200_records.csv
+  </footer>
+</div>
+
+<script>
+// ─── RAW DATA ────────────────────────────────────────────────────────────────
+const RAW = [{"id":"P1000","date":"2024-04-12","type":"Story","caption_len":6,"hashtags":13,"likes":6906,"comments":442,"shares":228,"saves":1024,"reach":44361,"impressions":49543,"followers":57307,"er":15.0069,"interactions":8600},{"id":"P1001","date":"2024-12-14","type":"Image","caption_len":7,"hashtags":23,"likes":7457,"comments":122,"shares":547,"saves":1854,"reach":18271,"impressions":14919,"followers":139165,"er":7.1713,"interactions":9980},{"id":"P1002","date":"2024-09-27","type":"Story","caption_len":117,"hashtags":17,"likes":3540,"comments":775,"shares":919,"saves":1973,"reach":30475,"impressions":70346,"followers":27042,"er":26.6511,"interactions":7207},{"id":"P1003","date":"2024-04-16","type":"Image","caption_len":105,"hashtags":14,"likes":3866,"comments":310,"shares":1246,"saves":566,"reach":46148,"impressions":40974,"followers":57930,"er":10.3366,"interactions":5988},{"id":"P1004","date":"2024-03-12","type":"Reel","caption_len":117,"hashtags":21,"likes":5744,"comments":272,"shares":5,"saves":370,"reach":48785,"impressions":17371,"followers":180485,"er":3.541,"interactions":6391},{"id":"P1005","date":"2024-07-07","type":"Reel","caption_len":60,"hashtags":22,"likes":3014,"comments":58,"shares":1345,"saves":935,"reach":19563,"impressions":46084,"followers":102883,"er":5.202,"interactions":5352},{"id":"P1006","date":"2024-01-21","type":"Video","caption_len":85,"hashtags":1,"likes":5068,"comments":240,"shares":467,"saves":1934,"reach":2606,"impressions":30629,"followers":38756,"er":19.8911,"interactions":7709},{"id":"P1007","date":"2024-04-12","type":"Image","caption_len":63,"hashtags":9,"likes":6017,"comments":393,"shares":74,"saves":660,"reach":25057,"impressions":52184,"followers":58268,"er":12.2606,"interactions":7144},{"id":"P1008","date":"2024-05-01","type":"Reel","caption_len":117,"hashtags":1,"likes":8887,"comments":738,"shares":3,"saves":1454,"reach":49354,"impressions":62916,"followers":175286,"er":6.3222,"interactions":11082},{"id":"P1009","date":"2024-08-02","type":"Reel","caption_len":6,"hashtags":16,"likes":828,"comments":767,"shares":645,"saves":968,"reach":21107,"impressions":74972,"followers":164674,"er":1.9481,"interactions":3208},{"id":"P1010","date":"2024-11-26","type":"Reel","caption_len":6,"hashtags":7,"likes":1465,"comments":405,"shares":117,"saves":1332,"reach":38099,"impressions":63187,"followers":189403,"er":1.7523,"interactions":3319},{"id":"P1011","date":"2024-03-28","type":"Image","caption_len":96,"hashtags":0,"likes":4592,"comments":628,"shares":880,"saves":1160,"reach":29029,"impressions":13984,"followers":53901,"er":13.4691,"interactions":7260},{"id":"P1012","date":"2024-04-09","type":"Video","caption_len":58,"hashtags":8,"likes":798,"comments":771,"shares":503,"saves":201,"reach":36454,"impressions":34039,"followers":104986,"er":2.1651,"interactions":2273},{"id":"P1013","date":"2024-12-25","type":"Reel","caption_len":91,"hashtags":10,"likes":7286,"comments":307,"shares":946,"saves":1459,"reach":28356,"impressions":59606,"followers":199488,"er":5.0118,"interactions":9998},{"id":"P1014","date":"2024-05-31","type":"Image","caption_len":105,"hashtags":21,"likes":495,"comments":211,"shares":573,"saves":312,"reach":3073,"impressions":11616,"followers":168268,"er":0.9455,"interactions":1591},{"id":"P1015","date":"2024-05-10","type":"Image","caption_len":100,"hashtags":15,"likes":7500,"comments":233,"shares":1464,"saves":116,"reach":13308,"impressions":51072,"followers":133386,"er":6.982,"interactions":9313},{"id":"P1016","date":"2024-05-29","type":"Reel","caption_len":101,"hashtags":6,"likes":8182,"comments":582,"shares":193,"saves":1689,"reach":35867,"impressions":25574,"followers":10626,"er":100.1882,"interactions":10646},{"id":"P1017","date":"2024-11-04","type":"Video","caption_len":5,"hashtags":9,"likes":4271,"comments":79,"shares":846,"saves":936,"reach":37301,"impressions":4430,"followers":143496,"er":4.2733,"interactions":6132},{"id":"P1018","date":"2024-09-14","type":"Image","caption_len":23,"hashtags":22,"likes":4460,"comments":439,"shares":714,"saves":1826,"reach":41696,"impressions":13676,"followers":17857,"er":41.6587,"interactions":7439},{"id":"P1019","date":"2024-12-09","type":"Video","caption_len":6,"hashtags":2,"likes":2602,"comments":107,"shares":1415,"saves":574,"reach":34572,"impressions":11816,"followers":156054,"er":3.0105,"interactions":4698},{"id":"P1020","date":"2024-10-20","type":"Reel","caption_len":57,"hashtags":17,"likes":817,"comments":426,"shares":1049,"saves":243,"reach":24252,"impressions":33733,"followers":138052,"er":1.8363,"interactions":2535},{"id":"P1021","date":"2024-07-10","type":"Image","caption_len":48,"hashtags":24,"likes":2882,"comments":708,"shares":1458,"saves":536,"reach":18185,"impressions":3050,"followers":184362,"er":3.0288,"interactions":5584},{"id":"P1022","date":"2024-10-03","type":"Video","caption_len":94,"hashtags":23,"likes":5046,"comments":768,"shares":172,"saves":1625,"reach":41901,"impressions":34933,"followers":31431,"er":24.2149,"interactions":7611},{"id":"P1023","date":"2024-06-09","type":"Reel","caption_len":36,"hashtags":12,"likes":5586,"comments":742,"shares":1323,"saves":74,"reach":11872,"impressions":25951,"followers":89976,"er":8.5856,"interactions":7725},{"id":"P1024","date":"2024-11-09","type":"Reel","caption_len":74,"hashtags":6,"likes":8435,"comments":310,"shares":325,"saves":1829,"reach":9496,"impressions":33413,"followers":87711,"er":12.426,"interactions":10899},{"id":"P1025","date":"2024-01-22","type":"Reel","caption_len":36,"hashtags":24,"likes":5080,"comments":102,"shares":1433,"saves":385,"reach":16958,"impressions":35801,"followers":31385,"er":22.3036,"interactions":7000},{"id":"P1026","date":"2024-09-09","type":"Image","caption_len":72,"hashtags":3,"likes":7366,"comments":339,"shares":1141,"saves":1926,"reach":32389,"impressions":56619,"followers":174230,"er":6.1826,"interactions":10772},{"id":"P1027","date":"2024-08-23","type":"Story","caption_len":59,"hashtags":12,"likes":4591,"comments":439,"shares":835,"saves":1233,"reach":27165,"impressions":33913,"followers":159091,"er":4.4616,"interactions":7098},{"id":"P1028","date":"2024-12-10","type":"Image","caption_len":79,"hashtags":19,"likes":7292,"comments":451,"shares":723,"saves":474,"reach":38743,"impressions":41600,"followers":23639,"er":37.8189,"interactions":8940},{"id":"P1029","date":"2024-02-18","type":"Image","caption_len":60,"hashtags":0,"likes":5688,"comments":312,"shares":224,"saves":417,"reach":32153,"impressions":58775,"followers":90530,"er":7.3357,"interactions":6641},{"id":"P1030","date":"2024-02-28","type":"Reel","caption_len":21,"hashtags":7,"likes":7751,"comments":253,"shares":531,"saves":346,"reach":27157,"impressions":36400,"followers":26563,"er":33.4337,"interactions":8881},{"id":"P1031","date":"2024-06-18","type":"Story","caption_len":42,"hashtags":13,"likes":3736,"comments":170,"shares":112,"saves":1552,"reach":40452,"impressions":5494,"followers":175413,"er":3.1754,"interactions":5570},{"id":"P1032","date":"2024-07-06","type":"Story","caption_len":28,"hashtags":15,"likes":1267,"comments":485,"shares":139,"saves":639,"reach":22680,"impressions":75691,"followers":120672,"er":2.0966,"interactions":2530},{"id":"P1033","date":"2024-09-27","type":"Reel","caption_len":73,"hashtags":13,"likes":1162,"comments":339,"shares":558,"saves":938,"reach":32396,"impressions":44001,"followers":141848,"er":2.1128,"interactions":2997},{"id":"P1034","date":"2024-07-08","type":"Reel","caption_len":102,"hashtags":11,"likes":2256,"comments":546,"shares":0,"saves":954,"reach":13375,"impressions":68364,"followers":172516,"er":2.1772,"interactions":3756},{"id":"P1035","date":"2024-06-23","type":"Story","caption_len":74,"hashtags":18,"likes":7960,"comments":763,"shares":89,"saves":875,"reach":2122,"impressions":46028,"followers":144783,"er":6.6907,"interactions":9687},{"id":"P1036","date":"2024-02-20","type":"Video","caption_len":90,"hashtags":22,"likes":5261,"comments":110,"shares":653,"saves":762,"reach":49256,"impressions":38573,"followers":87970,"er":7.714,"interactions":6786},{"id":"P1037","date":"2024-12-29","type":"Video","caption_len":15,"hashtags":14,"likes":5405,"comments":567,"shares":319,"saves":1202,"reach":41309,"impressions":1806,"followers":90553,"er":8.2747,"interactions":7493},{"id":"P1038","date":"2024-02-24","type":"Image","caption_len":116,"hashtags":1,"likes":6641,"comments":85,"shares":138,"saves":1205,"reach":17225,"impressions":57638,"followers":166779,"er":4.8381,"interactions":8069},{"id":"P1039","date":"2024-08-31","type":"Reel","caption_len":20,"hashtags":1,"likes":4829,"comments":137,"shares":844,"saves":663,"reach":41260,"impressions":30757,"followers":175182,"er":3.695,"interactions":6473},{"id":"P1040","date":"2024-11-15","type":"Story","caption_len":101,"hashtags":22,"likes":9448,"comments":142,"shares":258,"saves":24,"reach":16146,"impressions":35636,"followers":197860,"er":4.9894,"interactions":9872},{"id":"P1041","date":"2024-05-10","type":"Reel","caption_len":77,"hashtags":21,"likes":7430,"comments":188,"shares":901,"saves":1990,"reach":17529,"impressions":49280,"followers":87879,"er":11.9585,"interactions":10509},{"id":"P1042","date":"2024-11-02","type":"Story","caption_len":63,"hashtags":18,"likes":5434,"comments":405,"shares":689,"saves":1203,"reach":29902,"impressions":25262,"followers":174899,"er":4.4203,"interactions":7731},{"id":"P1043","date":"2024-05-14","type":"Reel","caption_len":74,"hashtags":24,"likes":9024,"comments":334,"shares":9,"saves":709,"reach":4763,"impressions":63211,"followers":141727,"er":7.1094,"interactions":10076},{"id":"P1044","date":"2024-01-21","type":"Reel","caption_len":84,"hashtags":21,"likes":4430,"comments":789,"shares":260,"saves":1524,"reach":31487,"impressions":55842,"followers":49859,"er":14.0456,"interactions":7003},{"id":"P1045","date":"2024-11-24","type":"Story","caption_len":97,"hashtags":21,"likes":8110,"comments":512,"shares":171,"saves":1879,"reach":47328,"impressions":57979,"followers":189697,"er":5.6258,"interactions":10672},{"id":"P1046","date":"2024-06-15","type":"Image","caption_len":7,"hashtags":16,"likes":6901,"comments":73,"shares":897,"saves":1184,"reach":48424,"impressions":39197,"followers":57098,"er":15.8587,"interactions":9055},{"id":"P1047","date":"2024-09-30","type":"Story","caption_len":24,"hashtags":19,"likes":4946,"comments":550,"shares":12,"saves":176,"reach":9146,"impressions":42844,"followers":151323,"er":3.7562,"interactions":5684},{"id":"P1048","date":"2024-03-29","type":"Video","caption_len":63,"hashtags":9,"likes":6831,"comments":778,"shares":1191,"saves":284,"reach":28029,"impressions":65754,"followers":127413,"er":7.1296,"interactions":9084},{"id":"P1049","date":"2024-11-11","type":"Reel","caption_len":40,"hashtags":5,"likes":7341,"comments":57,"shares":320,"saves":62,"reach":12164,"impressions":35157,"followers":5526,"er":140.789,"interactions":7780},{"id":"P1050","date":"2024-01-14","type":"Reel","caption_len":23,"hashtags":14,"likes":1053,"comments":454,"shares":1342,"saves":1002,"reach":36237,"impressions":78129,"followers":73760,"er":5.221,"interactions":3851},{"id":"P1051","date":"2024-08-29","type":"Story","caption_len":94,"hashtags":21,"likes":2639,"comments":209,"shares":328,"saves":661,"reach":36296,"impressions":41042,"followers":52837,"er":7.262,"interactions":3837},{"id":"P1052","date":"2024-09-21","type":"Reel","caption_len":71,"hashtags":10,"likes":7156,"comments":130,"shares":784,"saves":665,"reach":24527,"impressions":62665,"followers":16536,"er":52.8241,"interactions":8735},{"id":"P1053","date":"2024-12-11","type":"Video","caption_len":23,"hashtags":4,"likes":1642,"comments":751,"shares":776,"saves":155,"reach":29873,"impressions":28376,"followers":33541,"er":9.9103,"interactions":3324},{"id":"P1054","date":"2024-02-22","type":"Image","caption_len":24,"hashtags":0,"likes":5393,"comments":47,"shares":910,"saves":1905,"reach":36897,"impressions":56554,"followers":84083,"er":9.8177,"interactions":8255},{"id":"P1055","date":"2024-12-05","type":"Image","caption_len":100,"hashtags":7,"likes":1291,"comments":756,"shares":1442,"saves":1492,"reach":21109,"impressions":15199,"followers":187099,"er":2.6622,"interactions":4981},{"id":"P1056","date":"2024-04-01","type":"Story","caption_len":75,"hashtags":20,"likes":6413,"comments":115,"shares":1118,"saves":1072,"reach":36335,"impressions":51948,"followers":39531,"er":22.0536,"interactions":8718},{"id":"P1057","date":"2024-09-20","type":"Story","caption_len":56,"hashtags":11,"likes":7038,"comments":765,"shares":317,"saves":966,"reach":39209,"impressions":74781,"followers":13712,"er":66.2631,"interactions":9086},{"id":"P1058","date":"2024-02-04","type":"Story","caption_len":109,"hashtags":11,"likes":2781,"comments":667,"shares":235,"saves":848,"reach":19750,"impressions":73750,"followers":109101,"er":4.153,"interactions":4531},{"id":"P1059","date":"2024-07-24","type":"Story","caption_len":37,"hashtags":4,"likes":9509,"comments":187,"shares":333,"saves":1107,"reach":21672,"impressions":67262,"followers":70455,"er":15.8058,"interactions":11136},{"id":"P1060","date":"2024-03-21","type":"Video","caption_len":44,"hashtags":6,"likes":1640,"comments":99,"shares":375,"saves":1384,"reach":12055,"impressions":47600,"followers":79744,"er":4.3865,"interactions":3498},{"id":"P1061","date":"2024-02-19","type":"Video","caption_len":43,"hashtags":3,"likes":6272,"comments":378,"shares":1482,"saves":688,"reach":22374,"impressions":77898,"followers":134749,"er":6.5455,"interactions":8820},{"id":"P1062","date":"2024-12-25","type":"Story","caption_len":86,"hashtags":5,"likes":5641,"comments":524,"shares":1160,"saves":147,"reach":13581,"impressions":63483,"followers":10109,"er":73.9143,"interactions":7472},{"id":"P1063","date":"2024-01-02","type":"Image","caption_len":108,"hashtags":12,"likes":9680,"comments":364,"shares":587,"saves":1653,"reach":24563,"impressions":19297,"followers":54268,"er":22.6358,"interactions":12284},{"id":"P1064","date":"2024-02-23","type":"Video","caption_len":5,"hashtags":19,"likes":1465,"comments":700,"shares":512,"saves":341,"reach":7319,"impressions":31448,"followers":59615,"er":5.0625,"interactions":3018},{"id":"P1065","date":"2024-04-15","type":"Image","caption_len":15,"hashtags":14,"likes":8791,"comments":285,"shares":1319,"saves":475,"reach":26212,"impressions":27172,"followers":87503,"er":12.4224,"interactions":10870},{"id":"P1066","date":"2024-09-16","type":"Story","caption_len":96,"hashtags":2,"likes":9972,"comments":199,"shares":1343,"saves":1086,"reach":25262,"impressions":43874,"followers":165831,"er":7.5981,"interactions":12600},{"id":"P1067","date":"2024-11-05","type":"Story","caption_len":61,"hashtags":22,"likes":8802,"comments":199,"shares":917,"saves":1724,"reach":11546,"impressions":8657,"followers":90708,"er":12.8346,"interactions":11642},{"id":"P1068","date":"2024-07-09","type":"Video","caption_len":93,"hashtags":7,"likes":7594,"comments":671,"shares":1372,"saves":1383,"reach":31963,"impressions":26425,"followers":196184,"er":5.6172,"interactions":11020},{"id":"P1069","date":"2024-08-05","type":"Story","caption_len":54,"hashtags":19,"likes":4412,"comments":97,"shares":872,"saves":560,"reach":29269,"impressions":27685,"followers":107471,"er":5.528,"interactions":5941},{"id":"P1070","date":"2024-02-13","type":"Reel","caption_len":27,"hashtags":15,"likes":1424,"comments":676,"shares":1252,"saves":326,"reach":23650,"impressions":25578,"followers":162661,"er":2.2611,"interactions":3678},{"id":"P1071","date":"2024-06-10","type":"Reel","caption_len":35,"hashtags":12,"likes":9447,"comments":65,"shares":269,"saves":1792,"reach":3211,"impressions":29831,"followers":166087,"er":6.968,"interactions":11573},{"id":"P1072","date":"2024-07-20","type":"Image","caption_len":98,"hashtags":17,"likes":3241,"comments":638,"shares":797,"saves":1759,"reach":5353,"impressions":8906,"followers":165081,"er":3.8981,"interactions":6435},{"id":"P1073","date":"2024-09-26","type":"Video","caption_len":46,"hashtags":9,"likes":7519,"comments":55,"shares":1314,"saves":1164,"reach":29577,"impressions":62413,"followers":88309,"er":11.3828,"interactions":10052},{"id":"P1074","date":"2024-12-16","type":"Reel","caption_len":103,"hashtags":18,"likes":3586,"comments":407,"shares":724,"saves":989,"reach":24363,"impressions":55028,"followers":131446,"er":4.3409,"interactions":5706},{"id":"P1075","date":"2024-10-30","type":"Image","caption_len":11,"hashtags":16,"likes":1910,"comments":793,"shares":1188,"saves":214,"reach":22292,"impressions":8287,"followers":198118,"er":2.072,"interactions":4105},{"id":"P1076","date":"2024-09-27","type":"Video","caption_len":20,"hashtags":23,"likes":6688,"comments":9,"shares":4,"saves":434,"reach":40983,"impressions":34660,"followers":111661,"er":6.3899,"interactions":7135},{"id":"P1077","date":"2024-08-02","type":"Reel","caption_len":94,"hashtags":18,"likes":3023,"comments":470,"shares":850,"saves":1914,"reach":9442,"impressions":76758,"followers":162215,"er":3.8572,"interactions":6257},{"id":"P1078","date":"2024-09-08","type":"Image","caption_len":116,"hashtags":22,"likes":5401,"comments":608,"shares":1402,"saves":951,"reach":48775,"impressions":61504,"followers":11154,"er":74.9686,"interactions":8362},{"id":"P1079","date":"2024-07-08","type":"Video","caption_len":64,"hashtags":4,"likes":4286,"comments":686,"shares":77,"saves":722,"reach":49094,"impressions":60720,"followers":157876,"er":3.6554,"interactions":5771},{"id":"P1080","date":"2024-10-22","type":"Video","caption_len":117,"hashtags":20,"likes":9005,"comments":538,"shares":1433,"saves":1341,"reach":2262,"impressions":35701,"followers":177760,"er":6.929,"interactions":12317},{"id":"P1081","date":"2024-07-31","type":"Video","caption_len":6,"hashtags":22,"likes":6077,"comments":409,"shares":573,"saves":31,"reach":32487,"impressions":18674,"followers":69288,"er":10.2327,"interactions":7090},{"id":"P1082","date":"2024-07-26","type":"Story","caption_len":5,"hashtags":8,"likes":4368,"comments":517,"shares":131,"saves":669,"reach":16350,"impressions":24874,"followers":56195,"er":10.1166,"interactions":5685},{"id":"P1083","date":"2024-08-24","type":"Image","caption_len":52,"hashtags":11,"likes":4848,"comments":649,"shares":600,"saves":284,"reach":12612,"impressions":44642,"followers":25581,"er":24.9443,"interactions":6381},{"id":"P1084","date":"2024-12-03","type":"Reel","caption_len":16,"hashtags":20,"likes":4949,"comments":237,"shares":1065,"saves":1328,"reach":24558,"impressions":66160,"followers":188720,"er":4.016,"interactions":7579},{"id":"P1085","date":"2024-02-22","type":"Video","caption_len":73,"hashtags":0,"likes":9535,"comments":528,"shares":88,"saves":428,"reach":45920,"impressions":18602,"followers":35087,"er":30.1508,"interactions":10579},{"id":"P1086","date":"2024-10-06","type":"Image","caption_len":41,"hashtags":0,"likes":3809,"comments":350,"shares":401,"saves":1500,"reach":39390,"impressions":26931,"followers":186002,"er":3.258,"interactions":6060},{"id":"P1087","date":"2024-08-04","type":"Reel","caption_len":36,"hashtags":14,"likes":9373,"comments":50,"shares":295,"saves":285,"reach":981,"impressions":30192,"followers":169053,"er":5.9171,"interactions":10003},{"id":"P1088","date":"2024-09-08","type":"Image","caption_len":13,"hashtags":1,"likes":6719,"comments":550,"shares":1318,"saves":1167,"reach":47804,"impressions":47542,"followers":74298,"er":13.1282,"interactions":9754},{"id":"P1089","date":"2024-07-06","type":"Image","caption_len":109,"hashtags":21,"likes":8747,"comments":82,"shares":615,"saves":1447,"reach":33421,"impressions":43520,"followers":51167,"er":21.2852,"interactions":10891},{"id":"P1090","date":"2024-02-10","type":"Video","caption_len":103,"hashtags":15,"likes":9186,"comments":734,"shares":799,"saves":1042,"reach":40885,"impressions":65772,"followers":179480,"er":6.5528,"interactions":11761},{"id":"P1091","date":"2024-06-05","type":"Video","caption_len":23,"hashtags":24,"likes":9676,"comments":77,"shares":421,"saves":17,"reach":2024,"impressions":59762,"followers":44499,"er":22.9016,"interactions":10191},{"id":"P1092","date":"2024-01-15","type":"Reel","caption_len":52,"hashtags":7,"likes":3172,"comments":798,"shares":1046,"saves":768,"reach":35388,"impressions":51106,"followers":130816,"er":4.4215,"interactions":5784},{"id":"P1093","date":"2024-10-27","type":"Reel","caption_len":84,"hashtags":12,"likes":6630,"comments":253,"shares":574,"saves":589,"reach":15548,"impressions":26559,"followers":188341,"er":4.272,"interactions":8046},{"id":"P1094","date":"2024-03-05","type":"Story","caption_len":7,"hashtags":20,"likes":604,"comments":51,"shares":142,"saves":1394,"reach":35611,"impressions":34742,"followers":174631,"er":1.2546,"interactions":2191},{"id":"P1095","date":"2024-12-10","type":"Image","caption_len":24,"hashtags":0,"likes":1314,"comments":125,"shares":992,"saves":1198,"reach":38404,"impressions":70669,"followers":101347,"er":3.5808,"interactions":3629},{"id":"P1096","date":"2024-11-22","type":"Reel","caption_len":28,"hashtags":15,"likes":1631,"comments":218,"shares":664,"saves":1009,"reach":34508,"impressions":22754,"followers":53787,"er":6.5481,"interactions":3522},{"id":"P1097","date":"2024-01-09","type":"Image","caption_len":58,"hashtags":6,"likes":7676,"comments":243,"shares":144,"saves":193,"reach":560,"impressions":4972,"followers":40488,"er":20.3912,"interactions":8256},{"id":"P1098","date":"2024-12-09","type":"Image","caption_len":37,"hashtags":4,"likes":923,"comments":60,"shares":1248,"saves":501,"reach":9630,"impressions":71831,"followers":79441,"er":3.439,"interactions":2732},{"id":"P1099","date":"2024-05-08","type":"Video","caption_len":28,"hashtags":21,"likes":1028,"comments":354,"shares":1006,"saves":987,"reach":18523,"impressions":42873,"followers":27431,"er":12.3036,"interactions":3375},{"id":"P1100","date":"2024-05-15","type":"Image","caption_len":79,"hashtags":22,"likes":5129,"comments":111,"shares":502,"saves":1136,"reach":45580,"impressions":10903,"followers":66681,"er":10.3148,"interactions":6878},{"id":"P1101","date":"2024-03-03","type":"Reel","caption_len":117,"hashtags":2,"likes":233,"comments":52,"shares":820,"saves":113,"reach":13850,"impressions":4020,"followers":199555,"er":0.6104,"interactions":1218},{"id":"P1102","date":"2024-05-18","type":"Image","caption_len":76,"hashtags":11,"likes":2205,"comments":577,"shares":103,"saves":1245,"reach":24854,"impressions":42755,"followers":127720,"er":3.2336,"interactions":4130},{"id":"P1103","date":"2024-03-21","type":"Video","caption_len":40,"hashtags":15,"likes":3727,"comments":341,"shares":1062,"saves":1701,"reach":45686,"impressions":46648,"followers":54153,"er":12.6143,"interactions":6831},{"id":"P1104","date":"2024-06-11","type":"Reel","caption_len":42,"hashtags":18,"likes":6416,"comments":30,"shares":197,"saves":946,"reach":28645,"impressions":10516,"followers":11368,"er":66.7576,"interactions":7589},{"id":"P1105","date":"2024-10-15","type":"Video","caption_len":108,"hashtags":4,"likes":1952,"comments":261,"shares":578,"saves":830,"reach":34520,"impressions":3396,"followers":163496,"er":2.2147,"interactions":3621},{"id":"P1106","date":"2024-09-17","type":"Reel","caption_len":88,"hashtags":21,"likes":5010,"comments":12,"shares":390,"saves":1667,"reach":21087,"impressions":20129,"followers":117360,"er":6.0319,"interactions":7079},{"id":"P1107","date":"2024-08-18","type":"Reel","caption_len":103,"hashtags":24,"likes":4275,"comments":629,"shares":1202,"saves":1920,"reach":41631,"impressions":2591,"followers":181076,"er":4.4324,"interactions":8026},{"id":"P1108","date":"2024-02-10","type":"Reel","caption_len":116,"hashtags":13,"likes":5448,"comments":257,"shares":553,"saves":1287,"reach":10150,"impressions":12303,"followers":117755,"er":6.4074,"interactions":7545},{"id":"P1109","date":"2024-01-28","type":"Image","caption_len":93,"hashtags":4,"likes":9542,"comments":696,"shares":1471,"saves":924,"reach":20433,"impressions":31561,"followers":61985,"er":20.3807,"interactions":12633},{"id":"P1110","date":"2024-05-14","type":"Reel","caption_len":103,"hashtags":14,"likes":6290,"comments":723,"shares":1038,"saves":54,"reach":21081,"impressions":72719,"followers":55069,"er":14.7179,"interactions":8105},{"id":"P1111","date":"2024-07-19","type":"Image","caption_len":29,"hashtags":16,"likes":1356,"comments":307,"shares":1312,"saves":1894,"reach":23893,"impressions":8314,"followers":57326,"er":8.4935,"interactions":4869},{"id":"P1112","date":"2024-11-23","type":"Video","caption_len":97,"hashtags":13,"likes":3476,"comments":643,"shares":477,"saves":1666,"reach":23551,"impressions":20623,"followers":113737,"er":5.5057,"interactions":6262},{"id":"P1113","date":"2024-09-24","type":"Story","caption_len":22,"hashtags":19,"likes":5745,"comments":60,"shares":1254,"saves":799,"reach":26712,"impressions":68675,"followers":159470,"er":4.9276,"interactions":7858},{"id":"P1114","date":"2024-02-02","type":"Reel","caption_len":114,"hashtags":4,"likes":3586,"comments":730,"shares":922,"saves":777,"reach":49582,"impressions":66082,"followers":55861,"er":10.7678,"interactions":6015},{"id":"P1115","date":"2024-02-17","type":"Story","caption_len":86,"hashtags":11,"likes":3684,"comments":530,"shares":419,"saves":1481,"reach":4590,"impressions":34130,"followers":80897,"er":7.5578,"interactions":6114},{"id":"P1116","date":"2024-03-02","type":"Video","caption_len":70,"hashtags":15,"likes":9688,"comments":478,"shares":156,"saves":1901,"reach":7460,"impressions":52756,"followers":132118,"er":9.2516,"interactions":12223},{"id":"P1117","date":"2024-08-03","type":"Video","caption_len":58,"hashtags":15,"likes":8153,"comments":32,"shares":549,"saves":161,"reach":36272,"impressions":27292,"followers":73577,"er":12.0894,"interactions":8895},{"id":"P1118","date":"2024-10-19","type":"Video","caption_len":39,"hashtags":20,"likes":3430,"comments":82,"shares":1464,"saves":1403,"reach":22020,"impressions":70274,"followers":14078,"er":45.3118,"interactions":6379},{"id":"P1119","date":"2024-04-08","type":"Video","caption_len":84,"hashtags":6,"likes":2803,"comments":220,"shares":1120,"saves":86,"reach":49981,"impressions":3469,"followers":161075,"er":2.6255,"interactions":4229},{"id":"P1120","date":"2024-06-20","type":"Video","caption_len":65,"hashtags":3,"likes":8762,"comments":390,"shares":1020,"saves":54,"reach":36908,"impressions":54947,"followers":67768,"er":15.0897,"interactions":10226},{"id":"P1121","date":"2024-12-25","type":"Video","caption_len":45,"hashtags":0,"likes":8220,"comments":369,"shares":996,"saves":1499,"reach":28970,"impressions":23534,"followers":56047,"er":19.7763,"interactions":11084},{"id":"P1122","date":"2024-08-01","type":"Story","caption_len":104,"hashtags":4,"likes":7214,"comments":670,"shares":1434,"saves":1823,"reach":20991,"impressions":64620,"followers":76626,"er":14.5395,"interactions":11141},{"id":"P1123","date":"2024-02-04","type":"Image","caption_len":37,"hashtags":22,"likes":1453,"comments":530,"shares":950,"saves":1201,"reach":1841,"impressions":49874,"followers":62660,"er":6.5975,"interactions":4134},{"id":"P1124","date":"2024-08-14","type":"Story","caption_len":72,"hashtags":9,"likes":5163,"comments":703,"shares":288,"saves":1414,"reach":45123,"impressions":50708,"followers":185858,"er":4.0719,"interactions":7568},{"id":"P1125","date":"2024-04-10","type":"Video","caption_len":37,"hashtags":21,"likes":8649,"comments":316,"shares":1277,"saves":1372,"reach":25291,"impressions":75553,"followers":137997,"er":8.4161,"interactions":11614},{"id":"P1126","date":"2024-05-10","type":"Reel","caption_len":18,"hashtags":4,"likes":7675,"comments":11,"shares":195,"saves":1031,"reach":838,"impressions":69344,"followers":122832,"er":7.2554,"interactions":8912},{"id":"P1127","date":"2024-09-13","type":"Video","caption_len":25,"hashtags":3,"likes":767,"comments":7,"shares":597,"saves":832,"reach":6395,"impressions":50138,"followers":135406,"er":1.627,"interactions":2203},{"id":"P1128","date":"2024-01-05","type":"Video","caption_len":52,"hashtags":1,"likes":4568,"comments":627,"shares":516,"saves":312,"reach":12754,"impressions":55302,"followers":130150,"er":4.6277,"interactions":6023},{"id":"P1129","date":"2024-08-05","type":"Story","caption_len":24,"hashtags":19,"likes":9437,"comments":754,"shares":864,"saves":758,"reach":11844,"impressions":48638,"followers":162087,"er":7.2881,"interactions":11813},{"id":"P1130","date":"2024-09-11","type":"Reel","caption_len":12,"hashtags":9,"likes":6919,"comments":367,"shares":1141,"saves":1858,"reach":2250,"impressions":79249,"followers":38320,"er":26.8398,"interactions":10285},{"id":"P1131","date":"2024-12-24","type":"Video","caption_len":11,"hashtags":18,"likes":3819,"comments":755,"shares":805,"saves":442,"reach":2921,"impressions":3719,"followers":69881,"er":8.3299,"interactions":5821},{"id":"P1132","date":"2024-10-09","type":"Video","caption_len":71,"hashtags":0,"likes":2845,"comments":512,"shares":1182,"saves":1790,"reach":40387,"impressions":23890,"followers":95827,"er":6.6046,"interactions":6329},{"id":"P1133","date":"2024-07-25","type":"Image","caption_len":21,"hashtags":23,"likes":7583,"comments":278,"shares":814,"saves":327,"reach":5819,"impressions":78236,"followers":107215,"er":8.3962,"interactions":9002},{"id":"P1134","date":"2024-01-15","type":"Reel","caption_len":37,"hashtags":4,"likes":639,"comments":510,"shares":227,"saves":1077,"reach":16396,"impressions":37509,"followers":162361,"er":1.5108,"interactions":2453},{"id":"P1135","date":"2024-12-11","type":"Story","caption_len":52,"hashtags":12,"likes":5064,"comments":743,"shares":215,"saves":760,"reach":12418,"impressions":43534,"followers":139461,"er":4.863,"interactions":6782},{"id":"P1136","date":"2024-02-11","type":"Video","caption_len":80,"hashtags":3,"likes":4935,"comments":19,"shares":947,"saves":1262,"reach":25564,"impressions":19787,"followers":161755,"er":4.4283,"interactions":7163},{"id":"P1137","date":"2024-06-27","type":"Story","caption_len":63,"hashtags":15,"likes":3875,"comments":196,"shares":14,"saves":1252,"reach":47117,"impressions":49845,"followers":149701,"er":3.5651,"interactions":5337},{"id":"P1138","date":"2024-03-03","type":"Story","caption_len":119,"hashtags":23,"likes":6142,"comments":635,"shares":1180,"saves":578,"reach":28435,"impressions":58932,"followers":66550,"er":12.8249,"interactions":8535},{"id":"P1139","date":"2024-12-17","type":"Story","caption_len":90,"hashtags":15,"likes":7202,"comments":489,"shares":1284,"saves":1074,"reach":38141,"impressions":34062,"followers":29826,"er":33.6921,"interactions":10049},{"id":"P1140","date":"2024-08-18","type":"Story","caption_len":26,"hashtags":22,"likes":7412,"comments":32,"shares":1180,"saves":1632,"reach":30211,"impressions":76713,"followers":105734,"er":9.6998,"interactions":10256},{"id":"P1141","date":"2024-08-28","type":"Image","caption_len":114,"hashtags":1,"likes":5420,"comments":718,"shares":46,"saves":1627,"reach":5306,"impressions":61461,"followers":162702,"er":4.8008,"interactions":7811},{"id":"P1142","date":"2024-02-21","type":"Story","caption_len":34,"hashtags":16,"likes":6232,"comments":43,"shares":323,"saves":1006,"reach":41860,"impressions":76418,"followers":182235,"er":4.1726,"interactions":7604},{"id":"P1143","date":"2024-04-05","type":"Image","caption_len":42,"hashtags":19,"likes":7991,"comments":277,"shares":843,"saves":1287,"reach":12682,"impressions":67672,"followers":103511,"er":10.0453,"interactions":10398},{"id":"P1144","date":"2024-08-09","type":"Reel","caption_len":106,"hashtags":23,"likes":2879,"comments":235,"shares":129,"saves":1441,"reach":22797,"impressions":35832,"followers":16653,"er":28.1271,"interactions":4684},{"id":"P1145","date":"2024-08-18","type":"Image","caption_len":113,"hashtags":11,"likes":1024,"comments":90,"shares":1434,"saves":1826,"reach":20041,"impressions":32966,"followers":164033,"er":2.6665,"interactions":4374},{"id":"P1146","date":"2024-08-24","type":"Story","caption_len":55,"hashtags":17,"likes":1681,"comments":478,"shares":94,"saves":95,"reach":29421,"impressions":73545,"followers":86941,"er":2.7007,"interactions":2348},{"id":"P1147","date":"2024-05-22","type":"Image","caption_len":58,"hashtags":2,"likes":7814,"comments":130,"shares":626,"saves":1111,"reach":17274,"impressions":13987,"followers":38662,"er":25.0401,"interactions":9681},{"id":"P1148","date":"2024-06-19","type":"Image","caption_len":12,"hashtags":0,"likes":3424,"comments":541,"shares":754,"saves":1101,"reach":45313,"impressions":38311,"followers":103818,"er":5.606,"interactions":5820},{"id":"P1149","date":"2024-01-29","type":"Image","caption_len":31,"hashtags":0,"likes":5813,"comments":149,"shares":1315,"saves":1311,"reach":37698,"impressions":32575,"followers":192518,"er":4.4609,"interactions":8588},{"id":"P1150","date":"2024-02-05","type":"Video","caption_len":31,"hashtags":18,"likes":7126,"comments":529,"shares":793,"saves":1143,"reach":9320,"impressions":64852,"followers":157360,"er":6.0949,"interactions":9591},{"id":"P1151","date":"2024-01-13","type":"Story","caption_len":102,"hashtags":10,"likes":355,"comments":216,"shares":1306,"saves":813,"reach":24570,"impressions":2007,"followers":100081,"er":2.6878,"interactions":2690},{"id":"P1152","date":"2024-06-08","type":"Reel","caption_len":25,"hashtags":4,"likes":4904,"comments":29,"shares":68,"saves":490,"reach":4732,"impressions":71981,"followers":41877,"er":13.1122,"interactions":5491},{"id":"P1153","date":"2024-11-22","type":"Reel","caption_len":34,"hashtags":11,"likes":1938,"comments":584,"shares":10,"saves":1935,"reach":11622,"impressions":77242,"followers":116562,"er":3.8323,"interactions":4467},{"id":"P1154","date":"2024-07-05","type":"Reel","caption_len":101,"hashtags":2,"likes":109,"comments":398,"shares":1277,"saves":451,"reach":15523,"impressions":48517,"followers":151385,"er":1.4764,"interactions":2235},{"id":"P1155","date":"2024-08-30","type":"Story","caption_len":32,"hashtags":0,"likes":2971,"comments":71,"shares":871,"saves":1523,"reach":8507,"impressions":30257,"followers":77715,"er":6.9948,"interactions":5436},{"id":"P1156","date":"2024-03-26","type":"Story","caption_len":115,"hashtags":0,"likes":9089,"comments":237,"shares":549,"saves":164,"reach":18405,"impressions":43207,"followers":146398,"er":6.8573,"interactions":10039},{"id":"P1157","date":"2024-10-10","type":"Video","caption_len":68,"hashtags":7,"likes":7509,"comments":113,"shares":1157,"saves":181,"reach":42286,"impressions":14281,"followers":115091,"er":7.7851,"interactions":8960},{"id":"P1158","date":"2024-03-06","type":"Video","caption_len":101,"hashtags":9,"likes":7518,"comments":150,"shares":711,"saves":468,"reach":29898,"impressions":62246,"followers":137632,"er":6.428,"interactions":8847},{"id":"P1159","date":"2024-06-18","type":"Story","caption_len":73,"hashtags":10,"likes":5224,"comments":115,"shares":22,"saves":909,"reach":34768,"impressions":2435,"followers":84148,"er":7.4512,"interactions":6270},{"id":"P1160","date":"2024-02-14","type":"Video","caption_len":65,"hashtags":11,"likes":1115,"comments":232,"shares":814,"saves":734,"reach":7237,"impressions":27660,"followers":88186,"er":3.2828,"interactions":2895},{"id":"P1161","date":"2024-03-02","type":"Image","caption_len":52,"hashtags":12,"likes":2293,"comments":115,"shares":345,"saves":822,"reach":36562,"impressions":6084,"followers":162817,"er":2.1957,"interactions":3575},{"id":"P1162","date":"2024-05-13","type":"Reel","caption_len":23,"hashtags":11,"likes":8515,"comments":474,"shares":301,"saves":943,"reach":26010,"impressions":14507,"followers":167962,"er":6.0924,"interactions":10233},{"id":"P1163","date":"2024-10-10","type":"Video","caption_len":8,"hashtags":13,"likes":7549,"comments":38,"shares":362,"saves":6,"reach":19926,"impressions":73595,"followers":156094,"er":5.0963,"interactions":7955},{"id":"P1164","date":"2024-01-28","type":"Video","caption_len":39,"hashtags":1,"likes":4258,"comments":627,"shares":395,"saves":329,"reach":37765,"impressions":46539,"followers":128629,"er":4.3606,"interactions":5609},{"id":"P1165","date":"2024-04-17","type":"Video","caption_len":68,"hashtags":18,"likes":4025,"comments":780,"shares":217,"saves":774,"reach":18350,"impressions":8491,"followers":188651,"er":3.0723,"interactions":5796},{"id":"P1166","date":"2024-02-13","type":"Story","caption_len":53,"hashtags":17,"likes":7070,"comments":373,"shares":140,"saves":1696,"reach":1114,"impressions":51192,"followers":75316,"er":12.3201,"interactions":9279},{"id":"P1167","date":"2024-12-05","type":"Image","caption_len":21,"hashtags":2,"likes":7038,"comments":752,"shares":957,"saves":150,"reach":22276,"impressions":64888,"followers":33380,"er":26.6537,"interactions":8897},{"id":"P1168","date":"2024-10-12","type":"Image","caption_len":48,"hashtags":22,"likes":4884,"comments":599,"shares":1233,"saves":1108,"reach":24577,"impressions":74609,"followers":115198,"er":6.7918,"interactions":7824},{"id":"P1169","date":"2024-11-26","type":"Image","caption_len":96,"hashtags":16,"likes":4100,"comments":558,"shares":984,"saves":146,"reach":9874,"impressions":10077,"followers":7356,"er":78.6841,"interactions":5788},{"id":"P1170","date":"2024-05-07","type":"Image","caption_len":34,"hashtags":7,"likes":1733,"comments":429,"shares":992,"saves":1647,"reach":35935,"impressions":21953,"followers":75326,"er":6.3736,"interactions":4801},{"id":"P1171","date":"2024-12-13","type":"Video","caption_len":97,"hashtags":9,"likes":7366,"comments":617,"shares":827,"saves":1404,"reach":31407,"impressions":77919,"followers":97447,"er":10.4816,"interactions":10214},{"id":"P1172","date":"2024-08-18","type":"Reel","caption_len":50,"hashtags":1,"likes":8802,"comments":522,"shares":682,"saves":914,"reach":13909,"impressions":68889,"followers":119994,"er":9.1005,"interactions":10920},{"id":"P1173","date":"2024-07-08","type":"Reel","caption_len":10,"hashtags":18,"likes":484,"comments":696,"shares":1483,"saves":1571,"reach":17014,"impressions":24821,"followers":25049,"er":16.9029,"interactions":4234},{"id":"P1174","date":"2024-08-12","type":"Video","caption_len":103,"hashtags":8,"likes":504,"comments":286,"shares":1003,"saves":1308,"reach":30366,"impressions":38567,"followers":110361,"er":2.8099,"interactions":3101},{"id":"P1175","date":"2024-10-09","type":"Reel","caption_len":109,"hashtags":6,"likes":8275,"comments":324,"shares":355,"saves":699,"reach":3483,"impressions":25860,"followers":21082,"er":45.7879,"interactions":9653},{"id":"P1176","date":"2024-04-30","type":"Story","caption_len":41,"hashtags":3,"likes":2100,"comments":742,"shares":1007,"saves":81,"reach":32205,"impressions":22195,"followers":5661,"er":69.4224,"interactions":3930},{"id":"P1177","date":"2024-04-25","type":"Story","caption_len":28,"hashtags":20,"likes":9960,"comments":447,"shares":1347,"saves":513,"reach":21162,"impressions":78475,"followers":173484,"er":7.071,"interactions":12267},{"id":"P1178","date":"2024-08-20","type":"Story","caption_len":97,"hashtags":17,"likes":6089,"comments":319,"shares":1156,"saves":1920,"reach":24010,"impressions":22427,"followers":7920,"er":119.7475,"interactions":9484},{"id":"P1179","date":"2024-09-15","type":"Video","caption_len":117,"hashtags":12,"likes":1560,"comments":745,"shares":887,"saves":814,"reach":13151,"impressions":28083,"followers":196387,"er":2.0398,"interactions":4006},{"id":"P1180","date":"2024-12-24","type":"Story","caption_len":50,"hashtags":10,"likes":7290,"comments":381,"shares":126,"saves":708,"reach":41498,"impressions":58372,"followers":84561,"er":10.0578,"interactions":8505},{"id":"P1181","date":"2024-07-16","type":"Story","caption_len":57,"hashtags":23,"likes":7240,"comments":293,"shares":1129,"saves":1939,"reach":29035,"impressions":45064,"followers":13946,"er":76.0146,"interactions":10601},{"id":"P1182","date":"2024-05-16","type":"Video","caption_len":99,"hashtags":3,"likes":3736,"comments":441,"shares":1008,"saves":1546,"reach":7140,"impressions":8813,"followers":181572,"er":3.7071,"interactions":6731},{"id":"P1183","date":"2024-11-13","type":"Video","caption_len":103,"hashtags":24,"likes":4909,"comments":666,"shares":603,"saves":745,"reach":45047,"impressions":32598,"followers":21309,"er":32.4886,"interactions":6923},{"id":"P1184","date":"2024-06-13","type":"Reel","caption_len":64,"hashtags":20,"likes":4278,"comments":281,"shares":1401,"saves":1022,"reach":15817,"impressions":28082,"followers":60230,"er":11.5922,"interactions":6982},{"id":"P1185","date":"2024-08-12","type":"Video","caption_len":101,"hashtags":24,"likes":7345,"comments":714,"shares":1013,"saves":1409,"reach":8064,"impressions":30241,"followers":116822,"er":8.9718,"interactions":10481},{"id":"P1186","date":"2024-11-02","type":"Reel","caption_len":67,"hashtags":3,"likes":6700,"comments":586,"shares":50,"saves":706,"reach":27845,"impressions":45569,"followers":166099,"er":4.8417,"interactions":8042},{"id":"P1187","date":"2024-08-21","type":"Video","caption_len":89,"hashtags":9,"likes":6097,"comments":507,"shares":1052,"saves":470,"reach":48788,"impressions":12745,"followers":117340,"er":6.9252,"interactions":8126},{"id":"P1188","date":"2024-06-20","type":"Image","caption_len":36,"hashtags":4,"likes":2148,"comments":628,"shares":1485,"saves":1142,"reach":29187,"impressions":27029,"followers":64321,"er":8.4001,"interactions":5403},{"id":"P1189","date":"2024-05-31","type":"Video","caption_len":91,"hashtags":8,"likes":4880,"comments":520,"shares":1319,"saves":395,"reach":14237,"impressions":14025,"followers":137028,"er":5.1916,"interactions":7114},{"id":"P1190","date":"2024-11-10","type":"Story","caption_len":37,"hashtags":23,"likes":816,"comments":354,"shares":1320,"saves":1555,"reach":9823,"impressions":15288,"followers":79131,"er":5.1118,"interactions":4045},{"id":"P1191","date":"2024-06-08","type":"Image","caption_len":71,"hashtags":2,"likes":8039,"comments":450,"shares":778,"saves":260,"reach":15729,"impressions":7540,"followers":183980,"er":5.1783,"interactions":9527},{"id":"P1192","date":"2024-04-05","type":"Image","caption_len":22,"hashtags":16,"likes":5665,"comments":354,"shares":1430,"saves":804,"reach":44981,"impressions":69878,"followers":30963,"er":26.6544,"interactions":8253},{"id":"P1193","date":"2024-08-20","type":"Image","caption_len":29,"hashtags":2,"likes":4644,"comments":611,"shares":813,"saves":933,"reach":9002,"impressions":42846,"followers":106757,"er":6.5579,"interactions":7001},{"id":"P1194","date":"2024-06-28","type":"Video","caption_len":110,"hashtags":15,"likes":5076,"comments":668,"shares":1428,"saves":1279,"reach":1045,"impressions":76932,"followers":175515,"er":4.815,"interactions":8451},{"id":"P1195","date":"2024-04-22","type":"Story","caption_len":99,"hashtags":3,"likes":3519,"comments":141,"shares":1369,"saves":1757,"reach":37614,"impressions":18482,"followers":104259,"er":6.5088,"interactions":6786},{"id":"P1196","date":"2024-11-13","type":"Image","caption_len":58,"hashtags":17,"likes":7339,"comments":763,"shares":419,"saves":904,"reach":29930,"impressions":24411,"followers":44063,"er":21.3898,"interactions":9425},{"id":"P1197","date":"2024-02-21","type":"Story","caption_len":62,"hashtags":16,"likes":9866,"comments":247,"shares":1205,"saves":1249,"reach":10496,"impressions":51975,"followers":119225,"er":10.5406,"interactions":12567},{"id":"P1198","date":"2024-09-24","type":"Story","caption_len":71,"hashtags":6,"likes":349,"comments":547,"shares":982,"saves":1076,"reach":28288,"impressions":61545,"followers":121400,"er":2.4333,"interactions":2954},{"id":"P1199","date":"2024-10-21","type":"Story","caption_len":108,"hashtags":23,"likes":8965,"comments":44,"shares":824,"saves":939,"reach":30469,"impressions":79797,"followers":85818,"er":12.5521,"interactions":10772}];
+
+// ─── COLORS ──────────────────────────────────────────────────────────────────
+const TYPE_COLORS = {
+  Story: '#e040fb', Reel: '#00e5ff', Image: '#ff6d00', Video: '#00e676'
+};
+const MONTHS_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTH_KEYS = ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08','2024-09','2024-10','2024-11','2024-12'];
+
+Chart.defaults.color = '#7a7a9a';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.font.size = 11;
+
+function avg(arr) { return arr.length ? arr.reduce((a,b) => a+b, 0)/arr.length : 0; }
+function fmt(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(2)+'M';
+  if (n >= 1e3) return (n/1e3).toFixed(1)+'K';
+  return Math.round(n).toString();
+}
+
+let charts = {};
+
+// ─── FILTER ──────────────────────────────────────────────────────────────────
+function getFiltered() {
+  const type = document.getElementById('filterType').value;
+  const month = document.getElementById('filterMonth').value;
+  return RAW.filter(r => {
+    const ym = r.date.slice(0,7);
+    return (type === 'All' || r.type === type) && (month === 'All' || ym === month);
+  });
+}
+
+function applyFilters() {
+  const data = getFiltered();
+  updateKPIs(data);
+  updateTrend(data);
+  updateTypeChart(data);
+  updateTop5(data);
+  updateScatter(data);
+  updateCaptionChart(data);
+  updateHashChart(data);
+  updateDonut(data);
+  updateMonthReach(data);
+}
+
+function resetFilters() {
+  document.getElementById('filterType').value = 'All';
+  document.getElementById('filterMonth').value = 'All';
+  applyFilters();
+}
+
+// ─── KPIs ─────────────────────────────────────────────────────────────────────
+function updateKPIs(data) {
+  document.getElementById('kpiPosts').textContent = data.length;
+  document.getElementById('kpiER').textContent = avg(data.map(r=>r.er)).toFixed(2)+'%';
+  document.getElementById('kpiReach').textContent = fmt(avg(data.map(r=>r.reach)));
+  document.getElementById('kpiInteractions').textContent = fmt(data.reduce((a,r)=>a+r.interactions,0));
+  document.getElementById('kpiImpressions').textContent = fmt(avg(data.map(r=>r.impressions)));
+}
+
+// ─── TREND ────────────────────────────────────────────────────────────────────
+function buildMonthly(data) {
+  const byMonth = {};
+  MONTH_KEYS.forEach(k => byMonth[k] = []);
+  data.forEach(r => { const k = r.date.slice(0,7); if(byMonth[k]) byMonth[k].push(r); });
+  return MONTH_KEYS.map(k => ({
+    reach: byMonth[k].length ? avg(byMonth[k].map(r=>r.reach)) : null,
+    impressions: byMonth[k].length ? avg(byMonth[k].map(r=>r.impressions)) : null,
+    er: byMonth[k].length ? avg(byMonth[k].map(r=>r.er)) : null,
+    count: byMonth[k].length
+  }));
+}
+
+function updateTrend(data) {
+  const monthly = buildMonthly(data);
+  const ds = [
+    { label:'Avg Reach', data: monthly.map(m=>m.reach), borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,0.07)', tension:0.4, yAxisID:'y', fill:true, pointRadius:4 },
+    { label:'Avg Impressions', data: monthly.map(m=>m.impressions), borderColor:'#7c4dff', backgroundColor:'rgba(124,77,255,0.07)', tension:0.4, yAxisID:'y', fill:true, pointRadius:4 },
+    { label:'Avg ER %', data: monthly.map(m=>m.er), borderColor:'#e040fb', backgroundColor:'rgba(224,64,251,0.07)', tension:0.4, yAxisID:'y2', fill:false, pointRadius:4, borderDash:[5,3] },
+  ];
+  if(charts.trend) charts.trend.destroy();
+  charts.trend = new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: { labels: MONTHS_LABELS, datasets: ds },
+    options: {
+      responsive:true, interaction:{ mode:'index', intersect:false },
+      plugins: { legend:{ labels:{ color:'#9a9abb', boxWidth:12 } }, tooltip:{ backgroundColor:'#16161f', borderColor:'#232330', borderWidth:1 } },
+      scales: {
+        x: { grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#5a5a7a' } },
+        y: { position:'left', grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#5a5a7a', callback: v => fmt(v) } },
+        y2: { position:'right', grid:{ drawOnChartArea:false }, ticks:{ color:'#e040fb', callback: v => v?.toFixed(1)+'%' } }
+      }
+    }
+  });
+}
+
+// ─── POST TYPE BAR ────────────────────────────────────────────────────────────
+function updateTypeChart(data) {
+  const types = ['Story','Reel','Image','Video'];
+  const byType = {};
+  types.forEach(t => byType[t] = []);
+  data.forEach(r => { if(byType[r.type]) byType[r.type].push(r); });
+  const erData = types.map(t => byType[t].length ? avg(byType[t].map(r=>r.er)) : 0);
+  const reachData = types.map(t => byType[t].length ? avg(byType[t].map(r=>r.reach))/1000 : 0);
+  if(charts.type) charts.type.destroy();
+  charts.type = new Chart(document.getElementById('typeChart'), {
+    type: 'bar',
+    data: {
+      labels: types,
+      datasets: [
+        { label:'Avg ER %', data: erData, backgroundColor: types.map(t=>TYPE_COLORS[t]), borderRadius:6, yAxisID:'y' },
+        { label:'Avg Reach (K)', data: reachData, backgroundColor: types.map(t=>TYPE_COLORS[t]+'55'), borderRadius:6, yAxisID:'y2' }
+      ]
+    },
+    options: {
+      responsive:true,
+      plugins: { legend:{ labels:{ color:'#9a9abb', boxWidth:12 } }, tooltip:{ backgroundColor:'#16161f', borderColor:'#232330', borderWidth:1 } },
+      scales: {
+        x: { grid:{ color:'rgba(255,255,255,0.04)' } },
+        y: { position:'left', grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#9a9abb', callback: v => v.toFixed(1)+'%' } },
+        y2: { position:'right', grid:{ drawOnChartArea:false }, ticks:{ color:'#7a7a9a', callback: v => v.toFixed(1)+'K' } }
+      }
+    }
+  });
+}
+
+// ─── TOP 5 ────────────────────────────────────────────────────────────────────
+const RANK_COLORS = ['#ffd700','#c0c0c0','#cd7f32','#7c4dff','#e040fb'];
+const MAX_ER = 141;
+function updateTop5(data) {
+  const top = [...data].sort((a,b) => b.er-a.er).slice(0,5);
+  const tb = document.getElementById('top5Body');
+  tb.innerHTML = '';
+  top.forEach((r,i) => {
+    const tr = document.createElement('tr');
+    const pct = Math.min(100, (r.er/MAX_ER)*100);
+    tr.innerHTML = `
+      <td><span class="rank-badge" style="background:${RANK_COLORS[i]}22;color:${RANK_COLORS[i]}">${i+1}</span></td>
+      <td style="font-family:'Syne',sans-serif;font-weight:600;font-size:0.82rem">${r.id}</td>
+      <td><span class="type-pill" style="background:${TYPE_COLORS[r.type]}22;color:${TYPE_COLORS[r.type]}">${r.type}</span></td>
+      <td style="color:#7a7a9a">${r.date}</td>
+      <td>
+        <div class="er-bar-wrap">
+          <div class="er-bar" style="width:${pct*0.9}px;background:${RANK_COLORS[i]}"></div>
+          <span style="font-family:'Syne',sans-serif;font-size:0.82rem;color:${RANK_COLORS[i]}">${r.er.toFixed(2)}%</span>
+        </div>
+      </td>
+      <td style="color:#9a9abb">${fmt(r.reach)}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+// ─── SCATTER ──────────────────────────────────────────────────────────────────
+function updateScatter(data) {
+  const scatterData = {};
+  ['Story','Reel','Image','Video'].forEach(t => scatterData[t] = []);
+  // cap ER at 80 for readability
+  data.forEach(r => { if(scatterData[r.type]) scatterData[r.type].push({x: r.followers/1000, y: Math.min(r.er,80)}); });
+  const ds = ['Story','Reel','Image','Video'].map(t => ({
+    label: t,
+    data: scatterData[t],
+    backgroundColor: TYPE_COLORS[t]+'99',
+    borderColor: TYPE_COLORS[t],
+    borderWidth: 1,
+    pointRadius: 5,
+    pointHoverRadius: 8
+  }));
+  if(charts.scatter) charts.scatter.destroy();
+  charts.scatter = new Chart(document.getElementById('scatterChart'), {
+    type:'scatter',
+    data:{ datasets: ds },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ labels:{ color:'#9a9abb', boxWidth:10 } }, tooltip:{ backgroundColor:'#16161f', borderColor:'#232330', borderWidth:1 } },
+      scales:{
+        x:{ title:{ display:true, text:'Follower Count (K)', color:'#5a5a7a' }, grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#5a5a7a', callback:v=>v+'K' } },
+        y:{ title:{ display:true, text:'Engagement Rate % (capped at 80)', color:'#5a5a7a' }, grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#5a5a7a', callback:v=>v+'%' } }
+      }
+    }
+  });
+}
+
+// ─── CAPTION CHART ────────────────────────────────────────────────────────────
+function updateCaptionChart(data) {
+  const short = data.filter(r=>r.caption_len<=30);
+  const medium = data.filter(r=>r.caption_len>30&&r.caption_len<=100);
+  const long = data.filter(r=>r.caption_len>100);
+  const bins = ['Short (≤30)','Medium (31–100)','Long (>100)'];
+  const erVals = [avg(short.map(r=>r.er)), avg(medium.map(r=>r.er)), avg(long.map(r=>r.er))];
+  const reachVals = [avg(short.map(r=>r.reach))/1000, avg(medium.map(r=>r.reach))/1000, avg(long.map(r=>r.reach))/1000];
+  if(charts.caption) charts.caption.destroy();
+  charts.caption = new Chart(document.getElementById('captionChart'), {
+    type:'bar',
+    data:{
+      labels: bins,
+      datasets:[
+        { label:'Avg ER %', data:erVals, backgroundColor:['#e040fb99','#7c4dff99','#00e5ff99'], borderRadius:6, yAxisID:'y' },
+        { label:'Avg Reach (K)', data:reachVals, backgroundColor:['#e040fb33','#7c4dff33','#00e5ff33'], borderRadius:6, yAxisID:'y2' }
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ labels:{ color:'#9a9abb', boxWidth:12 } }, tooltip:{ backgroundColor:'#16161f', borderColor:'#232330', borderWidth:1 } },
+      scales:{
+        x:{ grid:{ color:'rgba(255,255,255,0.04)' } },
+        y:{ position:'left', grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#9a9abb', callback:v=>v.toFixed(1)+'%' } },
+        y2:{ position:'right', grid:{ drawOnChartArea:false }, ticks:{ color:'#7a7a9a', callback:v=>v.toFixed(1)+'K' } }
+      }
+    }
+  });
+}
+
+// ─── HASHTAG CHART ────────────────────────────────────────────────────────────
+function updateHashChart(data) {
+  const low = data.filter(r=>r.hashtags<=10);
+  const mid = data.filter(r=>r.hashtags>10&&r.hashtags<=20);
+  const high = data.filter(r=>r.hashtags>20);
+  const bins = ['Low (≤10)','Mid (11–20)','High (>20)'];
+  const erVals = [avg(low.map(r=>r.er)), avg(mid.map(r=>r.er)), avg(high.map(r=>r.er))];
+  const countVals = [low.length, mid.length, high.length];
+  if(charts.hash) charts.hash.destroy();
+  charts.hash = new Chart(document.getElementById('hashChart'), {
+    type:'bar',
+    data:{
+      labels: bins,
+      datasets:[
+        { label:'Avg ER %', data:erVals, backgroundColor:['#00e67699','#ff6d0099','#e040fb99'], borderRadius:6, yAxisID:'y' },
+        { label:'Post Count', data:countVals, backgroundColor:['#00e67633','#ff6d0033','#e040fb33'], borderRadius:6, yAxisID:'y2' }
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ labels:{ color:'#9a9abb', boxWidth:12 } }, tooltip:{ backgroundColor:'#16161f', borderColor:'#232330', borderWidth:1 } },
+      scales:{
+        x:{ grid:{ color:'rgba(255,255,255,0.04)' } },
+        y:{ position:'left', grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#9a9abb', callback:v=>v.toFixed(1)+'%' } },
+        y2:{ position:'right', grid:{ drawOnChartArea:false }, ticks:{ color:'#7a7a9a' } }
+      }
+    }
+  });
+}
+
+// ─── DONUT ────────────────────────────────────────────────────────────────────
+function updateDonut(data) {
+  const types = ['Story','Reel','Image','Video'];
+  const counts = types.map(t => data.filter(r=>r.type===t).length);
+  if(charts.donut) charts.donut.destroy();
+  charts.donut = new Chart(document.getElementById('donutChart'), {
+    type:'doughnut',
+    data:{
+      labels: types,
+      datasets:[{ data:counts, backgroundColor: types.map(t=>TYPE_COLORS[t]), borderColor:'#16161f', borderWidth:3, hoverOffset:8 }]
+    },
+    options:{
+      responsive:true, cutout:'65%',
+      plugins:{ legend:{ position:'bottom', labels:{ color:'#9a9abb', boxWidth:12, padding:14 } }, tooltip:{ backgroundColor:'#16161f', borderColor:'#232330', borderWidth:1 } }
+    }
+  });
+}
+
+// ─── MONTHLY REACH ────────────────────────────────────────────────────────────
+function updateMonthReach(data) {
+  const byMonth = {};
+  MONTH_KEYS.forEach(k => byMonth[k] = []);
+  data.forEach(r => { const k = r.date.slice(0,7); if(byMonth[k]) byMonth[k].push(r); });
+  const vals = MONTH_KEYS.map(k => byMonth[k].length ? avg(byMonth[k].map(r=>r.reach)) : 0);
+  const maxVal = Math.max(...vals);
+  const colors = vals.map(v => v===maxVal ? '#ff6d00' : '#7c4dff88');
+  if(charts.monthReach) charts.monthReach.destroy();
+  charts.monthReach = new Chart(document.getElementById('monthReachChart'), {
+    type:'bar',
+    data:{
+      labels: MONTHS_LABELS,
+      datasets:[{ label:'Avg Reach', data:vals, backgroundColor:colors, borderRadius:6 }]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:'#16161f', borderColor:'#232330', borderWidth:1, callbacks:{ label:ctx=>' Avg Reach: '+fmt(ctx.raw) } } },
+      scales:{
+        x:{ grid:{ color:'rgba(255,255,255,0.04)' } },
+        y:{ grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#5a5a7a', callback:v=>fmt(v) } }
+      }
+    }
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+applyFilters();
+</script>
+</body>
+</html>
