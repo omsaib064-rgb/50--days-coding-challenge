@@ -240,3 +240,53 @@ Improved skills in Power BI, data visualization, and health data analysis.
 
 
 
+10. GitHub README Content
+Project Title
+Instagram Engagement Analysis Dashboard
+Project Description
+
+This Power BI project analyzes Instagram post performance to identify trends in audience engagement, content effectiveness, and growth. The dashboard helps understand which post types perform best, what drives interaction, and how content reach changes over time.
+
+🎯🎯🎯🎯Objectives
+Analyze Instagram engagement trends
+Compare post performance by content type
+Measure the effect of captions and hashtags
+Track reach, impressions, and follower impact
+Build an interactive Power BI dashboard
+Tools Used
+Power BI
+Power Query
+DAX
+CSV Dataset
+Key Metrics
+Engagement Rate
+Interaction to Follower Ratio
+Avg Reach
+Avg Impressions
+Total Engagement
+Total Posts
+Dashboard Pages
+Page 1: Overview
+KPI cards
+Trend analysis
+Top 5 posts
+Page 2: Content Performance
+Post type comparison
+Caption vs engagement
+Hashtag vs engagement
+Page 3: Growth Insights
+Follower count vs engagement
+Monthly reach trends
+🎯🎯🎯Key Insights
+Reels had the highest engagement rate
+Stories generated strong reach
+April had the highest average reach
+Hashtags and caption length had weak engagement impact
+Follower growth alone did not guarantee higher engagement
+
+
+
+
+
+
+
