@@ -1,0 +1,97 @@
+# 🍔 Day 9 Code Challenge – Eating Out on Health Analysis
+
+## 📊 Project Overview
+
+This project analyzes how eating out frequency impacts health indicators like BMI, cholesterol, blood pressure, diabetes, and overall health score using Power BI.
+
+---
+
+## 📁 Dataset Features
+
+* Age
+* Gender
+* Occupation
+* Eat Out Frequency
+* Preferred Eat Out Type
+* Daily Calories
+* Exercise Hours Per Week
+* Sleep Hours
+* BMI
+* Blood Pressure
+* Cholesterol Level
+* Diabetes
+* Health Score
+
+---
+
+## ⚙️ Tasks Performed
+
+* Data cleaning using Power Query
+* Created calculated columns and DAX measures
+* Built interactive dashboard
+* Applied conditional formatting
+* Generated insights from data
+
+---
+
+## 📐 DAX Measures
+
+* Avg_BMI
+* High_Risk_Count
+* EatOut_Impact
+* Avg Eat-Out Frequency
+* Avg Health Score
+* % Diabetes
+* % Hypertension
+
+---
+
+## 📊 Dashboard Pages
+
+### 1. Overview
+
+* KPI Cards
+* Pie Chart
+* Bar Chart
+
+### 2. Health Trends
+
+* Stacked Column Chart
+* Scatter Plot
+* Line Chart
+
+### 3. Demographics & Lifestyle
+
+* Occupation Analysis
+* Gender Analysis
+* Exercise vs BMI
+* Slicers
+
+---
+
+## 🔍 Key Insights
+
+* Frequent eating out leads to higher BMI
+* Fast food increases cholesterol risk
+* Exercise improves health outcomes
+* Students and employees eat out more
+
+---
+
+## 🛠 Tools Used
+
+* Power BI
+* Power Query
+* DAX
+
+---
+
+## 📸 Screenshots
+
+(Add your dashboard images here)
+
+---
+
+## 🚀 Outcome
+
+Improved skills in Power BI, data visualization, and health data analysis.
