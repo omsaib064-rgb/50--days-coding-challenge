@@ -1,0 +1,152 @@
+
+
+# 📊 Instagram Engagement Analysis Dashboard
+
+## 🚀 Project Overview
+This Power BI project analyzes Instagram post performance data to uncover insights into audience engagement, content effectiveness, and growth trends.
+
+The dashboard helps identify:
+- Which post types perform best
+- What factors influence engagement
+- How reach and impressions change over time
+- Whether follower growth impacts content performance
+
+This project is useful for **brands, influencers, digital marketers, and social media analysts** who want to make better content strategy decisions using data.
+
+---
+
+## 🎯 Objective
+The main objective of this project is to analyze Instagram engagement data and build an interactive dashboard that answers key business questions such as:
+
+- Which post type has the highest engagement rate?
+- Does caption length impact engagement?
+- Do hashtags improve post performance?
+- Which month had the highest average reach?
+- Does follower count affect engagement?
+
+---
+
+## 🗂️ Dataset Information
+The dataset contains **200 Instagram post records** with the following features:
+
+- **Post_ID**
+- **Post_Date**
+- **Post_Type**
+- **Caption_Length**
+- **Hashtags_Used**
+- **Likes**
+- **Comments**
+- **Shares**
+- **Saves**
+- **Reach**
+- **Impressions**
+- **Follower_Count**
+
+---
+
+## 🛠️ Tools & Technologies Used
+- **Power BI**
+- **Power Query**
+- **DAX**
+- **CSV Dataset**
+- **Data Visualization**
+
+---
+
+## 🧹 Data Cleaning & Transformation
+Before analysis, the following steps were performed:
+
+- Removed duplicate records
+- Checked and handled null values
+- Converted **Post_Date** into date format
+- Created **Month_Year** column for trend analysis
+- Verified data types
+- Prepared the dataset for dashboard development
+
+---
+
+## 📌 DAX Measures Used
+
+### **1. Total Engagement**
+```DAX
+Total_Engagement = 
+SUM('Instagram'[Likes]) +
+SUM('Instagram'[Comments]) +
+SUM('Instagram'[Shares]) +
+SUM('Instagram'[Saves])
+Project Title
+Instagram Engagement Analysis Dashboard
+Project Description
+
+This Power BI project analyzes Instagram post performance to identify trends in audience engagement, content effectiveness, and growth. The dashboard helps understand which post types perform best, what drives interaction, and how content reach changes over time.
+
+Objectives
+Analyze Instagram engagement trends
+Compare post performance by content type
+Measure the effect of captions and hashtags
+Track reach, impressions, and follower impact
+Build an interactive Power BI dashboard
+Tools Used
+Power BI
+Power Query
+DAX
+CSV Dataset
+Key Metrics
+Engagement Rate
+Interaction to Follower Ratio
+Avg Reach
+Avg Impressions
+Total Engagement
+Total Posts
+Dashboard Pages
+Page 1: Overview
+KPI cards
+Trend analysis
+Top 5 posts
+Page 2: Content Performance
+Post type comparison
+Caption vs engagement
+Hashtag vs engagement
+Page 3: Growth Insights
+Follower count vs engagement
+Monthly reach trends
+Key Insights
+Reels had the highest engagement rate
+Stories generated strong reach
+April had the highest average reach
+Hashtags and caption length had weak engagement impact
+Follower growth alone did not guarantee higher engagement
+11. Best Dashboard Title Ideas
+
+Use one of these:
+
+Instagram Engagement Analysis Dashboard
+Social Media Performance Dashboard
+Instagram Content Insights Dashboard
+Influencer Engagement Tracker
+Instagram Growth & Engagement Report
+12. Best Color Theme Suggestion
+
+Use Instagram style theme:
+
+Pink
+Purple
+Orange
+White / Light Background
+
+This makes the dashboard look professional and platform relevant.
+
+13. Submission Deliverables
+
+Your final files should be:
+
+Power BI Dashboard (.pbix)
+Screenshot of dashboard
+GitHub README
+Insight summary
+
+
+☸️☸️☸️link    🎯🎯🎯
+https://drive.google.com/file/d/1lW7z_WeOoSvV1eu9rBR3R-de1quytIRl/view?usp=sharing
+
+
