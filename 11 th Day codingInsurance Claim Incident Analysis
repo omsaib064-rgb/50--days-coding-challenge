@@ -1,0 +1,147 @@
+daily-coding-challenge/
+└── insurance-claim-analysis/ 11 Day coding
+    ├── 📄 README.md    
+    
+     Project Overview
+This project performs end-to-end analysis of an insurance claims dataset containing 1,000 records across 39 original columns. The goal is to uncover actionable insights around claim patterns, fraud detection, customer segmentation, and risk profiling — delivering cleaned data, pivot-based analytics, and a professional Excel dashboard ready for management presentation.
+The analysis answers four core business questions:
+
+What are the trends in claims by policy type, region, incident type, and time?
+Which customer segments or locations have the highest claim rates?
+What is the distribution of fraudulent vs. non-fraudulent claims, and what factors are common in fraud cases?
+What is the relationship between policy details (premium, deductible) and claim amounts/frequency?
+
+
+🎯🎯🎯 Project Objective
+ObjectiveDetailPrimary GoalClean, model, and analyze insurance claims data to support decision-makingBusiness ContextHelp insurance management reduce fraud, optimize pricing, and improve claims processingAudienceInsurance executives, risk managers, data analystsOutcomeExecutive dashboard + pivot analytics + findings & recommendations
+
+📊📊📁 Dataset Description
+
+Source File: insurance.csv
+Records: 1,000 claim incidents
+Original Columns: 39
+Engineered Columns: 7 (added during cleaning)
+
+Key Fields
+CategoryFieldsPolicy Infopolicy_number, policy_state, policy_csl, policy_annual_premium, policy_deductable, umbrella_limitInsured Detailsinsured_sex, insured_education_level, insured_occupation, insured_hobbies, age, insured_relationshipIncident Detailsincident_type, incident_severity, incident_date, incident_state, incident_city, incident_hour_of_the_dayClaim Breakdowntotal_claim_amount, injury_claim, property_claim, vehicle_claimVehicleauto_make, auto_model, auto_yearTargetfraud_reported (Y/N)
+
+📊📊🧹 Data Cleaning Summary
+Issues Identified & Fixed
+IssueColumn(s)BeforeAfterTreatmentNull valuesauthorities_contacted91 nulls0Filled with "Unknown"? placeholderscollision_type178 ?0Filled with "Not Applicable"? placeholdersproperty_damage360 ?0Filled with Mode? placeholderspolice_report_available343 ?0Filled with ModeDate parsingpolicy_bind_date, incident_dateStringDateTimepd.to_datetime()
+Engineered Columns Added
+New ColumnDescriptionpolicy_bind_yearYear extracted from policy_bind_dateincident_monthMonth name from incident_dateincident_month_numMonth number (1–12) for time-series sortingclaim_per_premiumtotal_claim_amount / policy_annual_premium — Loss Ratio proxyage_groupBinned: <30, 30-40, 40-50, 50-60, 60+fraud_flagBinary: 1 = Fraud, 0 = Non-Fraudyears_as_customermonths_as_customer / 12
+
+📊 Dashboard
+The Excel dashboard (📈 Dashboard sheet) presents 6 interactive charts alongside 6 KPI metric cards:
+KPI Cards
+MetricValue📁 Total Claims1,000💰 Total Claim Value~$52.7 Million📈 Avg Claim Amount~$52,762🚨 Fraud Cases247⚠️ Fraud Rate24.7%📋 Avg Annual Premium~$1,256
+Charts Included
+#Chart TitleTypeInsight1Total Claims by Incident TypeClustered BarMulti-vehicle > Single > Theft > Parked2Fraud vs Non-Fraud DistributionPie Chart24.7% fraud rate across portfolio3Total Claims by Policy StateBar ChartOH leads in claim volume4Avg Claim Amount by SeverityHorizontal BarTotal Loss = highest avg claim5Fraud Rate (%) by Age GroupColumn ChartAge-based fraud risk segmentation6Monthly Total Claim TrendLine ChartMonth-wise claim volume movement
+
+📂 Excel Workbook Structure
+SheetTab ColorDescription📋 Raw Data⬛ GreyOriginal 1,000-row, 39-column dataset as-is✅ Cleaned Data🟩 GreenCleaned dataset with 7 engineered features🔍 Data Quality🟧 OrangeBefore/after cleaning report + column descriptions📊 Profile Data🟦 BlueDataset statistics, KPI cards, categorical distributions📉 Pivot Tables🟦 Navy4 pivot analyses: by State, Incident Type, Occupation, Severity📈 Dashboard🔴 RedExecutive dashboard with 6 KPI cards + 6 charts💡 Findings & Recommendations🟨 GoldKey findings + 4 management recommendation blocks
+
+🗝️🗝️🗝️🔍 Key Findings
+1. 📍 Claim Volume by Region
+
+Ohio (OH) holds the largest policy concentration (352 policies) and highest total claim value
+Illinois (IL) follows with 338 policies; Indiana (IN) has 310 policies
+Regional risk diversification is limited — all three states have comparable fraud profiles
+
+2. 🚗 Incident Type Patterns
+
+Multi-vehicle Collision is the most frequent incident type (419 cases, ~42%)
+Single Vehicle Collision accounts for 40% (403 cases)
+Vehicle Theft (94 cases) and Parked Car incidents (84 cases) are less frequent but require distinct handling
+
+3. 🚨 Fraud Analysis
+
+24.7% of all claims (247 out of 1,000) are flagged as fraudulent — significantly above industry benchmarks
+Fraud is concentrated in Major Damage and Total Loss severity categories
+Claims with no police report show higher fraud correlations
+Certain occupations (craft-repair, machine-op, armed-forces) appear in elevated fraud segments
+
+4. ⚠️ Severity & Claim Size
+
+Total Loss incidents yield the highest average claim amount
+Trivial Damage incidents (90 cases) have the lowest average claim
+Loss ratio (claim ÷ premium) averages ~42x, indicating high claim-to-premium exposure
+
+5. 💰 Premium vs Claim Relationship
+
+Average annual premium is $1,256.41 with average claim of $52,762
+High deductible policies ($2,000) slightly suppress total claim amounts
+Umbrella limit holders do not show a meaningfully different fraud rate
+
+
+☸️☸️✅ Management Recommendations
+🎯 Fraud Mitigation
+
+Deploy ML fraud scoring on high-risk occupations and incident types
+Flag claims with no police report + major damage for mandatory manual review
+Increase verification for Vehicle Theft and Single Vehicle Collision filings
+
+📍📍📍 Regional Pricing Strategy
+
+Re-price OH and IL policies based on updated regional loss ratios
+Introduce state-specific deductible tiers to manage high-volume markets
+Conduct granular city-level analysis for incident hotspots (Columbus, Arlington, etc.)
+
+💓💓🔆🏵️🏵️💡 Product & Policy Design
+
+Introduce telematics-based premiums for age groups under 30
+Implement loyalty discounts for customers with 5+ years tenure
+Bundle umbrella coverage incentives for high net-worth customer segments
+
+📋 Claims Operations
+
+Fast-track settlement for trivial/minor damage claims (auto-adjudication)
+Use severity scoring to route complex cases to senior adjusters
+Automate police report verification via API integrations with authorities
+
+
+🛠️ Tools & Technologies
+ToolPurposePython 3.xCore scripting, data manipulationPandasData cleaning, transformation, pivot tablesNumPyNumerical operations, null handlingOpenPyXLExcel workbook creation, formatting, chartingMicrosoft ExcelFinal workbook viewing, dashboard presentationGitHubVersion control and project documentation
+
+🎯🎯📁 Repository Structure
+daily-coding-challenge/
+└── insurance-claim-analysis/
+    ├── 📄 README.md                         ← This file
+    ├── 📊 Insurance_Claim_Analysis.xlsx     ← Full Excel workbook (7 sheets)
+    ├── 📂 data/
+    │   └── insurance.csv                    ← Raw dataset (1,000 records)
+    └── 📂 scripts/
+        └── build_insurance_excel.py         ← Python build script
+
+🛩️🛩️🚀 How to Run
+bash# 1. Clone the repository
+git clone https://github.com/omsaib064-rgb/daily-coding-challenge.git
+cd daily-coding-challenge/insurance-claim-analysis
+
+# 2. Install dependencies
+pip install pandas numpy openpyxl
+
+# 3. Run the analysis script
+python scripts/build_insurance_excel.py
+
+# 4. Open the generated Excel file
+open Insurance_Claim_Analysis.xlsx
+
+📈📈📈 Project Outcomes
+DeliverableStatusRaw Data Sheet✅ CompleteCleaned Dataset (null-free)✅ CompleteData Quality Report✅ CompleteProfile / Summary Statistics✅ Complete4 Pivot Table Analyses✅ CompleteExecutive Dashboard (6 charts)✅ CompleteFindings & Recommendations✅ CompleteGitHub README✅ Complete
+
+☸️☸️👤 Author
+Upendrachary
+Daily Coding Challenge Series — Data Analytics Track
+GitHub: @omsaib064-rgb
+Repository: daily-coding-challenge
+
+    
+    
+☸️☸️☸️    LINK    ☸️☸️☸️
+https://docs.google.com/spreadsheets/d/1anMdm32f-vvp2FO5gNVyCljHW1Uf2QZm/edit?usp=sharing&ouid=107125194133694085286&rtpof=true&sd=true
+
+    
+                                        ☸️☸️☸️  END    ☸️☸️☸️
+    
+    
