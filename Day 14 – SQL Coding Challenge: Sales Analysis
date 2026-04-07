@@ -1,0 +1,42 @@
+ 🏵️🏵️🏵️🏵️Day 14 – SQL Coding Challenge: Sales Analysis🏵️🏵️🏵️
+
+💻💻Overview
+This project is part of my SQL practice journey.  
+In this challenge, I worked on a Sales table and solved 10 beginner level SQL queries using filtering, sorting, and distinct values.
+
+💻💻🏓🏓Table Name
+Sales
+
+🔆🔆🔆 Concepts Covered
+- SELECT
+- WHERE
+- ORDER BY
+- ASC / DESC
+- DISTINCT
+
+☸️☸️☸️ Challenge Questions Solved
+1. Show all records from the Sales table
+2. Display only customer names and cities
+3. Show product name and price
+4. Show all sales where city is Bangalore
+5. Find all products in Electronics category
+6. Show sales where price is greater than 10,000
+7. Display sales where quantity is more than 2
+8. Show all sales sorted by price (low to high)
+9. Display sales sorted by quantity (high to low)
+10. Show unique cities
+
+🧞🧞 Learning Outcome
+This challenge helped me strengthen my SQL basics and improve my understanding of data filtering and sorting techniques.
+
+🛠️🛠️🛠️Tools Used
+- MySQL / SQL
+- GitHub
+
+## 🧞🧞🧞Author
+Your Name; G upendrachary
+
+
+🔗🔗🔗    LINK🔗🔗🔗
+
+https://drive.google.com/file/d/1TuIaR0XUX6Pt8lZeH6wT6AFnd1JABRSz/view?usp=sharing
