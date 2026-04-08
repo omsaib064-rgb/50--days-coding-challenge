@@ -582,9 +582,6 @@ By combining these tables, we can understand customer activity, spending pattern
 
 ## 🎯 Project Objective
 
-The main goals of this project are:
-
-* Understand relational database structure
 * Practice SQL JOIN operations
 * Analyze customer order data
 * Identify missing or invalid records
@@ -732,7 +729,112 @@ https://drive.google.com/file/d/1yKFU6jYoc4igk8SkHZc0i-wdE7ABvYOt/view?usp=shari
 
 
 
+🔹 Task 1: Basic JOIN Queries
+Retrieve all posts along with the username of the author
+Find all comments on each post along with the commenter’s username
+🔹 Task 2: Aggregate + Subquery Analysis
+Find the top 3 users with the most posts
+Retrieve posts that have more likes than the average number of likes per post
+Find users who have never posted anything but have liked posts
+🔹 Task 3: Friendship Analysis
+Get a list of all friends of a specific user
+Retrieve posts that were liked by friends of a given user
+🔹 Task 4: Stored Procedure
+Create a stored procedure GetUserActivity(userId) that returns:
+Total posts by the user
+Total likes given by the user
+Total likes received on the user’s posts
+Total comments made by the user
+🔹 Task 5: Challenge Query
+Find the most influential user
+(The user whose posts have the highest total likes + comments)
+💡 SQL Concepts Used
 
+This project demonstrates the use of:
+
+SELECT
+INNER JOIN
+LEFT JOIN
+SELF JOIN logic
+GROUP BY
+ORDER BY
+HAVING
+SUBQUERIES
+NESTED QUERIES
+AGGREGATE FUNCTIONS
+STORED PROCEDURES
+INDEXES
+🚀 Key Business Insights
+
+Using SQL, this project helps to identify:
+
+Which users are the most active
+Which posts receive the most engagement
+Which users engage without posting
+How friendships influence post interactions
+Who the most influential user is on the platform
+
+These insights are valuable for:
+
+User engagement analysis
+Content performance tracking
+Social network analysis
+Influencer identification
+Recommendation systems
+⚡ Performance Optimization
+
+Indexes were created to improve query performance on frequently used columns such as:
+
+user_id
+post_id
+friendship relationship columns
+
+This helps optimize:
+
+joins
+filtering
+aggregation
+friendship lookups
+▶️ How to Run This Project
+Step 1
+
+Open MySQL Workbench or any SQL editor.
+
+Step 2
+
+Run the social_media_analysis.sql file.
+
+Step 3
+
+The script will:
+
+Create the database
+Create all tables
+Insert sample data
+Run all required queries
+Create stored procedure
+Add indexes
+Step 4
+
+View the query outputs and take screenshots for documentation.
+
+📸 Suggested Screenshots for GitHub
+
+You can add screenshots of:
+
+Table creation output
+Sample data output
+Top 3 users query result
+Most influential user result
+Stored procedure output
+Posts with usernames
+Friends of user result
+
+Store them inside the screenshots/ folder.
+
+🏁 Conclusion
+
+The Social Media Data Analysis using SQL project is a practical and realistic SQL case study that demonstrates how relational databases can be used to solve business problems in a social media environment.
 
 
 
