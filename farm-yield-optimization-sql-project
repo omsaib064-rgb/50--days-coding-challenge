@@ -1,0 +1,231 @@
+ ☸️☸️☸️Farm Yield Optimization SQL Project☸️☸️
+
+## Project Overview
+This project focuses on analyzing agricultural data for a fictional company called **Agri-Innovate**. The objective is to help farmers improve crop yield and optimize water usage by using SQL queries on farm management data.
+
+The project uses multiple related tables such as farmers, plots, yields, and irrigation logs to extract meaningful insights about farm productivity, environmental impact, and resource efficiency.
+
+This SQL challenge is designed to strengthen practical SQL skills such as joins, aggregation, grouping, filtering, ranking, common table expressions, and analytical problem solving.
+
+---
+
+🔆🔆🔆 Problem Statement
+As a Data Analyst at **Agri-Innovate**, the goal is to analyze farm operations and identify patterns that can help improve future harvest decisions.
+
+The farmer wants to understand:
+
+- Which plots are the most productive
+- How much water each plot consumes
+- How weather affects crop yield
+- Which soil types produce the highest yields
+- Which farmer manages resources most efficiently
+- Which plots are underperforming despite high water usage
+
+---
+
+ 📌📌📌Objectives
+The main objectives of this project are:
+
+- Analyze plot productivity based on average crop yield
+- Measure irrigation usage across all plots
+- Compare crop performance under different weather conditions
+- Identify top performing plots by soil type
+- Evaluate farmer level water efficiency
+- Track harvest activity over time
+- Detect low efficiency plots for optimization
+
+---
+
+💻💻💻 Database Schema
+This project is based on the following four tables:
+
+🤵🏾🤵🏾🤵🏾 1. farmers
+Contains farmer details.
+
+| Column Name | Data Type | Description |
+|------------|-----------|-------------|
+| farmer_id | INT | Unique farmer ID |
+| first_name | VARCHAR | Farmer first name |
+| last_name | VARCHAR | Farmer last name |
+| email | VARCHAR | Farmer email |
+| hire_date | DATE | Hiring date |
+
+🔆🔆🔆2. plots
+Contains agricultural plot details.
+
+| Column Name | Data Type | Description |
+|------------|-----------|-------------|
+| plot_id | INT | Unique plot ID |
+| plot_name | VARCHAR | Plot name |
+| farmer_id | INT | Farmer managing the plot |
+| crop_type | VARCHAR | Type of crop |
+| soil_type | VARCHAR | Soil type |
+
+☸️☸️3. yields
+Contains harvest and yield records.
+
+| Column Name | Data Type | Description |
+|------------|-----------|-------------|
+| yield_id | INT | Unique yield record ID |
+| plot_id | INT | Plot ID |
+| harvest_date | DATE | Harvest date |
+| yield_kg | DECIMAL | Yield in kilograms |
+| weather_condition | VARCHAR | Weather condition |
+
+📍📍 4. irrigation_logs
+Contains irrigation details.
+
+| Column Name | Data Type | Description |
+|------------|-----------|-------------|
+| log_id | INT | Unique irrigation log ID |
+| plot_id | INT | Plot ID |
+| irrigation_date | DATE | Irrigation date |
+| water_amount_liters | DECIMAL | Water used in liters |
+
+---
+🛠️🛠️🛠️ Tools Used
+The following tools were used in this project:
+
+- **SQL**
+- **MySQL Workbench** / **DB Browser** / **SQL IDE**
+- **GitHub** for project hosting and documentation
+
+---
+🎯🎯🎯 SQL Concepts Used
+This project covers the following SQL concepts:
+
+- SELECT
+- WHERE
+- ORDER BY
+- GROUP BY
+- JOIN
+- Aggregate Functions
+- Subqueries
+- Common Table Expressions (CTEs)
+- Window Functions
+- Ranking Functions
+- Date Functions
+
+---
+
+## Project Tasks and Solutions
+
+### Task 1: Productivity and Performance
+
+#### 1.1 Top 3 Most Productive Plots
+Find the top 3 plots with the highest average yield.
+
+**Output Columns:**
+- plot_name
+- crop_type
+- average_yield_kg
+
+📌📌 1.2 Total Water Consumption by Plot
+Calculate total water usage for each plot and rank them.
+
+**Output Columns:**
+- plot_name
+- total_water_liters
+
+---
+
+🥊🥊 Task 2: Yield and Environmental Analysis
+
+#### 2.1 Average Yield by Crop Type and Weather
+Analyze how weather conditions impact crop production.
+
+**Output Columns:**
+- crop_type
+- weather_condition
+- average_yield_kg
+
+🔆🔆🔆 2.2 Highest Yielding Plot by Soil Type
+Find the top yielding plot in each soil category.
+
+**Output Columns:**
+- soil_type
+- plot_name
+- highest_yield_kg
+
+---
+
+### Task 3: Farmer and Resource Management
+
+🤵🏾🤵🏾3.1 Farmer With Lowest Average Water Consumption
+Identify the most water efficient farmer.
+
+**Output Columns:**
+- first_name
+- last_name
+- average_water_liters_per_plot
+
+🔆🔆 3.2 Harvest Count Per Month
+Track the number of harvests over the last 12 months.
+
+**Output Columns:**
+- month
+- number_of_harvests
+
+---
+
+ 🎯🎯Task 4: Bonus Analysis
+
+#### 4.1 Low Yield but High Water Consumption Plots
+Identify inefficient plots where yield is below average but water usage is above average for the same crop type.
+
+**Output Columns:**
+- plot_name
+- crop_type
+- yield_kg
+- water_amount_liters
+
+---
+
+🗝️🗝️🗝️ Key Insights
+This project helps uncover several important farm management insights:
+
+- Some plots consistently produce higher yields than others
+- Water consumption varies significantly between plots
+- Weather conditions influence crop performance
+- Soil type impacts agricultural productivity
+- Resource efficiency can be measured at both plot and farmer level
+- Some plots may require intervention due to poor efficiency
+
+---
+
+☸️☸️ Business Impact
+The results of this project can help agricultural businesses:
+
+- Improve crop planning for future seasons
+- Optimize irrigation and reduce water waste
+- Increase productivity of underperforming plots
+- Support data driven farming decisions
+- Improve overall farm resource allocation
+
+---
+
+🧠🧠 Files Included
+This repository contains:
+
+- `farm_yield_optimization.sql` → All SQL queries
+- `README.md` → Project documentation
+- `results.txt` → Query outputs and result summaries
+
+---
+🔆🔆🔆 Conclusion
+The **Farm Yield Optimization SQL Project** demonstrates how SQL can be used to solve real world agricultural problems by transforming raw farm data into useful insights.
+
+By analyzing productivity, irrigation, environmental impact, and efficiency, this project provides a strong foundation for smarter farming and better decision making.
+
+This project is a practical example of how data analytics can improve sustainability and operational performance in agriculture.
+
+---
+
+🤵🏾🤵🏾 Author
+**Your Name Here** G Upendrachary
+
+If you like this project, feel free to star the repository and connect with me on GitHub.
+
+🎯🎯🎯LINK🎯🎯🎯
+
+https://drive.google.com/file/d/1779HYciF3q0JqzZNKGib9axMxHs71TuV/view?usp=sharing
