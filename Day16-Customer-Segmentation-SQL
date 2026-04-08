@@ -1,0 +1,329 @@
+# Day 16 SQL Coding Challenge  
+## Customer Segmentation Analysis using SQL
+
+---
+
+## 📌 Project Title
+**Customer Segmentation Analysis using SQL**
+
+---
+
+## 📖 Project Overview
+
+Customer Segmentation is an important concept in data analytics and business intelligence.  
+This project focuses on analyzing customer purchase behavior using SQL.
+
+The dataset contains customer details such as:
+
+- Customer ID
+- Customer Name
+- City
+- Age
+- Total Amount Spent
+- Number of Orders
+
+Using SQL queries, this project helps identify customer groups based on spending behavior and derive useful business insights.
+
+This project is useful for practicing:
+
+- SELECT
+- WHERE
+- ORDER BY
+- GROUP BY
+- SUM()
+- AVG()
+- COUNT()
+- CASE
+- HAVING
+
+---
+
+## 🎯 Project Objective
+
+The main objectives of this project are:
+
+- To analyze customer spending behavior
+- To identify high value, medium value, and low value customers
+- To calculate total revenue and average spending
+- To understand city wise customer contribution
+- To perform customer segmentation using SQL
+- To improve SQL querying and analytical thinking
+
+---
+
+## 🛠 Tools Used
+
+- **SQL**
+- **MySQL / PostgreSQL / SQL Server**
+- **GitHub**
+- **PDF Dataset Reference**
+
+---
+
+## 🗂 Dataset Information
+
+### Table Name:
+`customers`
+
+---
+
+## 🧱 Table Structure
+
+```sql
+CREATE TABLE customers (
+    customer_id INT,
+    customer_name VARCHAR(50),
+    city VARCHAR(50),
+    age INT,
+    total_spent DECIMAL(10,2),
+    number_of_orders INT
+);
+```
+
+---
+
+## 📥 Insert Sample Data
+
+```sql
+INSERT INTO customers VALUES
+(1, 'Amit', 'Bangalore', 25, 12000, 5),
+(2, 'Neha', 'Mumbai', 30, 45000, 12),
+(3, 'Raj', 'Delhi', 22, 8000, 3),
+(4, 'Sneha', 'Bangalore', 28, 60000, 15),
+(5, 'Karan', 'Mumbai', 35, 20000, 7),
+(6, 'Pooja', 'Delhi', 27, 15000, 6),
+(7, 'Arjun', 'Bangalore', 40, 70000, 20),
+(8, 'Meera', 'Mumbai', 23, 5000, 2);
+```
+
+---
+
+# ✅ SQL Questions and Solutions
+
+---
+
+## 🔹 Level 1: Basic Filtering
+
+### 1. Show all customers from Bangalore
+
+```sql
+SELECT * 
+FROM customers
+WHERE city = 'Bangalore';
+```
+
+---
+
+### 2. Display customers with total_spent > 20000
+
+```sql
+SELECT * 
+FROM customers
+WHERE total_spent > 20000;
+```
+
+---
+
+### 3. List customers aged between 25 and 35
+
+```sql
+SELECT * 
+FROM customers
+WHERE age BETWEEN 25 AND 35;
+```
+
+---
+
+## 🔹 Level 2: Sorting & Aggregation
+
+### 4. Show all customers sorted by total_spent (highest first)
+
+```sql
+SELECT * 
+FROM customers
+ORDER BY total_spent DESC;
+```
+
+---
+
+### 5. Find the total revenue generated
+
+```sql
+SELECT SUM(total_spent) AS total_revenue
+FROM customers;
+```
+
+**Expected Output:** `235000`
+
+---
+
+### 6. Find the average spending per customer
+
+```sql
+SELECT AVG(total_spent) AS average_spending
+FROM customers;
+```
+
+**Expected Output:** `29375`
+
+---
+
+## 🔹 Level 3: Grouping
+
+### 7. Find total spending per city
+
+```sql
+SELECT city, SUM(total_spent) AS total_spending
+FROM customers
+GROUP BY city;
+```
+
+#### Expected Output
+
+| City | Total Spending |
+|------|----------------|
+| Bangalore | 142000 |
+| Mumbai | 70000 |
+| Delhi | 23000 |
+
+---
+
+### 8. Count number of customers in each city
+
+```sql
+SELECT city, COUNT(*) AS customer_count
+FROM customers
+GROUP BY city;
+```
+
+#### Expected Output
+
+| City | Customer Count |
+|------|----------------|
+| Bangalore | 3 |
+| Mumbai | 3 |
+| Delhi | 2 |
+
+---
+
+## 🔹 Level 4: Customer Segmentation (Core Task)
+
+### 9. Count how many customers fall into each segment
+
+### Segmentation Logic:
+- **High Value** → `total_spent >= 50000`
+- **Medium Value** → `total_spent BETWEEN 20000 AND 49999`
+- **Low Value** → `total_spent < 20000`
+
+```sql
+SELECT 
+    CASE
+        WHEN total_spent >= 50000 THEN 'High Value'
+        WHEN total_spent BETWEEN 20000 AND 49999 THEN 'Medium Value'
+        ELSE 'Low Value'
+    END AS customer_segment,
+    COUNT(*) AS total_customers
+FROM customers
+GROUP BY 
+    CASE
+        WHEN total_spent >= 50000 THEN 'High Value'
+        WHEN total_spent BETWEEN 20000 AND 49999 THEN 'Medium Value'
+        ELSE 'Low Value'
+    END;
+```
+
+#### Expected Output
+
+| Customer Segment | Total Customers |
+|------------------|-----------------|
+| High Value | 2 |
+| Medium Value | 2 |
+| Low Value | 4 |
+
+---
+
+## 🔹 Level 5: Advanced Basic (HAVING)
+
+### 10. Show cities where total spending is greater than 50000
+
+```sql
+SELECT city, SUM(total_spent) AS total_spending
+FROM customers
+GROUP BY city
+HAVING SUM(total_spent) > 50000;
+```
+
+#### Expected Output
+
+| City | Total Spending |
+|------|----------------|
+| Bangalore | 142000 |
+| Mumbai | 70000 |
+
+---
+
+## 📊 Key Insights
+
+- **Bangalore** generated the highest total spending
+- **High Value customers** are fewer in number but contribute significantly to revenue
+- **Low Value customers** are more in count
+- Customer segmentation helps businesses create better:
+  - Marketing campaigns
+  - Loyalty programs
+  - Customer retention strategies
+  - Personalized offers
+
+---
+
+## 📌 Business Use Case
+
+This project helps answer questions like:
+
+- Which customers spend the most?
+- Which city contributes the highest revenue?
+- How can customers be grouped for promotions?
+- Which customer segment should receive special offers?
+
+This type of analysis is widely used in:
+
+- E commerce
+- Retail
+- CRM Analytics
+- Marketing Analytics
+- Business Intelligence
+
+---
+
+## 🏁 Conclusion
+
+This project demonstrates how SQL can be used to analyze customer behavior and perform customer segmentation.
+
+By applying SQL clauses such as `WHERE`, `GROUP BY`, `ORDER BY`, `CASE`, and `HAVING`, raw customer data can be transformed into meaningful business insights.
+
+This project is a great beginner friendly SQL portfolio project and helps strengthen analytical SQL skills.
+
+---
+
+## 📁 Suggested Folder Structure
+
+```bash
+Day16_Customer_Segmentation_SQL/
+│
+├── README.md
+├── customer_segmentation.sql
+└── Day16_Coding Challenge.pdf
+```
+
+---
+
+## 🚀 GitHub Repository Name
+
+```bash
+Day16-Customer-Segmentation-SQL
+```
+
+---
+
+## ⭐ Support
+
+If you like this project, feel free to **Star ⭐** the repository and explore more SQL practice projects.
