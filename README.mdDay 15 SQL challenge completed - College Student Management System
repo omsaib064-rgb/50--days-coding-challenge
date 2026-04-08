@@ -1,0 +1,225 @@
+# 🎓 College Student Management System using SQL
+
+## 📌 Project Overview
+
+This project is a beginner friendly SQL based analysis of a **College Student Management System**.
+It demonstrates how a Data Analyst can work with structured data involving:
+
+* 👨‍🎓 Students
+* 📚 Courses
+* 📝 Marks
+
+The project is divided into **four progressive levels** to build strong SQL fundamentals:
+
+* Level 1: Basic Queries
+* Level 2: Filtering Data
+* Level 3: Sorting Records
+* Level 4: Aggregate Analysis
+
+---
+
+## 🎯 Objective
+
+The main objectives of this project are:
+
+* Understand relational database structure
+* Practice writing SQL queries from basic to intermediate level
+* Perform data filtering and sorting
+* Apply aggregate functions for insights
+* Build a strong foundation for Data Analytics
+
+---
+
+## 🛠️ Tools & Technologies
+
+* 💾 SQL / MySQL
+* 🧰 MySQL Workbench / VS Code
+* 🌐 GitHub
+* 📝 Markdown
+
+---
+
+## 🗂️ Database Schema
+
+### 👨‍🎓 Students Table
+
+| Column       | Description       |
+| ------------ | ----------------- |
+| student_id   | Unique student ID |
+| student_name | Name of student   |
+| gender       | Gender            |
+| city         | City              |
+| join_year    | Year of joining   |
+
+---
+
+### 📚 Courses Table
+
+| Column      | Description      |
+| ----------- | ---------------- |
+| course_id   | Unique course ID |
+| course_name | Course name      |
+| department  | Department       |
+
+---
+
+### 📝 Marks Table
+
+| Column     | Description       |
+| ---------- | ----------------- |
+| mark_id    | Unique mark ID    |
+| student_id | Student reference |
+| course_id  | Course reference  |
+| marks      | Marks obtained    |
+
+---
+
+## 💡 SQL Concepts Covered
+
+This project covers essential SQL concepts:
+
+* CREATE DATABASE
+* CREATE TABLE
+* INSERT INTO
+* SELECT
+* WHERE
+* BETWEEN
+* ORDER BY
+* COUNT()
+* AVG()
+* MAX()
+* MIN()
+* SUM()
+* PRIMARY KEY
+* FOREIGN KEY
+
+---
+
+## 📊 SQL Query Levels
+
+### 🔹 Level 1: Basic Queries
+
+* Display all students
+* Select specific columns
+* View all courses
+* Filter by city
+* Filter by join year
+
+### 🔹 Level 2: Filtering
+
+* Filter by gender
+* Marks greater than a value
+* Department based filtering
+* Exclude specific city
+* Range filtering using BETWEEN
+
+### 🔹 Level 3: Sorting
+
+* Sort student names
+* Sort marks descending
+* Sort by join year
+
+### 🔹 Level 4: Aggregate Analysis
+
+* Total number of students
+* Average marks
+* Highest marks
+* Lowest marks
+* Total marks
+
+---
+
+## 📈 Key Insights
+
+* 👥 Total Students: **5**
+* 📊 Average Marks: **80.29**
+* 🥇 Highest Marks: **90**
+* 📉 Lowest Marks: **67**
+* ➕ Total Marks: **562**
+
+---
+
+## 📸 Project Screenshots
+
+### Students Table Output
+
+![Students Table](screenshots/query1_students_table.png)
+
+### Courses Table Output
+
+![Courses Table](screenshots/query2_courses_table.png)
+
+### Marks Table Output
+
+![Marks Table](screenshots/query3_marks_table.png)
+
+### Filtering Query Output
+
+![Filtering Output](screenshots/query4_filtering_output.png)
+
+### Sorting Query Output
+
+![Sorting Output](screenshots/query5_sorting_output.png)
+
+### Aggregate Functions Output
+
+![Aggregate Output](screenshots/query6_aggregate_output.png)
+
+---
+
+## 🚀 Learning Outcome
+
+After completing this project, I gained:
+
+* Strong understanding of SQL basics
+* Hands on experience with real world dataset
+* Ability to filter and analyze data
+* Confidence in writing SQL queries independently
+
+---
+
+## 🧠 Conclusion
+
+This project demonstrates how SQL can be used to manage and analyze academic data efficiently.
+It strengthens core concepts required for any **Data Analyst role** and serves as a solid foundation for advanced topics like:
+
+* Joins
+* Group By
+* Subqueries
+* Data Visualization
+
+---
+
+## 📁 Project Structure
+
+```text
+Day15_College_Student_Management_SQL
+│
+├── README.md
+├── college_student_management.sql
+├── problem_statement.pdf
+└── screenshots
+    ├── query1_students_table.png
+    ├── query2_courses_table.png
+    ├── query3_marks_table.png
+    ├── query4_filtering_output.png
+    ├── query5_sorting_output.png
+    └── query6_aggregate_output.png
+```
+
+---
+
+## 👤 Author
+
+**G Upendrachary**
+
+---
+
+## ⭐ Acknowledgment
+
+This project is part of a **SQL Coding Challenge Series** designed to improve practical data analytics skills.
+
+
+🔗🔗🔗LINK🔗🔗🔗
+
+https://drive.google.com/file/d/1uBkStvVwj6Qi9weCWayLU5Efov5Xx6Fu/view?usp=sharing
