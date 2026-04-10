@@ -1,0 +1,134 @@
+ 💻💻🏥 Medical Insurance Cost Analysis (SQL Project)
+
+📌📌📌 📌 Project Overview
+
+This project focuses on analyzing a medical insurance dataset using SQL. The goal is to uncover patterns, cost drivers, and meaningful insights related to insurance charges based on factors such as age, BMI, smoking habits, region, and number of children.
+
+---
+
+🎯🎯 🎯 Objective
+
+* Analyze insurance cost distribution
+* Compare smokers vs non smokers expenses
+* Identify high risk groups based on BMI and age
+* Evaluate regional differences in insurance pricing
+* Generate actionable insights using SQL queries
+
+---
+
+📂📂 🗂️ Dataset Description
+
+The dataset contains the following fields:
+
+| Column Name    | Description               |
+| -------------- | ------------------------- |
+| policy_id      | Unique policy identifier  |
+| age            | Age of the policyholder   |
+| gender         | Male or Female            |
+| bmi            | Body Mass Index           |
+| children       | Number of dependents      |
+| smoker         | Yes or No                 |
+| region         | Geographic region         |
+| insurance_cost | Medical insurance charges |
+
+---
+
+🛠️🛠️🛠️ 🛠️ Tools & Technologies Used
+
+* MySQL
+* SQL (Structured Query Language)
+* GitHub for version control
+
+---
+
+📊📊 📊 SQL Concepts Applied
+
+* SELECT statements
+* WHERE filtering
+* GROUP BY aggregation
+* ORDER BY sorting
+* CASE statements
+* Aggregate functions (COUNT, AVG, MAX)
+
+---
+
+ 🏓🏓🔍 Key Analysis Performed
+
+☸️☸️ 1. Total Records Count
+
+Identified total number of policyholders.
+
+☸️☸️ 2. High Risk Smokers
+
+Filtered smokers above age 40.
+
+ 🔆🔆3. Gender Distribution
+
+Counted male vs female policyholders.
+
+📌📌 4. Cost Comparison
+
+Compared average insurance cost between smokers and non smokers.
+
+ 🎯🎯5. Regional Analysis
+
+Identified region with highest average insurance cost.
+
+🔆🔆 6. Top Policyholders
+
+Extracted top 5 highest insurance payers.
+
+☸️☸️ 7. Age Group Segmentation
+
+Classified into:
+
+* Young (18 to 30)
+* Middle aged (31 to 50)
+* Senior (51+)
+
+🧠8. BMI Risk Analysis
+
+Compared insurance cost for BMI greater than 30.
+
+📊📊 9. Insight Generation
+
+* Avg cost by children
+* Avg cost by gender
+* Avg cost by region
+
+ 📈📈10. Cost Difference by Region
+
+Calculated difference between smokers and non smokers across regions.
+
+---
+
+## 📈 Key Insights
+
+* Smokers pay significantly higher insurance costs 🚬
+* High BMI individuals also have increased premiums ⚠️
+* Age plays a major role in insurance pricing 📊
+* Certain regions show higher healthcare costs 🌍
+* Families with more children may have varying insurance expenses
+
+---
+ 🔆🔆🔆💡 Conclusion
+
+This analysis demonstrates how SQL can be effectively used to extract insights from healthcare datasets. The project highlights important factors influencing insurance costs and provides a foundation for further data analysis or dashboard development.
+
+---
+
+ 🛩️🛩️🚀 Future Improvements
+
+* Build Power BI or Tableau dashboard
+* Add predictive modeling using Python
+* Expand dataset for deeper insights
+* Perform statistical correlation analysis
+
+---
+
+🦸🏾‍♂️🦸🏾‍♂️ 📎 Author
+
+G Upendrachary
+Aspiring Data Analyst
+
+---
