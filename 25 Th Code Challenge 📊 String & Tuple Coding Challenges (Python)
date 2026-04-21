@@ -1,0 +1,111 @@
+#☸️☸️☸️☸️25 Th Code Challenge 📊 String & Tuple Coding Challenges (Python)☸️☸️☸️☸️
+
+## 📌 Project Overview
+
+This project demonstrates fundamental Python operations on **strings and tuples**, focusing on real world data cleaning and transformation tasks. It is ideal for beginners and aspiring data analysts to strengthen core programming skills.
+
+---
+
+## 🎯 Objectives
+
+* Practice string manipulation techniques
+* Understand tuple operations
+* Learn data cleaning methods
+* Apply Python built in functions efficiently
+* Improve problem solving for interviews
+
+---
+
+## 🛠️ Tools & Technologies
+
+* Python 3
+* Jupyter Notebook or VS Code
+
+---
+
+## 📂 Problem Statements & Solutions
+
+### 🔹 Challenge 1: Student Name Formatting
+
+Convert all names into proper case.
+
+```python
+students = ("sunitha", "RAVI", "aNu")
+formatted = tuple(name.capitalize() for name in students)
+print(formatted)
+```
+
+✅ Output:
+('Sunitha', 'Ravi', 'Anu')
+
+---
+
+### 🔹 Challenge 2: Count Total & Unique Subjects
+
+```python
+subjects = ("Math", "Science", "English", "Math", "Science")
+
+total = len(subjects)
+unique = len(set(subjects))
+
+print("Total:", total)
+print("Unique:", unique)
+```
+
+---
+
+### 🔹 Challenge 3: Remove Extra Spaces
+
+```python
+feedback = (" good course ", " excellent ", "average ")
+cleaned = tuple(f.strip() for f in feedback)
+print(cleaned)
+```
+
+---
+
+### 🔹 Challenge 4: Combine Name & Course
+
+```python
+names = ("Anu", "Ravi", "John")
+courses = ("Python", "SQL", "Power BI")
+
+combined = tuple(n + "-" + c for n, c in zip(names, courses))
+print(combined)
+```
+
+---
+
+### 🔹 Challenge 5: Extract Email Domains
+
+```python
+emails = ("anu@gmail.com", "ravi@yahoo.com", "john@edu.com")
+domains = tuple(email.split("@")[1] for email in emails)
+print(domains)
+```
+
+---
+
+## 📊 Key Learnings
+
+* Efficient use of `.capitalize()`, `.strip()`, `.split()`
+* Using `set()` for unique values
+* Applying `zip()` for combining data
+* Writing clean and optimized Python code
+
+---
+
+## 🚀 Conclusion
+
+This project provides a strong foundation in Python string and tuple handling, which are essential for **data analysis, preprocessing, and interview preparation**.
+
+---
+
+## 📁 Source
+
+Based on coding challenge exercises 
+
+
+☸️☸️☸️LINK☸️☸️☸️
+https://drive.google.com/file/d/14l7pLuPaGNBdCNAsyKzXwNko8SGHZOI0/view?usp=sharing
+
