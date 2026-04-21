@@ -1,0 +1,156 @@
+📊📊 📊 Insurance Claims Analysis using SQL
+
+📌📌 📌 Project Overview
+
+This project focuses on analyzing an insurance claims dataset using SQL. The main objective is to practice and demonstrate subquery concepts including scalar subqueries and correlated subqueries in a real world scenario.
+
+The dataset contains details about policy holders, claim types, claim amounts, dates, and approval status.
+
+---
+
+ 🎯🎯🎯 Objectives
+
+* Analyze claim data using SQL queries
+* Understand and apply subqueries
+* Perform filtering based on business conditions
+* Compare individual records with aggregated values
+* Prepare queries suitable for interview scenarios
+
+---
+
+🛠️🛠️🛠️ Tools Used
+
+* SQL
+* MySQL or PostgreSQL
+* Any SQL editor like DBeaver or SSMS
+
+---
+
+## 🗂️ Dataset Description
+
+Table Name: `claims`
+
+| Column Name   | Description                       |
+| ------------- | --------------------------------- |
+| claim_id      | Unique claim identifier           |
+| policy_holder | Name of the policy holder         |
+| policy_type   | Type of insurance                 |
+| claim_amount  | Amount claimed                    |
+| claim_date    | Date of claim                     |
+| status        | Claim status Approved or Rejected |
+
+---
+
+ 📥 Table Creation
+
+```sql
+CREATE TABLE claims (
+claim_id INT,
+policy_holder VARCHAR(50),
+policy_type VARCHAR(50),
+claim_amount INT,
+claim_date DATE,
+status VARCHAR(20)
+);
+```
+
+---
+
+ 📈📈📥 Data Insertion
+
+```sql
+INSERT INTO claims VALUES
+(1, 'Ravi', 'Health', 50000, '2024 01 10', 'Approved'),
+(2, 'Anita', 'Vehicle', 20000, '2024 01 12', 'Rejected'),
+(3, 'Ravi', 'Health', 30000, '2024 01 20', 'Approved'),
+(4, 'Suresh', 'Life', 100000, '2024 01 25', 'Approved'),
+(5, 'Anita', 'Vehicle', 15000, '2024 02 01', 'Approved'),
+(6, 'Kiran', 'Health', 40000, '2024 02 10', 'Rejected'),
+(7, 'Ravi', 'Health', 70000, '2024 02 15', 'Approved'),
+(8, 'Suresh', 'Life', 50000, '2024 02 20', 'Rejected');
+```
+
+---
+
+📊📊 📊 SQL Analysis Tasks
+🔆🔆
+ ✅ Task 1
+
+Find claims where claim amount is greater than average claim amount
+
+```sql
+SELECT *
+FROM claims
+WHERE claim_amount > (
+    SELECT AVG(claim_amount)
+    FROM claims
+);
+```
+
+---
+
+☸️☸️☸️ ✅ Task 2
+
+Find policy holders who have at least one approved claim
+
+```sql
+SELECT DISTINCT policy_holder
+FROM claims
+WHERE status = 'Approved';
+```
+
+---
+
+### ✅ Task 3
+
+Find claims where claim amount is greater than that policy holder average claim
+
+```sql
+SELECT *
+FROM claims c1
+WHERE claim_amount > (
+    SELECT AVG(claim_amount)
+    FROM claims c2
+    WHERE c1.policy_holder = c2.policy_holder
+);
+```
+
+---
+
+### ✅ Task 4
+
+Display each claim along with overall average claim amount
+
+```sql
+SELECT *,
+       (SELECT AVG(claim_amount) FROM claims) AS overall_avg
+FROM claims;
+```
+
+---
+
+## 🚀 Key Learnings
+
+* Subqueries can be used inside WHERE clause
+* Correlated subqueries execute row by row
+* Aggregation functions help in comparison analysis
+* SQL can solve real world business problems
+
+---
+
+## 📌 Conclusion
+
+This project demonstrates how SQL subqueries can be effectively used to analyze insurance claim data. It strengthens core SQL skills required for data analyst roles and helps in interview preparation.
+
+---
+
+## ⭐ Future Improvements
+
+* Create dashboards using Power BI
+* Add more datasets for advanced analysis
+* Optimize queries using joins
+
+---
+🔆🔆🔆LINK☸️☸️☸️
+
+https://drive.google.com/file/d/1vJuo0eOybGrhUWjLby8B5FjV9TgfGVqh/view?usp=sharing
