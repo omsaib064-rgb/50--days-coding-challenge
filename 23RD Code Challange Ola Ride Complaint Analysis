@@ -1,0 +1,50 @@
+#23rd Code Challange Ola Ride Complaint Analysis
+
+## 📌 Overview
+
+This project analyzes ride complaint data using only string operations in Python.
+
+## 🎯 Objectives
+
+* Clean raw string data
+* Count total complaints
+* Identify frequent issues
+* Analyze complaints by city
+* Standardize issue names
+
+## 🛠️ Tools Used
+
+* Python
+* String Functions
+
+## 📂 Dataset
+
+Data is provided as a single string containing:
+Ride ID, Driver Name, Issue, City
+
+## ⚙️ Process
+
+* Converted data to lowercase
+* Split records using comma
+* Counted occurrences of issues
+* Extracted driver names
+* Replaced inconsistent issue names
+
+## 📈 Results
+
+* Total Complaints: 3
+* Late Arrival Issues: 2
+* Bangalore Complaints: 2
+
+## 🧠 Learning
+
+* Data cleaning fundamentals
+* String manipulation
+* Handling unstructured data
+
+## 🔚 Conclusion
+
+This project demonstrates how basic string operations can be used to extract insights from raw data.
+☸️☸️☸️LINK🔆🔆🔆
+https://drive.google.com/file/d/1qgXRAdqHyAoNb71cP3MQiKROQdjcNEo5/view?usp=sharing
+
