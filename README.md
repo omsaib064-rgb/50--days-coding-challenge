@@ -1,0 +1,139 @@
+# 🧾 Sales Data Analysis Using Python
+
+## 📌 Project Overview
+
+This project demonstrates basic Python programming concepts using a real world e commerce sales scenario. The goal is to process a single order and perform calculations such as total price discount and GST using variables and data types.
+
+---
+
+## 🎯 Objectives
+
+* Store and manage data using Python variables
+* Understand different data types
+* Perform arithmetic calculations
+* Apply discount and tax logic
+* Format output in a professional way
+
+---
+
+## 🛠️ Tools Used
+
+* Python
+* Jupyter Notebook or any Python IDE
+
+---
+
+## 📂 Dataset Description
+
+This project uses manually defined data:
+
+| Variable      | Description          | Example  |
+| ------------- | -------------------- | -------- |
+| order_id      | Order identifier     | ORD12345 |
+| customer_name | Customer name        | Rahul    |
+| product_price | Price of one product | 799.99   |
+| quantity      | Number of items      | 3        |
+| discount      | Discount percentage  | 0.10     |
+| is_member     | Membership status    | True     |
+
+---
+
+## 🧠 Concepts Covered
+
+* Variables
+* Data types (string float integer boolean)
+* Arithmetic operations
+* Conditional expressions
+* Output formatting
+
+---
+
+## 💻 Python Implementation
+
+```python
+order_id = "ORD12345"
+customer_name = "Rahul"
+product_price = 799.99
+quantity = 3
+discount = 0.10
+is_member = True
+
+# Total price
+total_price = product_price * quantity
+
+# Discount calculation
+discount_amount = total_price * discount
+price_after_discount = total_price - discount_amount
+
+# GST calculation
+gst = price_after_discount * 0.18
+final_amount = price_after_discount + gst
+
+# Output
+print("----- Final Bill -----")
+print("Order ID:", order_id)
+print("Customer:", customer_name)
+print("Total Price:", round(total_price, 2))
+print("Discount Applied:", "Yes" if discount > 0 else "No")
+print("Final Amount including GST:", round(final_amount, 2))
+```
+
+---
+
+## 📊 Sample Output
+
+```
+----- Final Bill -----
+Order ID: ORD12345
+Customer: Rahul
+Total Price: 2399.97
+Discount Applied: Yes
+Final Amount including GST: 2548.77
+```
+
+---
+
+## 📈 Key Learnings
+
+* How to structure a simple data analysis problem
+* Importance of data types in Python
+* Real world application of calculations like discount and GST
+* Writing clean and readable code
+
+---
+
+## 🚀 Conclusion
+
+This project is ideal for beginners starting their journey in data analytics and Python. It builds a strong foundation for more advanced topics like data analysis using pandas and visualization tools.
+
+---
+
+# 🎤 Interview Explanation Script
+
+## 🗣️ Introduction
+
+In this project I worked on a simple sales data analysis scenario using Python. The objective was to process order level data and calculate the final bill amount after applying discount and GST.
+
+## 🧩 Approach
+
+First I defined variables such as order id customer name product price quantity discount and membership status. Then I calculated the total price by multiplying price and quantity.
+
+Next I applied a discount of 10 percent to get the discounted price. After that I calculated GST at 18 percent and added it to get the final bill amount.
+
+## 🔍 Key Points
+
+* Used basic Python variables and data types
+* Performed arithmetic calculations
+* Applied business logic like discount and tax
+* Displayed output in a clean format
+
+## 💡 Outcome
+
+The final output shows the complete bill including total price discount status and final amount. This project helped me understand how Python can be used for real world business calculations.
+
+## ✅ Conclusion
+
+This project demonstrates my understanding of Python fundamentals and problem solving skills which are essential for a data analyst role.
+☸️☸️☸️LINK☸️☸️☸️
+
+https://drive.google.com/file/d/1M0KGZo5qAL1nMRLGKbT01CdrN3zUqQbJ/view?usp=sharing
