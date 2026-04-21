@@ -1,0 +1,72 @@
+#☸️☸️☸️☸️24Th Code Challenge  🚖 Ride Booking Analysis☸️☸️☸️
+
+##📌📌 📌 Project Overview
+
+This project analyzes ride booking data for a company similar to Ola or Uber. The dataset consists of ride records stored as tuples containing ride details such as driver name, city, fare, and rating.
+
+##🎯🎯 🎯 Objectives🎯🎯
+
+* Count total number of rides
+* Filter rides based on city
+* Calculate total revenue from a specific city
+* Identify the highest rated driver
+* Compute average ratings for each city
+
+##🔆🔆 🧰 Tools Used☸️☸️☸️
+
+* Python
+* Core Data Structures (Tuples, Lists, Dictionaries)
+
+##📂📂 📂 Dataset Structure
+
+Each ride record is stored as:
+
+```
+(ride_id, driver_name, city, fare, rating)
+```
+
+##🔐🔐 🔍 Key Analysis
+
+### 1. Total Rides
+
+Calculated using length of dataset.
+
+### 2. Bangalore Rides
+
+Filtered using list comprehension.
+
+### 3. Revenue Calculation
+
+Used sum function on fare values.
+
+### 4. Highest Rated Driver
+
+Used max function with lambda.
+
+### 5. Average Rating per City
+
+Grouped ratings using dictionary and computed averages.
+
+##📊📊 📊 Results
+
+```
+{
+ "Bangalore": 4.4,
+ "Hyderabad": 4.2,
+ "Chennai": 4.0
+}
+```
+
+##🔆🔆 ✅ Conclusion
+
+This project demonstrates basic data analysis techniques using Python such as filtering, aggregation, and grouping. It is a beginner friendly project suitable for data analyst freshers.
+
+## 🚀 Future Improvements
+
+* Use Pandas for large datasets
+* Add visualization using Matplotlib or Power BI
+* Integrate real time ride data
+
+🔆🔆🔆LINK🔆🔆🔆
+
+https://drive.google.com/file/d/1iHxJi1CY1jOF3lIp1iLCzNb5ypCHDd9Q/view?usp=sharing
