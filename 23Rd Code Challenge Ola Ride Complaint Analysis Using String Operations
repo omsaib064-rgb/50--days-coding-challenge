@@ -1,0 +1,91 @@
+# Ola Ride Complaint Analysis Using String Operations
+
+## 📌 Project Overview
+
+This project focuses on analyzing ride complaint data received in an unstructured string format. The goal is to clean, process, and extract meaningful insights using only basic string operations in Python without using any external libraries.
+
+---
+
+## 🎯 Objectives
+
+* Convert raw data into a consistent format
+* Count total number of complaints
+* Identify frequent issues such as late arrival
+* Analyze complaints by city
+* Extract specific details like driver name
+* Standardize inconsistent issue names
+
+---
+
+## 🛠️ Tools and Technologies
+
+* Python
+* String Functions
+
+  * lower
+  * split
+  * count
+  * replace
+
+---
+
+## 📂 Dataset Description
+
+The dataset is provided as a single string containing ride complaint records.
+
+Each record includes:
+
+* Ride ID
+* Driver Name
+* Issue Type
+* City
+
+Example format:
+Ride101 Ramesh Late Arrival Bangalore
+
+---
+
+## ⚙️ Approach
+
+1. Converted entire dataset to lowercase for consistency
+2. Split the string into individual records using comma
+3. Counted total complaints using list length
+4. Identified issue frequency using count function
+5. Extracted driver name using string split
+6. Standardized issue names using replace function
+
+---
+
+## 📈 Key Insights
+
+* Total complaints identified: 3
+* Late arrival is the most frequent issue
+* Bangalore has the highest number of complaints
+* Data inconsistencies were found in issue naming
+
+---
+
+## 🧠 Learning Outcomes
+
+* Strong understanding of string manipulation
+* Data cleaning without external libraries
+* Handling unstructured datasets
+* Building logic for data extraction
+
+---
+
+## 🔚 Conclusion
+
+This project demonstrates how basic string operations can be used to clean and analyze raw data effectively. It provides a strong foundation for advanced data analysis using tools like Pandas, SQL, and Power BI.
+
+---
+
+## 🚀 Future Enhancements
+
+* Convert solution using Pandas
+* Perform SQL based analysis
+* Build interactive dashboard using Power BI
+
+🔆🔆🔆🔆LINK☸️☸️☸️
+
+https://drive.google.com/file/d/1qgXRAdqHyAoNb71cP3MQiKROQdjcNEo5/view?usp=sharing
