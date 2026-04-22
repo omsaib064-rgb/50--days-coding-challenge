@@ -1,0 +1,131 @@
+☸️☸️☸️27 Th Code Challenge 🚗 Ride Booking Data Analysis using Python Tuples☸️☸️☸️
+
+##📌📌 📌 Project Overview
+
+This project simulates a real world ride booking dataset similar to services like Uber or Ola. The goal is to perform basic data analysis using Python tuples.
+
+It demonstrates core data analytics skills such as filtering, aggregation, and extracting insights from structured data.
+
+---
+
+## 📂📂📂 Dataset
+
+Each trip is stored as a tuple in the format:
+
+(Trip_ID, City, Distance_km, Fare_amount)
+
+###🎇🎇🎇 Sample Data
+
+```python
+trips = (
+    (101, "Bangalore", 12.5, 250),
+    (102, "Hyderabad", 8.0, 180),
+    (103, "Bangalore", 15.2, 300),
+    (104, "Chennai", 5.5, 120),
+    (105, "Bangalore", 7.8, 200)
+)
+```
+
+---
+
+##🎯🎯 🎯 Objectives
+
+1. Find total number of trips
+2. Count trips from Bangalore
+3. Calculate total revenue
+4. Identify trips with distance greater than 10 km
+5. Find the trip with highest fare
+6. Calculate average fare for Bangalore trips
+
+---
+
+##🧠🧠 🧠 Solution
+
+```python
+trips = (
+    (101, "Bangalore", 12.5, 250),
+    (102, "Hyderabad", 8.0, 180),
+    (103, "Bangalore", 15.2, 300),
+    (104, "Chennai", 5.5, 120),
+    (105, "Bangalore", 7.8, 200)
+)
+
+#🔆🔆 Total trips
+total_trips = len(trips)
+
+# Trips from Bangalore
+bangalore_trips = sum(1 for t in trips if t[1] == "Bangalore")
+
+# Total revenue
+total_revenue = sum(t[3] for t in trips)
+
+# High distance trips
+high_distance = [t for t in trips if t[2] > 10]
+
+# Highest fare trip
+highest_fare = max(trips, key=lambda t: t[3])
+
+# Average fare for Bangalore
+bangalore_fares = [t[3] for t in trips if t[1] == "Bangalore"]
+avg_fare = sum(bangalore_fares) / len(bangalore_fares)
+
+# Output
+print("Total Trips:", total_trips)
+print("Bangalore Trips:", bangalore_trips)
+print("Total Revenue:", total_revenue)
+print("High Distance Trips:", high_distance)
+print("Highest Fare Trip:", highest_fare)
+print("Average Fare Bangalore:", avg_fare)
+```
+
+---
+
+## 📊 Output
+
+```
+Total Trips: 5
+Bangalore Trips: 3
+Total Revenue: 1050
+High Distance Trips: [(101, 'Bangalore', 12.5, 250), (103, 'Bangalore', 15.2, 300)]
+Highest Fare Trip: (103, 'Bangalore', 15.2, 300)
+Average Fare Bangalore: 250.0
+```
+
+---
+
+## 🚀 Skills Demonstrated
+
+Python basics
+Tuple data structure
+Data filtering
+Aggregation techniques
+Problem solving
+
+---
+
+## 📈 Real World Use Case
+
+This type of analysis is commonly used in:
+
+Ride booking platforms
+Business revenue tracking
+City wise performance analysis
+Customer behavior insights
+
+---
+
+## 🔥 Future Improvements
+
+Use Pandas for large datasets
+Visualize data using Matplotlib or Power BI
+Add more features like driver ratings and time analysis
+
+---
+
+## 🙌 Conclusion
+
+This project is a beginner friendly introduction to data analysis using Python. It builds a strong foundation for real world analytics and interview preparation.
+
+🎇🎇🎇🎇LINK🔆🔆🔆🔆
+
+https://drive.google.com/file/d/1q9xrgf207AxfEamiE7z5kSC3Oh8Vot5U/view?usp=sharing
