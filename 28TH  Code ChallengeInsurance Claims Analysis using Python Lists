@@ -1,0 +1,91 @@
+# Insurance Claims Analysis using Python Lists
+
+## 📊 Project Overview
+
+This project focuses on analyzing insurance claim data using basic Python concepts such as lists, loops, and conditional statements. It is designed for beginners in data analytics to practice real world problem solving.
+
+---
+
+## 📁 Dataset
+
+The dataset is stored in Python lists:
+
+```python
+policy_ids = [101, 102, 103, 104, 105, 106]
+claim_amounts = [5000, 15000, 7000, 20000, 3000, 12000]
+claim_status = ["Approved", "Rejected", "Approved", "Approved", "Rejected", "Approved"]
+customer_age = [25, 45, 35, 50, 23, 40]
+```
+
+---
+
+## ✅ Tasks Performed
+
+### 1. Total Approved Claim Amount
+
+Calculated total claim amount where status is Approved.
+
+**Output:** 44000
+
+---
+
+### 2. Count Rejected Claims
+
+Counted number of rejected claims.
+
+**Output:** 2
+
+---
+
+### 3. High Value Claims
+
+Identified policy IDs where claim amount is greater than 10000.
+
+**Output:** [102, 104, 106]
+
+---
+
+### 4. Average Age of Approved Customers
+
+Calculated average age of customers with approved claims.
+
+**Output:** 37.5
+
+---
+
+### 5. Risk Category Tagging
+
+Assigned risk levels based on age:
+
+* Age less than 30 → Low Risk
+* Age between 30 and 45 → Medium Risk
+* Age greater than 45 → High Risk
+
+**Output:**
+['Low Risk', 'Medium Risk', 'Medium Risk', 'High Risk', 'Low Risk', 'Medium Risk']
+
+---
+
+## 🛠️ Skills Used
+
+* Python Basics
+* Lists
+* Loops
+* Conditional Statements
+* Data Analysis Thinking
+
+---
+
+## 🚀 Conclusion
+
+This project demonstrates how raw data can be analyzed using simple Python logic. It is useful for beginners preparing for data analytics interviews and coding tests.
+
+---
+
+## 📌 Author
+
+Your Name G Upendrachary
+
+🎇🎇🎇LINK🎇🎇🎇🎇
+
+https://drive.google.com/file/d/1CqwBMrxMkbwmF2EFnWaB3-f2ZgA17FSM/view?usp=sharing
