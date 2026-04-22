@@ -1,0 +1,84 @@
+#☸️☸️☸️ 🧑‍💻26 Th  Coding Challenge Set: Strings & Tuples  ☸️☸️☸️
+
+## Find Longest Student Name
+
+### 📌📌📌📌 Problem Statement
+
+Given a tuple of student names, find the **longest name** from the list.
+
+---
+
+##🧠🧠# 📥 Input
+
+```python
+students = ("Anu", "Ravikumar", "Jo")
+```
+
+---
+
+###🔆🔆🔆 ⚙️ Solution
+
+```python
+longest_name = max(students, key=len)
+print("Longest name:", longest_name)
+```
+
+---
+
+### 📍📍💡 Output
+
+```
+Longest name: Ravikumar
+```
+
+---
+
+### 🧠 Explanation
+
+* The `max()` function is used to find the largest element
+* `key=len` ensures comparison is based on **string length**
+* This returns the name with the **maximum number of characters**
+
+---
+
+### 🔁 Alternative Approach
+
+```python
+longest = ""
+
+for name in students:
+    if len(name) > len(longest):
+        longest = name
+
+print("Longest name:", longest)
+```
+
+---
+
+### 🚀 Key Concepts
+
+* Tuples in Python
+* String length using `len()`
+* Built-in functions (`max`)
+* Loop and condition logic
+
+---
+
+### 📂 Use Case
+
+This logic is useful in:
+
+* Data analysis
+* Name validation systems
+* Ranking based on text length
+
+---
+
+### ⭐ Author
+
+Your Name; G Upendrachary
+
+---
+🔆🔆🔆LINK🔆🔆🔆..
+
+https://drive.google.com/file/d/1CPV7eo04jHp9vbckb8oqL0-PLhNYyY3o/view?usp=sharing
