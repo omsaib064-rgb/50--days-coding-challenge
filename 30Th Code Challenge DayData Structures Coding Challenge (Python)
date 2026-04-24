@@ -1,0 +1,78 @@
+#🧠🧠🧠30 Th Code Challange day  Data Structures Coding Challenge (Python)🧠🧠🧠
+
+This repository contains solutions for common Data Structures problems using Python. These problems are useful for interviews and coding practice.
+
+---
+
+ 📌📌📌 Problems Covere
+☸️☸️☸️1. String Problem
+
+**Longest Substring Without Repeating Characters**
+Find the length of the longest substring without duplicate characters.
+
+---
+
+### 2. List Problem
+
+**Remove Duplicates While Preserving Order**
+Remove duplicates from a list while keeping original order.
+
+---
+
+🔆🔆🔆 3. Tuple Problem
+
+**Find Minimum and Maximum**
+Find smallest and largest values in a tuple.
+
+---
+
+ 🌼🌼🌼4. Dictionary Problem
+
+**Character Frequency Counter**
+Count frequency of each character in a string.
+
+---
+
+### 5. Intermediate Problem
+
+**Group Words by Length**
+Group words based on their length using dictionary.
+
+---
+
+## 🚀 Technologies Used
+
+* Python
+* Data Structures
+* Basic Algorithms
+
+---
+
+## 📊 Sample Inputs
+
+```python
+"abcabcbb"
+[1, 2, 2, 3, 4, 3, 5]
+(10, 5, 20, 8)
+"programming"
+["cat", "dog", "elephant", "bat", "tiger"]
+```
+
+---
+
+## 🎯 Purpose
+
+* Practice coding skills
+* Prepare for interviews
+* Improve problem solving
+
+---
+
+## ✅ Author
+
+G Upendrachary
+
+🔆🔆🔆🔆LINK☸️☸️☸️
+
+https://drive.google.com/file/d/1v46pLOl3B8Pv0-1FtvbUPRJdRF_khEFP/view?usp=sharing
+
