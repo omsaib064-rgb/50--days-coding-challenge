@@ -1,0 +1,112 @@
+# 💰 Smart Expense Analyzer
+
+## 📌 Objective
+
+Analyze a user's monthly expenses using Python operators and determine financial status.
+
+---
+
+## 📊 Given Data
+
+```python
+salary = 50000
+rent = 12000
+food = 8000
+transport = 3000
+entertainment = 4000
+```
+
+---
+
+## ✅ Tasks Overview
+
+### 🧮 Task 1: Total Expenses
+
+Calculate total expenses using arithmetic operators.
+
+```python
+total_expenses = rent + food + transport + entertainment
+print("Total Expenses:", total_expenses)
+```
+
+---
+
+### 💵 Task 2: Savings Calculation
+
+Calculate savings from salary.
+
+```python
+savings = salary - total_expenses
+print("Savings:", savings)
+```
+
+---
+
+### ⚖️ Task 3: Expense Comparison
+
+Compare different expenses using comparison operators.
+
+```python
+print("Is rent greater than food?", rent > food)
+print("Is transport less than entertainment?", transport < entertainment)
+```
+
+---
+
+### 📉 Task 4: Financial Condition Check
+
+Determine financial status using conditions and logical operators.
+
+```python
+if savings > 10000:
+    print("Financial Status: Good Saving")
+elif 5000 <= savings <= 10000:
+    print("Financial Status: Average Saving")
+else:
+    print("Financial Status: Low Saving")
+```
+
+---
+
+### 🎁 Task 5: Bonus Update
+
+Increase salary by 10 percent using assignment operator.
+
+```python
+salary += salary * 0.10
+print("Updated Salary:", salary)
+```
+
+---
+
+## 📈 Final Output
+
+```
+Total Expenses: 27000
+Savings: 23000
+Is rent greater than food? True
+Is transport less than entertainment? True
+Financial Status: Good Saving
+Updated Salary: 55000.0
+```
+
+---
+
+## 🚀 Concepts Used
+
+* Arithmetic Operators
+* Comparison Operators
+* Logical Operators
+* Assignment Operators
+* Conditional Statements
+
+---
+
+## 🎯 Conclusion
+
+This project demonstrates how Python operators can be used for real world financial analysis. It helps in understanding expense tracking, savings calculation, and decision making logic in a simple and effective way.
+
+
+
+☸️☸️☸️LINK☸️☸️☸️
+https://drive.google.com/file/d/1gA9cVVgjBQ4XEIqqQLI0dvdNVqnRwqYk/view?usp=sharing
