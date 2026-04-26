@@ -1,0 +1,55 @@
+# Even Odd Checker
+
+## 📌 Project Overview
+
+This is a beginner-friendly Python project that checks whether a number is Even or Odd using basic conditional logic.
+
+## 🎯 Objective
+
+To understand:
+
+* If conditions
+* Modulus operator
+* User input handling
+
+## 🛠️ Technologies Used
+
+* Python 3
+
+## 📂 Project Structure
+
+* main.py → contains program logic
+* README.md → project documentation
+
+## ▶️ How to Run
+
+1. Install Python
+2. Clone the repository
+3. Run the program:
+
+```
+python main.py
+```
+
+## 📌 Example
+
+Input:
+Enter a number: 5
+
+Output:
+Result: Odd
+
+## 🚀 Future Improvements
+
+* Add GUI using Tkinter
+* Convert into web app using Flask
+* Accept multiple inputs
+
+## 👨‍💻 Author
+
+Your Name:
+G.Upendrachary
+
+☸️☸️☸️LINK☸️☸️☸️☸️
+
+https://drive.google.com/file/d/1irjFl0h8JM6XoFq5oKRaMVwObp67tNA4/view?usp=sharing
