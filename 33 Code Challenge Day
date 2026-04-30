@@ -1,0 +1,55 @@
+33 Code Challenge Day🎯 Number Guessing Game
+📌 Project Overview
+
+This is a simple Python based Number Guessing Game.
+The program generates a secret number and asks the user to guess it.
+Based on the input, the system gives feedback until the correct number is guessed.
+
+🚀 Features
+Infinite loop until correct guess
+User input handling
+Conditional logic for feedback
+Displays result when user wins
+🧠 Concept Used
+While loop
+If elif else conditions
+User input handling
+Loop control using break
+💻 Code Implementation
+secret = 7
+
+while True:
+    guess = int(input("Enter your guess: "))
+
+    if guess < secret:
+        print("Too Low")
+    elif guess > secret:
+        print("Too High")
+    else:
+        print("You Won!")
+        break
+▶️ How to Run
+Install Python
+Copy the code into a file named guess_game.py
+Run the file
+python guess_game.py
+📊 Example Output
+Enter your guess: 3
+Too Low
+
+Enter your guess: 10
+Too High
+
+Enter your guess: 7
+You Won!
+🔥 Future Improvements
+Add limited attempts
+Add random number generation
+Add score tracking system
+Build graphical interface
+👨‍💻 Author
+G.UPENDRACHARY
+
+☸️☸️☸️☸️LINK☸️☸️☸️
+
+https://drive.google.com/file/d/1v4BXVJNuhP5LRxzB4RH-ONrjUdWlo32e/view?usp=sharing
