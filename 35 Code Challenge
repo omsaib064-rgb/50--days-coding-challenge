@@ -1,0 +1,160 @@
+# 🐍 Day 35 Coding Challenge
+
+### Built in Functions in Python
+
+Welcome to **Day 35** of my Python coding journey 🚀
+This challenge focuses on using **built in functions**, **data structures**, and **clean logic building**.
+
+---
+
+## 📌 Challenge 1: Flatten a Nested List
+
+**Concept:** List Comprehension
+
+### 🧾 Problem
+
+```python
+nested = [[1, 2], [3, 4], [5]]
+```
+
+### ✅ Solution
+
+```python
+flattened = [num for sublist in nested for num in sublist]
+print(flattened)
+```
+
+### 📤 Output
+
+```
+[1, 2, 3, 4, 5]
+```
+
+---
+
+## 📌 Challenge 2: Check Anagram
+
+**Concept:** sorted()
+
+### 🧾 Problem
+
+```python
+s1 = "listen"
+s2 = "silent"
+```
+
+### ✅ Solution
+
+```python
+print(sorted(s1) == sorted(s2))
+```
+
+### 📤 Output
+
+```
+True
+```
+
+---
+
+## 📌 Challenge 3: Find Missing Number
+
+**Concept:** set()
+
+### 🧾 Problem
+
+```python
+nums = [1, 2, 4, 5]
+```
+
+### ✅ Solution
+
+```python
+missing = list(set(range(1, 6)) - set(nums))
+print(missing[0])
+```
+
+### 📤 Output
+
+```
+3
+```
+
+---
+
+## 📌 Challenge 4: Group Words by First Letter
+
+**Concept:** Dictionary and setdefault()
+
+### 🧾 Problem
+
+```python
+words = ["apple", "ant", "banana", "bat"]
+```
+
+### ✅ Solution
+
+```python
+grouped = {}
+for word in words:
+    grouped.setdefault(word[0], []).append(word)
+
+print(grouped)
+```
+
+### 📤 Output
+
+```
+{'a': ['apple', 'ant'], 'b': ['banana', 'bat']}
+```
+
+---
+
+## 📌 Challenge 5: Remove Empty Values
+
+**Concept:** Dictionary Comprehension
+
+### 🧾 Problem
+
+```python
+data = {"a": 1, "b": None, "c": 3, "d": None}
+```
+
+### ✅ Solution
+
+```python
+cleaned = {k: v for k, v in data.items() if v is not None}
+print(cleaned)
+```
+
+### 📤 Output
+
+```
+{'a': 1, 'c': 3}
+```
+
+---
+
+## 🎯 Key Learnings
+
+* Efficient use of list comprehension
+* Sorting for string comparison
+* Set operations for missing values
+* Grouping data using dictionaries
+* Cleaning data using dictionary comprehension
+
+---
+
+## 💡 Conclusion
+
+These problems strengthen core Python fundamentals that are widely used in **data analytics**, **automation**, and **real world problem solving**.
+
+---
+
+## ⭐ Connect with Me
+
+If you found this helpful, consider giving a ⭐ to the repository and follow for more daily coding challenges!
+
+---
+☸️☸️☸️LINK☸️☸️☸️
+https://drive.google.com/file/d/1mcWmElbNrkyj3yHcS2cPH7H_Lyo8x6-2/view?usp=sharing
