@@ -1,0 +1,127 @@
+# 📘 Day 34 Coding Challenge
+
+## 🔧 Python Built in Functions Practice
+
+This project contains solutions to practical Python problems focused on built in functions and core data structures such as lists, sets, and dictionaries. These exercises are designed to strengthen problem solving skills and prepare for data analytics roles and coding interviews.
+
+---
+
+## 🚀 Topics Covered
+
+* set for removing duplicates
+* dictionary and get method for counting
+* max function for finding highest values
+* intersection for common elements
+* sorted with lambda for custom sorting
+
+---
+
+## 📌 Problems and Solutions
+
+### 1️⃣ Remove Duplicates and Preserve Order
+
+**Concepts:** set, list, loop
+
+```python
+ids = [101, 102, 101, 103, 102, 104]
+
+unique_ids = []
+seen = set()
+
+for id in ids:
+    if id not in seen:
+        unique_ids.append(id)
+        seen.add(id)
+
+print(unique_ids)
+```
+
+**Output:**
+[101, 102, 103, 104]
+
+---
+
+### 2️⃣ Frequency Counter
+
+**Concepts:** dictionary, get, loop
+
+```python
+products = ["apple", "banana", "apple", "orange", "banana", "apple"]
+
+freq = {}
+
+for item in products:
+    freq[item] = freq.get(item, 0) + 1
+
+print(freq)
+```
+
+**Output:**
+{'apple': 3, 'banana': 2, 'orange': 1}
+
+---
+
+### 3️⃣ Find Top Scorer
+
+**Concepts:** max, dictionary
+
+```python
+marks = {"A": 85, "B": 92, "C": 88}
+
+topper = max(marks, key=marks.get)
+
+print(topper)
+```
+
+**Output:**
+B
+
+---
+
+### 4️⃣ Common Elements in Two Lists
+
+**Concepts:** set, intersection
+
+```python
+skills1 = ["Python", "SQL", "Excel"]
+skills2 = ["SQL", "Power BI", "Python"]
+
+common = list(set(skills1).intersection(set(skills2)))
+
+print(common)
+```
+
+**Output:**
+['Python', 'SQL']
+
+---
+
+### 5️⃣ Sort Dictionary by Values
+
+**Concepts:** sorted, lambda
+
+```python
+prices = {"apple": 50, "banana": 20, "orange": 30}
+
+sorted_prices = sorted(prices.items(), key=lambda x: x[1])
+
+print(sorted_prices)
+```
+
+**Output:**
+[('banana', 20), ('orange', 30), ('apple', 50)]
+
+---
+
+## 🎯 Learning Outcomes
+
+* Strong understanding of Python built in functions
+* Ability to manipulate data structures efficiently
+* Writing clean and optimized logic
+* Practical problem solving skills for analytics
+
+---
+
+☸️☸️☸️LINK☸️☸️☸️
+
+https://drive.google.com/file/d/1kex2LRZI86WOIPIzmCniPv4NoyKy20Wf/view?usp=sharing
