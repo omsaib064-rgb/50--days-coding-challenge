@@ -1,0 +1,158 @@
+# 📊 Student Batch Performance Analyzer
+
+## 📌 Project Overview
+
+This project analyzes student performance data across multiple batches using Python.
+It focuses on identifying trends, evaluating batch performance, and detecting top and at-risk students.
+
+---
+
+## 🎯 Objectives
+
+* Calculate average performance metrics
+* Identify top-performing students
+* Detect at-risk students
+* Generate batch-level summaries
+* Rank batches based on performance
+
+---
+
+## 🧠 Problem Statement
+
+You are given student data for multiple batches.
+Using Python, build functions to analyze performance and generate insights such as:
+
+* Best performing batch
+* Average attendance and content consumption
+* Student performance classification
+
+---
+
+## 🗂 Dataset
+
+The dataset consists of a list of dictionaries containing:
+
+* Batch
+* Student Name
+* Content Consumption
+* Live Attendance
+* Recording Views
+* Assignment Submission
+* Assignment Score
+
+---
+
+## ⚙️ Technologies Used
+
+* Python
+* Lists and Dictionaries
+* Functions
+* Basic Data Analysis Logic
+
+---
+
+## 🧩 Functions Implemented
+
+### 1. calculate_average(values)
+
+Returns the average of a list of numbers
+
+### 2. find_top_performers(data, column, threshold)
+
+Returns students whose values are greater than or equal to threshold
+
+### 3. find_at_risk_students(data, column, threshold)
+
+Returns students below the threshold
+
+### 4. batch_summary(data)
+
+Returns:
+
+* Total students
+* Average consumption
+* Average attendance
+* Average assignment submission
+
+### 5. rank_batches(batch_data)
+
+Compares batches and returns the best performing batch
+
+---
+
+## 🚀 How to Run
+
+```bash
+python main.py
+```
+
+---
+
+## 📈 Sample Output
+
+```
+Best Batch: b9
+
+Batch Summary:
+b7 Avg Consumption 50.0% Avg Attendance 50.0%
+b8 Avg Consumption 51.0% Avg Attendance 52.0%
+b9 Avg Consumption 58.6% Avg Attendance 60.0%
+
+Top Performers:
+Asha b8
+Neha b9
+Pooja b7
+Vikram b9
+
+At Risk Students:
+Ravi b7
+Sneha b8
+Karthik b9
+```
+
+---
+
+## 📊 Key Insights
+
+* Batch b9 shows highest overall performance
+* Students with low consumption are at risk
+* High assignment submission correlates with better performance
+
+---
+
+## 🔥 Real World Use Case
+
+This project simulates real data analytics tasks such as:
+
+* Student performance tracking
+* Learning platform analytics
+* KPI monitoring
+* Business decision support
+
+---
+
+## 📁 Project Structure
+
+```
+student-performance-analyzer/
+│
+├── main.py
+├── README.md
+└── dataset.py
+```
+
+---
+
+## 🙌 Author
+
+Your Name: G. Upendrachary
+
+---
+
+## ⭐ If you like this project
+
+Give it a star on GitHub ⭐
+
+☸️☸️☸️☸️LINK☸️☸️☸️
+
+https://drive.google.com/file/d/1UiSdGo7VogEimVQVxvUwDHyKw55kE9Wd/view?usp=sharing
