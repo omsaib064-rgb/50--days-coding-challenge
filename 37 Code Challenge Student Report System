@@ -1,0 +1,108 @@
+Student Report System 📘
+
+A simple Python project using user defined functions to manage student marks, calculate total, average, and assign grades.
+
+📌 Project Overview
+
+This project demonstrates:
+
+✅ Functions in Python
+✅ List handling
+✅ Conditional statements
+✅ User input handling
+✅ Basic student report generation
+
+The program takes marks for 3 subjects and calculates:
+
+Total Marks
+Average Marks
+Grade
+🚀 Features
+
+✨ User friendly input system
+✨ Calculates total automatically
+✨ Finds average marks
+✨ Generates grades based on performance
+✨ Beginner friendly Python project
+
+🛠️ Technologies Used
+Python 3
+📂 Project Structure
+student_report_system/
+│
+├── student_report.py
+└── README.md
+🧠 Grade Criteria
+Average Marks	Grade
+90 and above	A
+75 to 89	B
+50 to 74	C
+Below 50	D
+💻 Python Code
+# Function to get marks from user
+def get_marks():
+    marks = []
+
+    for i in range(1, 4):
+        mark = int(input(f"Enter marks for Subject {i}: "))
+        marks.append(mark)
+
+    return marks
+
+
+# Function to calculate total
+def calculate_total(marks):
+    return sum(marks)
+
+
+# Function to calculate average
+def calculate_average(total):
+    return total / 3
+
+
+# Function to get grade
+def get_grade(avg):
+
+    if avg >= 90:
+        return "A"
+
+    elif avg >= 75:
+        return "B"
+
+    elif avg >= 50:
+        return "C"
+
+    else:
+        return "D"
+
+
+# Main Program
+marks = get_marks()
+
+total = calculate_total(marks)
+
+average = calculate_average(total)
+
+grade = get_grade(average)
+
+print("\n----- Student Report -----")
+print("Marks :", marks)
+print("Total :", total)
+print("Average :", average)
+print("Grade :", grade)
+
+Future Improvements
+
+🚀 Add percentage calculation
+🚀 Add multiple student records
+🚀 Save reports to file
+🚀 Create GUI version using Tkinter
+
+👨‍💻 Author
+
+Created by G.Upendrachary ✨
+
+
+☸️☸️☸️LINK☸️☸️☸️☸️
+
+https://drive.google.com/file/d/1uLGmDUheZxfDjxeHAl298YdL8ZQZ7Zyf/view?usp=sharing
