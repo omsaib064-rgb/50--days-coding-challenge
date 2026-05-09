@@ -1,0 +1,129 @@
+Insurance Premium Calculator 🚗🏥💼
+
+A simple Python mini project that calculates the annual insurance premium based on customer age, policy type, and claim history.
+
+📌 Project Overview
+
+This project helps insurance companies estimate the final premium amount for customers using predefined business rules.
+
+The program takes customer details as input and applies premium adjustments based on:
+
+Age category
+Policy type
+Number of claims
+🎯 Features
+
+✅ User input handling
+✅ Policy type validation
+✅ Premium calculation using conditions
+✅ Claim based discount and loading
+✅ Function based clean code structure
+✅ Beginner friendly Python project
+
+🛠 Technologies Used
+Python 3
+📂 Project Structure
+Insurance Premium Calculator
+│
+├── insurance_premium_calculator.py
+└── README.md
+📊 Base Premium Table
+Policy Type	Base Premium
+Health	₹8000
+Vehicle	₹12000
+Life	₹10000
+⚙ Business Rules
+Age Based Rules
+Age below 25 → Add 20%
+Age between 25 and 45 → No change
+Age above 45 → Add 15%
+Claim Based Rules
+Claims more than 2 → Add 25%
+Claims equal to 0 → Give 10% discount
+💻 Python Code
+def calculate_premium(age, policy_type, claims):
+
+    premiums = {
+        "health": 8000,
+        "vehicle": 12000,
+        "life": 10000
+    }
+
+    if policy_type not in premiums:
+        return None
+
+    premium = premiums[policy_type]
+
+    # Age adjustment
+    if age < 25:
+        premium += premium * 0.20
+
+    elif age > 45:
+        premium += premium * 0.15
+
+    # Claims adjustment
+    if claims > 2:
+        premium += premium * 0.25
+
+    elif claims == 0:
+        premium -= premium * 0.10
+
+    return premium
+
+
+# Inputs
+name = input("Enter Customer Name: ")
+age = int(input("Enter Age: "))
+policy_type = input("Enter Policy Type (health/vehicle/life): ").lower()
+claims = int(input("Enter Number of Claims: "))
+
+# Calculate Premium
+final_premium = calculate_premium(age, policy_type, claims)
+
+# Output
+if final_premium is None:
+    print("Invalid policy type entered!")
+
+else:
+    base_prices = {
+        "health": 8000,
+        "vehicle": 12000,
+        "life": 10000
+    }
+
+    print("\n===== Insurance Premium Details =====")
+    print("Customer Name :", name)
+    print("Policy Type   :", policy_type)
+    print("Base Premium  : ₹", base_prices[policy_type])
+    print("Final Premium : ₹", int(final_premium))
+▶ Sample Input
+Enter Customer Name: Ravi
+Enter Age: 23
+Enter Policy Type: health
+Enter Number of Claims: 0
+✅ Sample Output
+===== Insurance Premium Details =====
+
+Customer Name : Ravi
+Policy Type   : health
+Base Premium  : ₹ 8000
+Final Premium : ₹ 8640
+🧠 Concepts Used
+Variables
+Functions
+Dictionaries
+Conditional Statements
+Input Output
+Arithmetic Operations
+Validation
+🚀 Future Enhancements
+Add GUI using Tkinter
+Store customer data in database
+Generate premium reports
+Add multiple policy plans
+👨‍💻 Author
+
+G.Upendrachary ✨
+
+☸️☸️☸️LINK☸️☸️☸️
+https://drive.google.com/file/d/1EkKNmxzfMkPjo3erHxrcfg3qkKzESMmH/view?usp=sharing
