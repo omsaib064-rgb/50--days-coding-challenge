@@ -1,0 +1,326 @@
+# 📦 Packaging Domain SQL Project
+
+## 📌 Project Overview
+
+This project focuses on analyzing packaging industry data using SQL.
+
+The company manufactures:
+
+* Boxes
+* Bottles
+* Wrappers
+
+The objective of this project is to generate business insights related to:
+
+* Production efficiency
+* Defect analysis
+* Revenue tracking
+* Profitability analysis
+* Inventory monitoring
+
+---
+
+# 🛠️ Tools Used
+
+| Tool            | Purpose               |
+| --------------- | --------------------- |
+| MySQL           | Database Management   |
+| SQL             | Data Analysis Queries |
+| MySQL Workbench | Query Execution       |
+| GitHub          | Project Hosting       |
+
+---
+
+# 🗂️ Database Name
+
+```sql
+packing_domain
+```
+
+---
+
+# 📊 Tables Used
+
+## 1️⃣ products
+
+Stores product details.
+
+| Column Name   | Data Type |
+| ------------- | --------- |
+| product_id    | INT       |
+| product_name  | VARCHAR   |
+| category      | VARCHAR   |
+| cost_per_unit | DECIMAL   |
+
+---
+
+## 2️⃣ production
+
+Stores production information.
+
+| Column Name        | Data Type |
+| ------------------ | --------- |
+| production_id      | INT       |
+| product_id         | INT       |
+| production_date    | DATE      |
+| quantity_produced  | INT       |
+| defective_quantity | INT       |
+
+---
+
+## 3️⃣ sales
+
+Stores sales data.
+
+| Column Name            | Data Type |
+| ---------------------- | --------- |
+| sale_id                | INT       |
+| product_id             | INT       |
+| sale_date              | DATE      |
+| quantity_sold          | INT       |
+| selling_price_per_unit | DECIMAL   |
+
+---
+
+# 🧱 Database Creation
+
+```sql
+CREATE DATABASE packing_domain;
+USE packing_domain;
+```
+
+---
+
+# 🏗️ Table Creation Queries
+
+```sql
+CREATE TABLE products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    category VARCHAR(20),
+    cost_per_unit DECIMAL(10,2)
+);
+
+CREATE TABLE production (
+    production_id INT PRIMARY KEY,
+    product_id INT,
+    production_date DATE,
+    quantity_produced INT,
+    defective_quantity INT,
+    FOREIGN KEY (product_id)
+    REFERENCES products(product_id)
+);
+
+CREATE TABLE sales (
+    sale_id INT PRIMARY KEY,
+    product_id INT,
+    sale_date DATE,
+    quantity_sold INT,
+    selling_price_per_unit DECIMAL(10,2),
+    FOREIGN KEY (product_id)
+    REFERENCES products(product_id)
+);
+```
+
+---
+
+# 📥 Data Insertion
+
+## products Table
+
+```sql
+INSERT INTO products VALUES
+(1, 'Small Box', 'Box', 10.00),
+(2, 'Medium Box', 'Box', 15.00),
+(3, 'Large Box', 'Box', 20.00),
+(4, 'Plastic Bottle', 'Bottle', 8.00),
+(5, 'Glass Bottle', 'Bottle', 12.00),
+(6, 'Food Wrapper', 'Wrapper', 2.00),
+(7, 'Gift Wrapper', 'Wrapper', 3.00);
+```
+
+---
+
+# 📌 SQL Analysis Tasks
+
+## ✅ Task 1: Defect Rate per Product
+
+Calculated:
+
+```text
+defect_rate = defective_quantity / quantity_produced
+```
+
+Insights:
+
+* Total production
+* Total defective units
+* Product wise defect rate
+
+---
+
+## ✅ Task 2: Top Performing Product by Revenue
+
+Calculated:
+
+```text
+revenue = quantity_sold × selling_price_per_unit
+```
+
+Insights:
+
+* Highest revenue generating product
+
+---
+
+## ✅ Task 3: Monthly Production Trend
+
+Insights:
+
+* Monthly production totals
+* Production growth tracking
+
+---
+
+## ✅ Task 4: Category Wise Profit
+
+Calculated:
+
+```text
+profit = selling_price - cost_price
+```
+
+Insights:
+
+* Revenue by category
+* Cost by category
+* Profit by category
+
+---
+
+## ✅ Task 5: High Defect Days
+
+Condition:
+
+```text
+defect_rate > 5%
+```
+
+Insights:
+
+* Poor production quality days
+* Product defect analysis
+
+---
+
+## ✅ Task 6: Running Total Revenue
+
+Insights:
+
+* Cumulative revenue tracking
+* Revenue growth over time
+
+---
+
+## ✅ Task 7: Best Category by Profit Margin
+
+Calculated:
+
+```text
+profit_margin = profit / revenue
+```
+
+Insights:
+
+* Most profitable category
+
+---
+
+## ✅ Task 8: Unsold Inventory
+
+Condition:
+
+```text
+produced > sold
+```
+
+Insights:
+
+* Inventory remaining
+* Overstock analysis
+
+---
+
+# 📈 SQL Concepts Used
+
+| SQL Concept      | Usage                    |
+| ---------------- | ------------------------ |
+| JOIN             | Combine multiple tables  |
+| GROUP BY         | Aggregation              |
+| SUM()            | Total calculations       |
+| ROUND()          | Formatting               |
+| HAVING           | Filtering aggregate data |
+| ORDER BY         | Sorting                  |
+| LIMIT            | Top records              |
+| WINDOW FUNCTIONS | Running totals           |
+| DATE_FORMAT()    | Monthly analysis         |
+
+---
+
+# 🚀 Project Outcomes
+
+This project helps understand:
+
+* Manufacturing performance
+* Product quality issues
+* Revenue growth
+* Profitability trends
+* Inventory management
+* Category performance
+
+---
+
+# 📂 Project Structure
+
+```text
+Packaging_Domain_SQL_Project/
+│
+├── SQL Queries
+├── Database Schema
+├── README.md
+└── Dataset
+```
+
+---
+
+# 🌟 Future Improvements
+
+Possible enhancements:
+
+* Power BI Dashboard
+* Tableau Visualization
+* Python Automation
+* KPI Reporting
+* Predictive Analytics
+
+---
+
+# 👨‍💻 Author
+
+## G.Upendrachary
+
+SQL Data Analytics Project
+
+---
+
+# ⭐ GitHub Repository
+
+If you found this project useful:
+
+⭐ Star the repository
+🍴 Fork the project
+📢 Share with others
+
+☸️☸️☸️LINK☸️☸️☸️☸️
+
+https://drive.google.com/file/d/1l_m0K_GDfGZ0gx0qso8F3ex8bB6_SFxs/view?usp=sharing
