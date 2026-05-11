@@ -1,0 +1,188 @@
+📊 Day 41 Power BI Coding Challenge
+Finance Domain Analysis Dashboard Using Power BI
+🚀 Project Overview
+
+This project is part of my Day 41 Code Challenge focused on the Finance Domain using Power BI.
+
+The objective of this project is to analyze company financial performance and identify:
+
+✅ Profit drivers
+✅ High performing regions
+✅ Product revenue insights
+✅ Customer profitability
+✅ Revenue trends
+✅ Discount impact on profit
+
+This dashboard helps businesses make data driven financial decisions using interactive visualizations and DAX calculations.
+
+📁 Dataset Information
+Table Name
+Financial_Data
+Columns Used
+Column Name	Description
+Date	Transaction date
+Region	Business region
+Product	Financial product
+Revenue	Total revenue
+Cost	Total cost
+Profit	Revenue minus cost
+Discount	Discount percentage
+Customer_Type	New or Existing customer
+🛠️ Tools & Technologies
+Tool	Purpose
+Power BI	Dashboard Development
+DAX	Calculated Columns & Measures
+Power Query	Data Cleaning
+Excel / CSV	Dataset Storage
+📌 Task 1: Calculated Columns (DAX)
+✅ Profit Margin
+
+Formula:
+
+Profit Margin=
+Revenue
+Profit
+	​
+
+
+Profit Margin =
+Sheet1[Profit] / Sheet1[Revenue]
+✅ Discount Value
+
+Formula:
+
+Discount Value=Revenue×Discount
+
+Discount Value =
+Sheet1[Revenue] * Sheet1[Discount]
+📌 Task 2: Measures
+✅ Total Revenue
+Total Revenue =
+SUM(Sheet1[Revenue])
+✅ Total Profit
+Total Profit =
+SUM(Sheet1[Profit])
+✅ Profit Margin %
+
+Formula:
+
+Profit Margin %=
+Total Revenue
+Total Profit
+	​
+
+
+Profit Margin % =
+DIVIDE([Total Profit], [Total Revenue])
+📌 Task 3: Business Questions Solved
+
+✅ Which region generates highest profit?
+✅ Which product has highest revenue but low profit?
+✅ Does discount impact profit negatively?
+✅ Which customer type is more profitable?
+✅ Monthly revenue trend analysis
+
+📌 Task 4: Dashboard Requirements
+✅ KPI Cards
+
+• Total Revenue
+• Total Profit
+• Profit Margin %
+
+✅ Charts
+
+• Bar Chart → Profit by Region
+• Column Chart → Revenue by Product
+• Line Chart → Revenue Trend
+• Pie Chart → Customer Type Distribution
+
+✅ Slicers
+
+• Region
+• Product
+• Customer Type
+
+📌 Task 5: Advanced DAX
+✅ Top Performing Product
+Top Product =
+CALCULATE(
+    SELECTEDVALUE(Sheet1[Product]),
+    TOPN(
+        1,
+        VALUES(Sheet1[Product]),
+        [Total Revenue],
+        DESC
+    )
+)
+✅ Loss Flag
+Loss Flag =
+IF(
+    Sheet1[Profit] < 0,
+    "Loss",
+    "Profit"
+)
+✅ Dynamic Title
+Title =
+"Financial Dashboard - " &
+SELECTEDVALUE(Sheet1[Region])
+📊 Dashboard Features
+
+✅ Interactive KPI Cards
+✅ Dynamic Filtering using Slicers
+✅ Revenue Trend Analysis
+✅ Product Performance Tracking
+✅ Customer Profitability Analysis
+✅ Region Wise Profit Insights
+✅ Dynamic Dashboard Title
+
+📈 Key Insights
+
+📌 South region generated highest profit
+📌 Loan products generated highest revenue
+📌 Discounts can negatively affect profitability
+📌 New customers contributed strong profits
+📌 Revenue trends help identify business growth patterns
+
+📂 Project Structure
+Day41_PowerBI_Finance_Project/
+│
+├── Dataset/
+│   └── Financial_Data.xlsx
+│
+├── PowerBI/
+│   └── Finance_Dashboard.pbix
+│
+├── Screenshots/
+│   └── Dashboard.png
+│
+└── README.md
+🎯 Learning Outcomes
+
+Through this project, I learned:
+
+✅ DAX Calculations
+✅ Power BI Dashboard Design
+✅ Business KPI Analysis
+✅ Financial Data Visualization
+✅ Interactive Reporting
+✅ Data Modeling Concepts
+
+🚀 Future Enhancements
+
+🔹 Forecasting Analysis
+🔹 Drill Through Reports
+🔹 Advanced Tooltips
+🔹 AI Visuals
+🔹 Row Level Security
+
+📌 Conclusion
+
+This project demonstrates how Power BI can be used to transform raw financial data into meaningful business insights using interactive dashboards and DAX calculations.
+
+The dashboard enables management to monitor revenue, profit, customer performance, and financial growth effectively.
+
+
+
+☸️☸️☸️☸️LINK☸️☸️☸️☸️
+
+https://drive.google.com/file/d/1sx76Pb6sYERi8FYur_jpNcAyy3dUVT4y/view?usp=sharing
