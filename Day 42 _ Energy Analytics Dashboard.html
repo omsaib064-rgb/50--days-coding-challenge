@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)file:///C:/Users/dell/Downloads/Day42_Energy_Dashboard.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 42 | Energy Analytics Dashboard</title>
+<script src="./Day 42 _ Energy Analytics Dashboard_files/chart.umd.min.js.download"></script>
+<link href="./Day 42 _ Energy Analytics Dashboard_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #0A0E1A;
+    --bg2:        #0F1629;
+    --bg3:        #151E35;
+    --card:       #1A2540;
+    --border:     #243054;
+    --accent1:    #3B82F6;
+    --accent2:    #06B6D4;
+    --accent3:    #F59E0B;
+    --accent4:    #10B981;
+    --danger:     #EF4444;
+    --warning:    #F97316;
+    --text1:      #F0F4FF;
+    --text2:      #94A3B8;
+    --text3:      #64748B;
+    --glow:       0 0 20px rgba(59,130,246,0.3);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text1);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Grid background ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── Header ── */
+  header {
+    position: relative; z-index: 10;
+    background: linear-gradient(135deg, #0F1629 0%, #1A2540 50%, #0F1629 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; box-shadow: var(--glow);
+  }
+  .logo-text h1 { font-size: 1.15rem; font-weight: 700; color: var(--text1); }
+  .logo-text p  { font-size: 0.72rem; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+  .header-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    padding: 4px 12px; border-radius: 20px; font-size: 0.72rem;
+    font-weight: 600; letter-spacing: 0.05em;
+    border: 1px solid; font-family: 'JetBrains Mono', monospace;
+  }
+  .badge-blue { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.4); color: #60A5FA; }
+  .badge-cyan { background: rgba(6,182,212,0.15); border-color: rgba(6,182,212,0.4); color: #22D3EE; }
+  .badge-amber { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.4); color: #FCD34D; }
+
+  /* ── Filters ── */
+  .filter-bar {
+    position: relative; z-index: 10;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 32px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .filter-label { font-size: 0.72rem; color: var(--text3); font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; }
+  select {
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--text1); padding: 6px 14px; border-radius: 8px;
+    font-size: 0.82rem; font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer; outline: none; transition: border-color .2s;
+  }
+  select:focus { border-color: var(--accent1); box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
+  .btn-reset {
+    padding: 6px 16px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--text2); font-size: 0.82rem;
+    font-family: 'Space Grotesk', sans-serif; cursor: pointer; transition: all .2s;
+  }
+  .btn-reset:hover { background: var(--card); color: var(--text1); }
+
+  /* ── Main layout ── */
+  main { position: relative; z-index: 5; padding: 24px 32px; max-width: 1600px; margin: 0 auto; }
+
+  /* ── KPI Cards ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px;
+    position: relative; overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .kpi-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--accent-color, var(--accent1));
+  }
+  .kpi-icon { font-size: 1.5rem; margin-bottom: 10px; }
+  .kpi-label { font-size: 0.72rem; color: var(--text3); text-transform: uppercase;
+    letter-spacing: 0.1em; margin-bottom: 6px; font-weight: 600; }
+  .kpi-value {
+    font-size: 2rem; font-weight: 700; color: var(--accent-color, var(--accent1));
+    font-family: 'JetBrains Mono', monospace; line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-sub { font-size: 0.75rem; color: var(--text2); }
+
+  /* ── Chart grid ── */
+  .chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .chart-grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .chart-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px; position: relative;
+  }
+  .chart-title {
+    font-size: 0.85rem; font-weight: 600; color: var(--text1);
+    margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+  }
+  .chart-sub { font-size: 0.72rem; color: var(--text3); margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 240px; }
+  .chart-wrap-sm { position: relative; height: 200px; }
+
+  /* ── Table ── */
+  .table-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px; margin-bottom: 16px; overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text3); font-weight: 600; padding: 10px 12px;
+    border-bottom: 1px solid var(--border); text-align: left;
+  }
+  tbody tr { transition: background .15s; }
+  tbody tr:hover { background: rgba(59,130,246,0.06); }
+  tbody td { padding: 10px 12px; font-size: 0.85rem; border-bottom: 1px solid rgba(36,48,84,0.6); }
+  .status-paid { color: var(--accent4); font-weight: 600; background: rgba(16,185,129,0.12);
+    padding: 2px 10px; border-radius: 20px; display: inline-block; font-size: 0.75rem; }
+  .status-pending { color: var(--danger); font-weight: 600; background: rgba(239,68,68,0.12);
+    padding: 2px 10px; border-radius: 20px; display: inline-block; font-size: 0.75rem; }
+  .rank-badge {
+    width: 24px; height: 24px; border-radius: 50%; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700;
+  }
+  .rank-1 { background: rgba(245,158,11,0.2); color: #FCD34D; border: 1px solid rgba(245,158,11,0.4); }
+  .rank-2 { background: rgba(148,163,184,0.2); color: #CBD5E1; border: 1px solid rgba(148,163,184,0.4); }
+  .rank-3 { background: rgba(205,127,50,0.15); color: #D97706; border: 1px solid rgba(205,127,50,0.3); }
+
+  /* ── Insights ── */
+  .insights-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .insight-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .insight-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .insight-text { font-size: 0.82rem; color: var(--text2); line-height: 1.5; }
+  .insight-text strong { color: var(--text1); }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center; padding: 20px 32px;
+    color: var(--text3); font-size: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Stat bar ── */
+  .stat-bar-wrap { margin-bottom: 10px; }
+  .stat-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .stat-bar-label { font-size: 0.78rem; color: var(--text2); width: 60px; flex-shrink: 0; }
+  .stat-bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+  .stat-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+  .stat-bar-val { font-size: 0.75rem; color: var(--text2); width: 56px; text-align: right;
+    font-family: 'JetBrains Mono', monospace; }
+
+  @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) {
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .chart-grid-2, .chart-grid-3 { grid-template-columns: 1fr; }
+    main { padding: 16px; }
+    header { padding: 12px 16px; }
+    .filter-bar { padding: 10px 16px; }
+    .insights-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<style>/* Copyright (C) Microsoft Corporation. All rights reserved. */
+
+.msreadout-word-highlight:not(.msreadout-inactive-highlight) {
+    background: #ffff00 !important;
+    color: black !important;
+}
+
+.msreadout-line-highlight:not(.msreadout-inactive-highlight) {
+    background: #b2d6f3 !important;
+    color: black !important;
+}
+
+@media screen and (forced-colors: active) {
+    .msreadout-word-highlight:not(.msreadout-inactive-highlight) {
+        forced-color-adjust: none;
+        background-color: Highlight !important;
+        color: HighlightText !important;
+    }
+
+    .msreadout-line-highlight:not(.msreadout-inactive-highlight) {
+        forced-color-adjust: none;
+        background: yellow !important;
+        color: black !important;
+    }
+}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uLy4uLy4uL2Nzcy9yZWFkX291dF9sb3VkX3dlYi5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsOERBQThEOztBQUU5RDtJQUNJLDhCQUE4QjtJQUM5Qix1QkFBdUI7QUFDM0I7O0FBRUE7SUFDSSw4QkFBOEI7SUFDOUIsdUJBQXVCO0FBQzNCOztBQUVBO0lBQ0k7UUFDSSx5QkFBeUI7UUFDekIsc0NBQXNDO1FBQ3RDLCtCQUErQjtJQUNuQzs7SUFFQTtRQUNJLHlCQUF5QjtRQUN6Qiw2QkFBNkI7UUFDN0IsdUJBQXVCO0lBQzNCO0FBQ0oiLCJzb3VyY2VzQ29udGVudCI6WyIvKiBDb3B5cmlnaHQgKEMpIE1pY3Jvc29mdCBDb3Jwb3JhdGlvbi4gQWxsIHJpZ2h0cyByZXNlcnZlZC4gKi9cclxuXHJcbi5tc3JlYWRvdXQtd29yZC1oaWdobGlnaHQ6bm90KC5tc3JlYWRvdXQtaW5hY3RpdmUtaGlnaGxpZ2h0KSB7XHJcbiAgICBiYWNrZ3JvdW5kOiAjZmZmZjAwICFpbXBvcnRhbnQ7XHJcbiAgICBjb2xvcjogYmxhY2sgIWltcG9ydGFudDtcclxufVxyXG5cclxuLm1zcmVhZG91dC1saW5lLWhpZ2hsaWdodDpub3QoLm1zcmVhZG91dC1pbmFjdGl2ZS1oaWdobGlnaHQpIHtcclxuICAgIGJhY2tncm91bmQ6ICNiMmQ2ZjMgIWltcG9ydGFudDtcclxuICAgIGNvbG9yOiBibGFjayAhaW1wb3J0YW50O1xyXG59XHJcblxyXG5AbWVkaWEgc2NyZWVuIGFuZCAoZm9yY2VkLWNvbG9yczogYWN0aXZlKSB7XHJcbiAgICAubXNyZWFkb3V0LXdvcmQtaGlnaGxpZ2h0Om5vdCgubXNyZWFkb3V0LWluYWN0aXZlLWhpZ2hsaWdodCkge1xyXG4gICAgICAgIGZvcmNlZC1jb2xvci1hZGp1c3Q6IG5vbmU7XHJcbiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogSGlnaGxpZ2h0ICFpbXBvcnRhbnQ7XHJcbiAgICAgICAgY29sb3I6IEhpZ2hsaWdodFRleHQgIWltcG9ydGFudDtcclxuICAgIH1cclxuXHJcbiAgICAubXNyZWFkb3V0LWxpbmUtaGlnaGxpZ2h0Om5vdCgubXNyZWFkb3V0LWluYWN0aXZlLWhpZ2hsaWdodCkge1xyXG4gICAgICAgIGZvcmNlZC1jb2xvci1hZGp1c3Q6IG5vbmU7XHJcbiAgICAgICAgYmFja2dyb3VuZDogeWVsbG93ICFpbXBvcnRhbnQ7XHJcbiAgICAgICAgY29sb3I6IGJsYWNrICFpbXBvcnRhbnQ7XHJcbiAgICB9XHJcbn0iXSwic291cmNlUm9vdCI6IiJ9 */</style></head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">
+      <h1>Energy Analytics Dashboard</h1>
+      <p>Day 42 / 50 · Energy Domain Challenge · Jan 2024</p>
+    </div>
+  </div>
+  <div class="header-badges">
+    <span class="badge badge-blue">10 Customers</span>
+    <span class="badge badge-cyan">4 Regions</span>
+    <span class="badge badge-amber">4 Energy Sources</span>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <span class="filter-label">Filters</span>
+  <select id="filterRegion" onchange="applyFilters()">
+    <option value="All">📍 All Regions</option>
+    <option value="North">North</option>
+    <option value="South">South</option>
+    <option value="East">East</option>
+    <option value="West">West</option>
+  </select>
+  <select id="filterSource" onchange="applyFilters()">
+    <option value="All">⚡ All Sources</option>
+    <option value="Solar">Solar</option>
+    <option value="Coal">Coal</option>
+    <option value="Wind">Wind</option>
+    <option value="Hydro">Hydro</option>
+  </select>
+  <select id="filterStatus" onchange="applyFilters()">
+    <option value="All">💳 All Payments</option>
+    <option value="Paid">Paid</option>
+    <option value="Pending">Pending</option>
+  </select>
+  <button class="btn-reset" onclick="resetFilters()">↺ Reset</button>
+  <span id="filter-count" style="font-size:0.75rem;color:var(--text3);margin-left:auto;font-family:&#39;JetBrains Mono&#39;,monospace;">Showing 10 of 10 records</span>
+</div>
+
+<main>
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card" style="--accent-color:var(--accent1)">
+      <div class="kpi-icon">⚡</div>
+      <div class="kpi-label">Total Consumption</div>
+      <div class="kpi-value" id="kpi-consumption">2,700</div>
+      <div class="kpi-sub">kWh · Jan 2024</div>
+    </div>
+    <div class="kpi-card" style="--accent-color:var(--accent4)">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-value" id="kpi-revenue">₹31,700</div>
+      <div class="kpi-sub">Billed this period</div>
+    </div>
+    <div class="kpi-card" style="--accent-color:var(--danger)">
+      <div class="kpi-icon">⏳</div>
+      <div class="kpi-label">Pending Payments</div>
+      <div class="kpi-value" id="kpi-pending">4</div>
+      <div class="kpi-sub" id="kpi-pending-sub">₹16,700 at risk · 52.68%</div>
+    </div>
+    <div class="kpi-card" style="--accent-color:var(--accent3)">
+      <div class="kpi-icon">📊</div>
+      <div class="kpi-label">Avg Consumption</div>
+      <div class="kpi-value" id="kpi-avg">270</div>
+      <div class="kpi-sub">kWh per customer</div>
+    </div>
+  </div>
+
+  <!-- Charts Row 1 -->
+  <div class="chart-grid-2">
+    <!-- Consumption by Region — Bar -->
+    <div class="chart-card">
+      <div class="chart-title">📍 Consumption by Region</div>
+      <div class="chart-sub">Total kWh consumed per region</div>
+      <div class="chart-wrap"><canvas id="chartRegion" width="843" height="300" style="display: block; box-sizing: border-box; height: 240px; width: 674px;"></canvas></div>
+    </div>
+    <!-- Revenue by Energy Source — Column -->
+    <div class="chart-card">
+      <div class="chart-title">⚡ Revenue by Energy Source</div>
+      <div class="chart-sub">Total billing amount (₹) per source</div>
+      <div class="chart-wrap"><canvas id="chartSource" width="843" height="300" style="display: block; box-sizing: border-box; height: 240px; width: 674px;"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Charts Row 2 -->
+  <div class="chart-grid-3">
+    <!-- Line Chart: Trend -->
+    <div class="chart-card">
+      <div class="chart-title">📈 Daily Consumption Trend</div>
+      <div class="chart-sub">Energy consumed per day (Jan 2024)</div>
+      <div class="chart-wrap"><canvas id="chartTrend" width="1142" height="300" style="display: block; box-sizing: border-box; height: 240px; width: 913px;"></canvas></div>
+    </div>
+    <!-- Pie Chart: Payment Status -->
+    <div class="chart-card">
+      <div class="chart-title">💳 Payment Status</div>
+      <div class="chart-sub">Customer distribution by payment</div>
+      <div class="chart-wrap-sm"><canvas id="chartPie" width="545" height="250" style="display: block; box-sizing: border-box; height: 200px; width: 436px;"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Energy Source Mini Stats -->
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <div class="chart-title">🔋 Source Efficiency — Revenue per kWh</div>
+      <div class="chart-sub">Billing efficiency across energy sources</div>
+      <div class="stat-bar-wrap" style="margin-top:16px;" id="source-bars">
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">Wind</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:100.0%;
+          background:#14B8A6;"></div>
+      </div>
+      <span class="stat-bar-val">₹12.14/kWh</span>
+    </div>
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">Solar</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:98.8%;
+          background:#F59E0B;"></div>
+      </div>
+      <span class="stat-bar-val">₹12/kWh</span>
+    </div>
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">Coal</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:96.7%;
+          background:#EF4444;"></div>
+      </div>
+      <span class="stat-bar-val">₹11.74/kWh</span>
+    </div>
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">Hydro</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:93.2%;
+          background:#3B82F6;"></div>
+      </div>
+      <span class="stat-bar-val">₹11.32/kWh</span>
+    </div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">📍 Region Share — Consumption %</div>
+      <div class="chart-sub">Regional contribution to total kWh</div>
+      <div class="stat-bar-wrap" style="margin-top:16px;" id="region-bars">
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">North</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:35.2%;
+          background:#3B82F6;"></div>
+      </div>
+      <span class="stat-bar-val">35.2%</span>
+    </div>
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">South</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:24.1%;
+          background:#F59E0B;"></div>
+      </div>
+      <span class="stat-bar-val">24.1%</span>
+    </div>
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">West</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:23%;
+          background:#10B981;"></div>
+      </div>
+      <span class="stat-bar-val">23%</span>
+    </div>
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">East</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:17.8%;
+          background:#06B6D4;"></div>
+      </div>
+      <span class="stat-bar-val">17.8%</span>
+    </div></div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="table-card">
+    <div class="chart-title" style="margin-bottom:4px;">🎯 Top Customers by Consumption</div>
+    <div class="chart-sub">Ranked by kWh consumed — all 10 customers</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th><th>Customer ID</th><th>Region</th><th>Source</th>
+          <th>Consumption (kWh)</th><th>Billing (₹)</th><th>Payment Status</th><th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+    <tr>
+      <td><span class="rank-badge rank-1">1</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#110</td>
+      <td><span style="color:#3B82F6;font-weight:500;">North</span></td>
+      <td><span style="color:#EF4444;font-weight:500;">Coal</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">500 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹6,000</td>
+      <td><span class="status-pending">Pending</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-10</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge rank-2">2</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#104</td>
+      <td><span style="color:#10B981;font-weight:500;">West</span></td>
+      <td><span style="color:#3B82F6;font-weight:500;">Hydro</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">400 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹4,500</td>
+      <td><span class="status-paid">Paid</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-04</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge rank-3">3</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#105</td>
+      <td><span style="color:#F59E0B;font-weight:500;">South</span></td>
+      <td><span style="color:#EF4444;font-weight:500;">Coal</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">350 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹4,000</td>
+      <td><span class="status-pending">Pending</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-05</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge ">4</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#102</td>
+      <td><span style="color:#3B82F6;font-weight:500;">North</span></td>
+      <td><span style="color:#EF4444;font-weight:500;">Coal</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">300 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹3,500</td>
+      <td><span class="status-pending">Pending</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-02</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge ">5</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#107</td>
+      <td><span style="color:#06B6D4;font-weight:500;">East</span></td>
+      <td><span style="color:#3B82F6;font-weight:500;">Hydro</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">280 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹3,200</td>
+      <td><span class="status-pending">Pending</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-07</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge ">6</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#108</td>
+      <td><span style="color:#10B981;font-weight:500;">West</span></td>
+      <td><span style="color:#14B8A6;font-weight:500;">Wind</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">220 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹2,600</td>
+      <td><span class="status-paid">Paid</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-08</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge ">7</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#103</td>
+      <td><span style="color:#06B6D4;font-weight:500;">East</span></td>
+      <td><span style="color:#14B8A6;font-weight:500;">Wind</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">200 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹2,500</td>
+      <td><span class="status-paid">Paid</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-03</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge ">8</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#109</td>
+      <td><span style="color:#F59E0B;font-weight:500;">South</span></td>
+      <td><span style="color:#F59E0B;font-weight:500;">Solar</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">180 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹2,100</td>
+      <td><span class="status-paid">Paid</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-09</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge ">9</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#106</td>
+      <td><span style="color:#3B82F6;font-weight:500;">North</span></td>
+      <td><span style="color:#F59E0B;font-weight:500;">Solar</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">150 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹1,800</td>
+      <td><span class="status-paid">Paid</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-06</td>
+    </tr>
+    <tr>
+      <td><span class="rank-badge ">10</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-weight:600;">#101</td>
+      <td><span style="color:#F59E0B;font-weight:500;">South</span></td>
+      <td><span style="color:#F59E0B;font-weight:500;">Solar</span></td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;">120 kWh</td>
+      <td style="font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--accent4);">₹1,500</td>
+      <td><span class="status-paid">Paid</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">2024-01-01</td>
+    </tr></tbody>
+    </table>
+  </div>
+
+  <!-- Business Insights -->
+  <div class="chart-card" style="margin-bottom:16px;">
+    <div class="chart-title" style="margin-bottom:12px;">💡 Business Insights &amp; Recommendations</div>
+    <div class="insights-grid" id="insights-grid">
+    <div class="insight-card">
+      <div class="insight-dot" style="background:#EF4444;"></div>
+      <div class="insight-text"><strong>52.7%</strong> of revenue (₹16,700) is stuck in pending payments — immediate collection required.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-dot" style="background:#3B82F6;"></div>
+      <div class="insight-text"><strong>North</strong> is the highest consuming region with <strong>950 kWh</strong> — monitor capacity allocation.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-dot" style="background:#F59E0B;"></div>
+      <div class="insight-text"><strong>Coal</strong> generates maximum revenue (₹13,500) — prioritize coal grid reliability.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-dot" style="background:#F97316;"></div>
+      <div class="insight-text">Customer <strong>#110</strong> is top consumer (500 kWh) with Pending status — highest priority target.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-dot" style="background:#14B8A6;"></div>
+      <div class="insight-text">Wind energy has best revenue/kWh ratio (₹12.14/kWh) — consider expanding Wind infrastructure for margin improvement.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-dot" style="background:#A855F7;"></div>
+      <div class="insight-text">Coal customers have the highest pending rate — correlate energy source with payment behaviour for credit scoring.</div>
+    </div></div>
+  </div>
+</main>
+
+<footer>
+  ⚡ Day 42 / 50 Daily Data Analytics Coding Challenge &nbsp;|&nbsp; Energy Domain &nbsp;|&nbsp;
+  Tools: MySQL · Excel (openpyxl) · Chart.js · HTML/CSS &nbsp;|&nbsp; © 2024
+</footer>
+
+<script>
+// ── Raw Dataset ──────────────────────────────────────────────
+const RAW = [
+  {id:101,region:'South',source:'Solar', cons:120, bill:1500, status:'Paid',    date:'2024-01-01'},
+  {id:102,region:'North',source:'Coal',  cons:300, bill:3500, status:'Pending', date:'2024-01-02'},
+  {id:103,region:'East', source:'Wind',  cons:200, bill:2500, status:'Paid',    date:'2024-01-03'},
+  {id:104,region:'West', source:'Hydro', cons:400, bill:4500, status:'Paid',    date:'2024-01-04'},
+  {id:105,region:'South',source:'Coal',  cons:350, bill:4000, status:'Pending', date:'2024-01-05'},
+  {id:106,region:'North',source:'Solar', cons:150, bill:1800, status:'Paid',    date:'2024-01-06'},
+  {id:107,region:'East', source:'Hydro', cons:280, bill:3200, status:'Pending', date:'2024-01-07'},
+  {id:108,region:'West', source:'Wind',  cons:220, bill:2600, status:'Paid',    date:'2024-01-08'},
+  {id:109,region:'South',source:'Solar', cons:180, bill:2100, status:'Paid',    date:'2024-01-09'},
+  {id:110,region:'North',source:'Coal',  cons:500, bill:6000, status:'Pending', date:'2024-01-10'},
+];
+
+const PALETTE = {
+  blue:'#3B82F6', cyan:'#06B6D4', amber:'#F59E0B', green:'#10B981',
+  red:'#EF4444', orange:'#F97316', purple:'#A855F7', teal:'#14B8A6'
+};
+const REGION_COLORS = {North:PALETTE.blue,South:PALETTE.amber,East:PALETTE.cyan,West:PALETTE.green};
+const SOURCE_COLORS = {Coal:PALETTE.red,Hydro:PALETTE.blue,Solar:PALETTE.amber,Wind:PALETTE.teal};
+
+const chartDefaults = {
+  plugins:{ legend:{ labels:{ color:'#94A3B8', font:{family:'Space Grotesk',size:11}}}},
+  scales:{
+    x:{ ticks:{ color:'#64748B', font:{family:'Space Grotesk',size:10} },
+        grid:{ color:'rgba(36,48,84,0.6)' }},
+    y:{ ticks:{ color:'#64748B', font:{family:'Space Grotesk',size:10} },
+        grid:{ color:'rgba(36,48,84,0.6)' }}
+  }
+};
+
+let charts = {};
+let filtered = [...RAW];
+
+// ── Chart builders ────────────────────────────────────────────
+function buildCharts(data) {
+  Object.values(charts).forEach(c=>c.destroy());
+  charts={};
+
+  // 1. Consumption by Region
+  const regionData = {};
+  data.forEach(r=>{ regionData[r.region]=(regionData[r.region]||0)+r.cons; });
+  const rLabels=Object.keys(regionData), rVals=Object.values(regionData);
+
+  charts.region=new Chart(document.getElementById('chartRegion'),{
+    type:'bar',
+    data:{
+      labels:rLabels,
+      datasets:[{
+        label:'Consumption (kWh)',
+        data:rVals,
+        backgroundColor:rLabels.map(r=>REGION_COLORS[r]||PALETTE.blue),
+        borderRadius:6, borderSkipped:false
+      }]
+    },
+    options:{
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        tooltip:{ callbacks:{ label:ctx=>`${ctx.parsed.x.toLocaleString()} kWh` }}},
+      scales:{
+        x:{ ticks:{color:'#64748B',font:{family:'Space Grotesk',size:10}},
+            grid:{color:'rgba(36,48,84,0.6)'}},
+        y:{ ticks:{color:'#94A3B8',font:{family:'Space Grotesk',size:11}},
+            grid:{display:false}}
+      }
+    }
+  });
+
+  // 2. Revenue by Energy Source
+  const srcData = {};
+  data.forEach(r=>{ srcData[r.source]=(srcData[r.source]||0)+r.bill; });
+  const sLabels=Object.keys(srcData), sVals=Object.values(srcData);
+
+  charts.source=new Chart(document.getElementById('chartSource'),{
+    type:'bar',
+    data:{
+      labels:sLabels,
+      datasets:[{
+        label:'Revenue (₹)',
+        data:sVals,
+        backgroundColor:sLabels.map(s=>SOURCE_COLORS[s]||PALETTE.blue),
+        borderRadius:6, borderSkipped:false
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        tooltip:{ callbacks:{ label:ctx=>`₹${ctx.parsed.y.toLocaleString()}` }}},
+      scales:{
+        x:{ ticks:{color:'#94A3B8',font:{family:'Space Grotesk',size:11}},grid:{display:false}},
+        y:{ ticks:{color:'#64748B',font:{family:'Space Grotesk',size:10},
+              callback:v=>`₹${(v/1000).toFixed(0)}K`},
+            grid:{color:'rgba(36,48,84,0.6)'}}
+      }
+    }
+  });
+
+  // 3. Trend Line (always use sorted by date)
+  const sorted=[...data].sort((a,b)=>a.date.localeCompare(b.date));
+  charts.trend=new Chart(document.getElementById('chartTrend'),{
+    type:'line',
+    data:{
+      labels:sorted.map(r=>`Jan ${r.date.slice(8)}`),
+      datasets:[{
+        label:'Consumption (kWh)',
+        data:sorted.map(r=>r.cons),
+        borderColor:PALETTE.blue, backgroundColor:'rgba(59,130,246,0.1)',
+        borderWidth:2.5, pointBackgroundColor:PALETTE.blue, pointRadius:5,
+        fill:true, tension:0.35
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        tooltip:{ callbacks:{ label:ctx=>`${ctx.parsed.y} kWh` }}},
+      scales:{
+        x:{ ticks:{color:'#64748B',font:{family:'Space Grotesk',size:10}},grid:{color:'rgba(36,48,84,0.4)'}},
+        y:{ ticks:{color:'#64748B',font:{family:'Space Grotesk',size:10}},grid:{color:'rgba(36,48,84,0.6)'}}
+      }
+    }
+  });
+
+  // 4. Payment Pie
+  const paidCount=data.filter(r=>r.status==='Paid').length;
+  const pendCount=data.filter(r=>r.status==='Pending').length;
+  charts.pie=new Chart(document.getElementById('chartPie'),{
+    type:'doughnut',
+    data:{
+      labels:['Paid','Pending'],
+      datasets:[{
+        data:[paidCount,pendCount],
+        backgroundColor:[PALETTE.green,PALETTE.red],
+        borderWidth:3, borderColor:'#1A2540', hoverOffset:8
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:'bottom', labels:{ color:'#94A3B8',font:{family:'Space Grotesk',size:11},padding:16 }},
+        tooltip:{ callbacks:{ label:ctx=>`${ctx.label}: ${ctx.raw} customers` }}
+      },
+      cutout:'65%'
+    }
+  });
+}
+
+// ── Stat Bars ─────────────────────────────────────────────────
+function renderStatBars(data) {
+  // Source efficiency
+  const srcCons={}, srcBill={};
+  data.forEach(r=>{
+    srcCons[r.source]=(srcCons[r.source]||0)+r.cons;
+    srcBill[r.source]=(srcBill[r.source]||0)+r.bill;
+  });
+  const srcEff=Object.keys(srcCons).map(s=>({
+    label:s, val:+(srcBill[s]/srcCons[s]).toFixed(2)
+  })).sort((a,b)=>b.val-a.val);
+  const maxEff=Math.max(...srcEff.map(e=>e.val));
+
+  document.getElementById('source-bars').innerHTML=srcEff.map(e=>`
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">${e.label}</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:${(e.val/maxEff*100).toFixed(1)}%;
+          background:${SOURCE_COLORS[e.label]||PALETTE.blue};"></div>
+      </div>
+      <span class="stat-bar-val">₹${e.val}/kWh</span>
+    </div>`).join('');
+
+  // Region share
+  const rCons={};
+  data.forEach(r=>{ rCons[r.region]=(rCons[r.region]||0)+r.cons; });
+  const total=data.reduce((s,r)=>s+r.cons,0)||1;
+  const rShare=Object.keys(rCons).map(r=>({
+    label:r, val:rCons[r], pct:+(rCons[r]/total*100).toFixed(1)
+  })).sort((a,b)=>b.val-a.val);
+
+  document.getElementById('region-bars').innerHTML=rShare.map(r=>`
+    <div class="stat-bar-row">
+      <span class="stat-bar-label">${r.label}</span>
+      <div class="stat-bar-track">
+        <div class="stat-bar-fill" style="width:${r.pct}%;
+          background:${REGION_COLORS[r.label]||PALETTE.blue};"></div>
+      </div>
+      <span class="stat-bar-val">${r.pct}%</span>
+    </div>`).join('');
+}
+
+// ── KPI Update ────────────────────────────────────────────────
+function updateKPIs(data) {
+  const totalCons=data.reduce((s,r)=>s+r.cons,0);
+  const totalRev=data.reduce((s,r)=>s+r.bill,0);
+  const pending=data.filter(r=>r.status==='Pending');
+  const pendRev=pending.reduce((s,r)=>s+r.bill,0);
+  const avgCons=data.length?+(totalCons/data.length).toFixed(0):0;
+  const pendPct=totalRev?(pendRev/totalRev*100).toFixed(2):'0.00';
+
+  document.getElementById('kpi-consumption').textContent=totalCons.toLocaleString();
+  document.getElementById('kpi-revenue').textContent=`₹${totalRev.toLocaleString()}`;
+  document.getElementById('kpi-pending').textContent=pending.length;
+  document.getElementById('kpi-pending-sub').textContent=`₹${pendRev.toLocaleString()} at risk · ${pendPct}%`;
+  document.getElementById('kpi-avg').textContent=avgCons.toLocaleString();
+  document.getElementById('filter-count').textContent=`Showing ${data.length} of ${RAW.length} records`;
+}
+
+// ── Table ─────────────────────────────────────────────────────
+function renderTable(data) {
+  const sorted=[...data].sort((a,b)=>b.cons-a.cons);
+  const rankClass={1:'rank-1',2:'rank-2',3:'rank-3'};
+  document.getElementById('table-body').innerHTML=sorted.map((r,i)=>`
+    <tr>
+      <td><span class="rank-badge ${rankClass[i+1]||''}">${i+1}</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;font-weight:600;">#${r.id}</td>
+      <td><span style="color:${REGION_COLORS[r.region]};font-weight:500;">${r.region}</span></td>
+      <td><span style="color:${SOURCE_COLORS[r.source]||'#94A3B8'};font-weight:500;">${r.source}</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;">${r.cons.toLocaleString()} kWh</td>
+      <td style="font-family:'JetBrains Mono',monospace;color:var(--accent4);">₹${r.bill.toLocaleString()}</td>
+      <td><span class="status-${r.status.toLowerCase()}">${r.status}</span></td>
+      <td style="color:var(--text3);font-size:0.78rem;">${r.date}</td>
+    </tr>`).join('');
+}
+
+// ── Insights ─────────────────────────────────────────────────
+function renderInsights(data) {
+  const totalRev=data.reduce((s,r)=>s+r.bill,0);
+  const pendRev=data.filter(r=>r.status==='Pending').reduce((s,r)=>s+r.bill,0);
+  const pendPct=totalRev?(pendRev/totalRev*100).toFixed(1):'0.0';
+
+  const rCons={};
+  data.forEach(r=>{ rCons[r.region]=(rCons[r.region]||0)+r.cons; });
+  const topRegion=Object.entries(rCons).sort((a,b)=>b[1]-a[1])[0];
+
+  const sRev={};
+  data.forEach(r=>{ sRev[r.source]=(sRev[r.source]||0)+r.bill; });
+  const topSource=Object.entries(sRev).sort((a,b)=>b[1]-a[1])[0];
+
+  const topCustomer=[...data].sort((a,b)=>b.cons-a.cons)[0];
+
+  const insights=[
+    {color:PALETTE.red, text:`<strong>${pendPct}%</strong> of revenue (₹${pendRev.toLocaleString()}) is stuck in pending payments — immediate collection required.`},
+    {color:PALETTE.blue, text:`<strong>${topRegion?topRegion[0]:'—'}</strong> is the highest consuming region with <strong>${topRegion?topRegion[1].toLocaleString():0} kWh</strong> — monitor capacity allocation.`},
+    {color:PALETTE.amber, text:`<strong>${topSource?topSource[0]:'—'}</strong> generates maximum revenue (₹${topSource?topSource[1].toLocaleString():0}) — prioritize coal grid reliability.`},
+    {color:PALETTE.orange, text:`Customer <strong>#${topCustomer?topCustomer.id:'—'}</strong> is top consumer (${topCustomer?topCustomer.cons:0} kWh) with ${topCustomer?topCustomer.status:'—'} status — highest priority target.`},
+    {color:PALETTE.teal, text:`Wind energy has best revenue/kWh ratio (₹12.14/kWh) — consider expanding Wind infrastructure for margin improvement.`},
+    {color:PALETTE.purple, text:`Coal customers have the highest pending rate — correlate energy source with payment behaviour for credit scoring.`},
+  ];
+
+  document.getElementById('insights-grid').innerHTML=insights.map(ins=>`
+    <div class="insight-card">
+      <div class="insight-dot" style="background:${ins.color};"></div>
+      <div class="insight-text">${ins.text}</div>
+    </div>`).join('');
+}
+
+// ── Filter logic ──────────────────────────────────────────────
+function applyFilters() {
+  const r=document.getElementById('filterRegion').value;
+  const s=document.getElementById('filterSource').value;
+  const st=document.getElementById('filterStatus').value;
+  filtered=RAW.filter(d=>
+    (r==='All'||d.region===r) &&
+    (s==='All'||d.source===s) &&
+    (st==='All'||d.status===st)
+  );
+  updateKPIs(filtered);
+  buildCharts(filtered);
+  renderStatBars(filtered);
+  renderTable(filtered);
+  renderInsights(filtered);
+}
+
+function resetFilters() {
+  document.getElementById('filterRegion').value='All';
+  document.getElementById('filterSource').value='All';
+  document.getElementById('filterStatus').value='All';
+  applyFilters();
+}
+
+// ── Init ──────────────────────────────────────────────────────
+applyFilters();
+</script>
+
+
+</body></html>
