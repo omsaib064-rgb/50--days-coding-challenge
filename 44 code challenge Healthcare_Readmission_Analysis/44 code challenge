@@ -1,0 +1,156 @@
+Healthcare Patient Readmission Analysis
+📌 Project Overview
+
+This project focuses on analyzing hospital patient data to identify the key factors causing frequent patient readmissions. The analysis helps healthcare management improve patient care, reduce readmission rates, optimize treatment costs, and monitor doctor performance.
+
+The project includes:
+
+• Data Cleaning
+• Exploratory Data Analysis
+• Data Visualization
+• Healthcare Insights
+• Business Recommendations
+
+🎯 Problem Statement
+
+Hospitals face challenges with repeated patient admissions. This project aims to:
+
+✅ Identify diseases with high readmission rates
+✅ Analyze patient age patterns
+✅ Evaluate doctor recovery performance
+✅ Study treatment cost impact on recovery
+✅ Generate healthcare management insights
+
+📂 Dataset Information
+
+The dataset contains:
+
+• Patient ID
+• Age
+• Disease
+• Admission Date
+• Readmission Status
+• Treatment Cost
+• Doctor Assigned
+• Recovery Days
+
+Dataset Source:
+
+Kaggle Diabetes Readmission Dataset
+
+🛠 Technologies Used
+Technology	Purpose
+Python	Data Analysis
+Pandas	Data Cleaning
+NumPy	Numerical Operations
+Matplotlib	Data Visualization
+Seaborn	Statistical Visualization
+Jupyter Notebook	Development Environment
+📊 Project Workflow
+1️⃣ Data Import
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+2️⃣ Load Dataset
+df = pd.read_csv(r"C:\Users\dell\Downloads\diabetic-patient-readmission-prediction.csv")
+3️⃣ Data Cleaning
+
+• Handle missing medical records
+• Remove duplicate values
+• Standardize disease names
+• Fix inconsistent data types
+
+df.isnull().sum()
+4️⃣ Exploratory Data Analysis
+
+Performed analysis on:
+
+• Patient age distribution
+• Disease wise readmission
+• Treatment costs
+• Recovery duration
+• Doctor performance
+
+📈 Visualizations
+
+The project includes:
+
+✅ Readmission by Disease
+✅ Patient Age Distribution
+✅ Recovery Trend Analysis
+✅ Cost Analysis Dashboard
+✅ Treatment Cost vs Recovery Scatter Plot
+
+🔍 Key Insights
+🩺 Diseases with Highest Readmission
+
+• Diabetes
+• Heart Disease
+• Kidney Disorders
+
+👨‍⚕️ Doctor Performance
+
+Some doctors achieved faster patient recovery times, indicating more effective treatment approaches.
+
+💰 Treatment Cost Analysis
+
+Higher treatment cost does not always guarantee faster recovery.
+
+👴 Age Analysis
+
+Elderly patients showed higher readmission probability compared to younger patients.
+
+📌 Business Recommendations
+
+✅ Improve follow up care for high risk patients
+✅ Implement predictive healthcare monitoring
+✅ Optimize expensive treatment procedures
+✅ Share best practices from top performing doctors
+✅ Focus on elderly patient care management
+
+📷 Sample Dashboard Features
+
+• Total Patients
+• Readmission Rate
+• Average Recovery Days
+• Total Treatment Cost
+• Disease Wise Analysis
+• Doctor Performance Metrics
+
+🚀 Future Enhancements
+
+• Machine Learning Prediction Models
+• Real Time Hospital Dashboard
+• Automated Healthcare Reporting
+• Patient Risk Scoring System
+
+📁 Project Structure
+Healthcare_Readmission_Analysis/
+│
+├── diabetic-patient-readmission-prediction.ipynb
+├── dataset.csv
+├── README.md
+├── visualizations/
+└── reports/
+▶️ How to Run
+Clone Repository
+git clone https://github.com/yourusername/Healthcare_Readmission_Analysis.git
+Install Dependencies
+pip install pandas numpy matplotlib seaborn
+Run Notebook
+jupyter notebook
+📚 Learning Outcomes
+
+Through this project, I learned:
+
+• Healthcare data analysis
+• Data cleaning techniques
+• Exploratory Data Analysis
+• Data visualization
+• Business storytelling
+• Insight generation
+
+🤝 Contributing
+
+Contributions and suggestions are welcome.
