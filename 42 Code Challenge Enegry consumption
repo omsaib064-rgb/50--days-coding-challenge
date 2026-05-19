@@ -1,0 +1,108 @@
+# ⚡ Day 42 / 50 — Energy Domain Challenge (SQL + Power BI)
+
+## 📌 Problem Statement
+Working as a **Data Analyst at an Energy Company** to analyze electricity consumption,
+revenue, and customer behavior to **optimize energy distribution** and **increase profitability**.
+
+---
+
+## 🗂️ Deliverables
+
+| File | Description |
+|------|-------------|
+| `Day42_Energy_SQL.sql` | Complete MySQL script — DDL, DML, all queries |
+| `Day42_Energy_Analysis.xlsx` | 4-sheet Excel workbook with charts & KPI dashboard |
+| `Day42_Energy_Dashboard.html` | Interactive Power BI-equivalent dashboard (Chart.js) |
+
+---
+
+## 📊 Dataset Overview
+
+| Attribute | Details |
+|-----------|---------|
+| Records | 10 Customers |
+| Date Range | Jan 01–10, 2024 |
+| Regions | North, South, East, West |
+| Energy Sources | Solar, Coal, Wind, Hydro |
+| Payment Statuses | Paid (6), Pending (4) |
+
+---
+
+## 🔑 Key KPIs
+
+| KPI | Value |
+|-----|-------|
+| Total Consumption | **2,700 kWh** |
+| Total Revenue | **₹31,700** |
+| Pending Payments | **4 customers** |
+| Avg Consumption | **270 kWh** |
+| Revenue at Risk | **₹16,700 (52.68%)** |
+
+---
+
+## 📍 SQL Queries Covered
+
+### Basic Analysis
+- Total electricity consumption
+- Total revenue generated
+
+### Group By Analysis
+- Consumption by Region
+- Revenue by Energy Source
+
+### Business Questions
+- Highest consuming region
+- Pending payment count & revenue at risk
+- Average billing per customer
+- Top 3 customers by consumption
+- Payment status revenue split
+
+### Advanced Analysis
+- Revenue per kWh (source efficiency)
+- Region-wise payment recovery rate
+- Consumption trend with running total (Window Function)
+- Customer ranking within region (RANK + PARTITION BY)
+
+---
+
+## 📈 Business Insights
+
+1. 🔴 **North** is the highest consuming region (950 kWh, 35.19%)
+2. 💰 **Coal** generates maximum revenue (₹13,500, 42.59%)
+3. ⏳ **52.68%** of revenue is stuck in pending payments (₹16,700)
+4. 🎯 **Payment recovery priority**: Customer 110 > 105 > 102 > 107
+5. 📈 **Consumption trend**: Volatile (120→500 kWh), peaking on Jan 10
+6. ✅ **Wind energy** has best revenue/kWh ratio (₹12.14) — expand for margins
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Tools |
+|-------|-------|
+| Database | MySQL 8.0 |
+| Spreadsheet | Excel (openpyxl 3.x) |
+| Visualization | Chart.js 4.x (HTML Dashboard) |
+| Analysis | Python (pandas logic) |
+
+---
+
+## 📁 Excel Workbook Structure
+
+- **Sheet 1 — Raw Data**: Full dataset with formatted table
+- **Sheet 2 — SQL Analysis**: All query results (region, source, top 3, trend)
+- **Sheet 3 — KPI Summary**: 6 KPI cards + region breakdown + business insights
+- **Sheet 4 — Charts**: 4 Excel charts (Bar, Column, Pie, Line)
+
+---
+
+## 🔗 GitHub
+Repository: `omsaib064-rgb/daily-coding-challenge`
+Folder: `Day42/`
+
+☸️☸️☸️☸️☸️☸️LINK☸️☸️☸️
+
+https://drive.google.com/file/d/1XX0gpy2fKeUtYAF-WaDp-McPID9UcnXp/view?usp=sharing
+https://docs.google.com/spreadsheets/d/1LUnQtfO2liv_26RR_cdWRogP-WoG_z3E/edit?usp=sharing&ouid=107125194133694085286&rtpof=true&sd=true
+
+
