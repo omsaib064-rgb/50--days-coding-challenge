@@ -1,0 +1,270 @@
+# 🛒 Day 43 — E-Commerce Sales Analysis | Profit Diagnostic
+
+> **50-Day Real-Time Data Analyst Coding Challenge**
+> Role: Junior Data Analyst | Domain: E-Commerce | Difficulty: ⭐⭐⭐
+
+---
+
+## 📌 Problem Statement
+
+An online retail company is facing **declining profits despite increasing sales**.
+As a Junior Data Analyst, the task is to diagnose *why* profit is eroding and deliver
+data-backed recommendations to the business.
+
+**Business Questions to Answer:**
+- Which products are destroying profit?
+- Are discounts helping or hurting the business?
+- Which region performs worst — and why?
+
+---
+
+## 📂 Dataset
+
+| Property | Detail |
+|---|---|
+| **Source** | [Kaggle — Sample Supermarket Dataset](https://www.kaggle.com/datasets/bravehart101/sample-supermarket-dataset) |
+| **File** | `SampleSuperstore.csv` |
+| **Raw Records** | 9,994 rows |
+| **After Cleaning** | 9,977 rows |
+| **Columns** | 13 |
+
+### Columns Used
+
+| Column | Type | Description |
+|---|---|---|
+| `Ship Mode` | Categorical | Shipping method selected |
+| `Segment` | Categorical | Customer type (Consumer / Corporate / Home Office) |
+| `Region` | Categorical | US region (East / West / Central / South) |
+| `Category` | Categorical | Product category (Furniture / Office Supplies / Technology) |
+| `Sub-Category` | Categorical | 17 product sub-categories |
+| `Sales` | Float | Revenue per order line |
+| `Quantity` | Int | Units sold |
+| `Discount` | Float | Discount applied (0.0 – 0.8) |
+| `Profit` | Float | Net profit per order line |
+
+---
+
+## 🧹 Task 1 — Data Cleaning
+
+| Step | Finding | Action |
+|---|---|---|
+| Duplicate Orders | **17 duplicate rows** detected | Removed → 9,977 clean records |
+| Missing Values | **Zero nulls** across all 13 columns | No imputation needed |
+| Data Types | All numeric columns correctly typed | Verified float/int consistency |
+| Discount Range | Values between 0.0 and 0.8 | No out-of-range anomalies |
+
+```python
+import pandas as pd
+
+df = pd.read_csv('SampleSuperstore.csv')
+print(f"Raw shape: {df.shape}")          # (9994, 13)
+
+df = df.drop_duplicates()
+print(f"Clean shape: {df.shape}")        # (9977, 13)
+
+print(df.isnull().sum())                 # All zeros — no missing values
+```
+
+---
+
+## 🔍 Task 2 — Exploratory Data Analysis (EDA)
+
+### 📊 KPI Summary
+
+| Metric | Value |
+|---|---|
+| Total Sales | **$2,296,195** |
+| Total Profit | **$286,241** |
+| Overall Margin | **12.4%** |
+| Loss-Making Orders | **1,869 (18.7%)** |
+| Worst Sub-Category | **Tables (−$17,725)** |
+| Best Sub-Category | **Copiers (+$55,618)** |
+
+---
+
+### 🏷️ Profit by Category
+
+| Category | Sales | Profit | Margin |
+|---|---|---|---|
+| Technology | $836,154 | $145,455 | **17.40%** |
+| Office Supplies | $718,735 | $122,365 | **17.02%** |
+| Furniture | $741,306 | $18,422 | **2.49%** ⚠️ |
+
+> **Key Finding:** Furniture generates the second-highest revenue but delivers a near-zero 2.49% margin — 7× lower than Technology.
+
+---
+
+### 📍 Profit by Region
+
+| Region | Sales | Profit | Margin |
+|---|---|---|---|
+| West | $725,256 | $108,330 | 14.9% ✅ |
+| East | $678,435 | $91,506 | 13.5% ✅ |
+| South | $391,722 | $46,749 | 11.9% 🟡 |
+| Central | $500,783 | $39,656 | **7.9%** ⚠️ |
+
+---
+
+### 📉 Sub-Category Deep Dive
+
+| Sub-Category | Category | Sales | Profit | Margin | Status |
+|---|---|---|---|---|---|
+| Tables | Furniture | $206,966 | **−$17,725** | −8.56% | 🔴 Loss |
+| Bookcases | Furniture | $114,880 | **−$3,473** | −3.02% | 🔴 Loss |
+| Supplies | Office | $46,674 | **−$1,189** | −2.55% | 🔴 Loss |
+| Machines | Technology | $189,239 | $3,385 | 1.79% | 🟡 Weak |
+| Chairs | Furniture | $327,778 | $26,567 | 8.11% | 🟡 OK |
+| Phones | Technology | $330,007 | $44,516 | 13.49% | ✅ Good |
+| Copiers | Technology | $149,528 | $55,618 | **37.19%** | 🟢 Star |
+
+---
+
+### 💸 Discount vs Profit Analysis
+
+**Correlation: −0.22** — Discounting negatively correlates with profit.
+
+| Discount Bucket | Cumulative Profit | Status |
+|---|---|---|
+| 0% | +$320,844 | 🟢 Excellent |
+| 1–10% | +$9,029 | 🟢 Positive |
+| 11–20% | +$91,726 | 🟢 Positive |
+| 21–30% | **−$10,357** | 🔴 Loss zone |
+| 31–50% | **−$48,448** | 🔴 Danger |
+| 51%+ | **−$76,553** | 🔴 Critical |
+
+> **Key Finding:** Every discount bracket above 30% is cumulatively loss-making.
+> The 51%+ bucket alone destroys **$76,553** in profit annually.
+
+---
+
+### 🗺️ Worst Performing States
+
+| State | Profit |
+|---|---|
+| Texas | **−$25,751** |
+| Ohio | **−$16,959** |
+| Pennsylvania | **−$15,565** |
+| Illinois | **−$12,602** |
+| North Carolina | −$7,491 |
+
+---
+
+## 📊 Task 3 — Visualizations
+
+All charts rendered interactively in the HTML dashboard using **Chart.js**.
+
+| # | Chart | Type | Key Insight |
+|---|---|---|---|
+| 1 | Sub-Category Profit | Horizontal Bar | Tables & Bookcases in the red |
+| 2 | Category Profit vs Sales | Grouped Bar | Furniture volume ≠ profit |
+| 3 | Region Performance | Bar | Central trails the pack |
+| 4 | Discount vs Profit | Bubble Scatter | Clear negative relationship |
+| 5 | Discount Bucket Breakdown | Bar | 30%+ guarantees losses |
+| 6 | Segment Contribution | Donut | Consumer = 47% of profit |
+| 7 | Worst 8 States | Horizontal Bar | Texas leads losses |
+| 8 | Margin by Sub-Category | Horizontal Bar | Spectrum from −8.6% to +37% |
+
+---
+
+## 💡 Task 4 — Business Insights
+
+### 🔥 Insight 1 — Tables Are a Profit Black Hole
+Tables generate **$207K in revenue** yet lose **$17,725**.
+With an average discount of **26.1%** — the highest in the catalog — every Tables order is statistically unprofitable.
+
+### ⚠️ Insight 2 — Discounts Are Hurting, Not Helping
+Aggressive discounting is being used as a volume driver but is destroying margins.
+Orders above 50% discount lose **$76.5K cumulatively**. The strategy is backfiring.
+
+### 📍 Insight 3 — Central Region Is the Weak Link
+Central earns only **$39.6K profit on $500K sales** — a 7.9% margin, barely half that of the West (14.9%).
+Over-reliance on discounted Furniture is likely the root cause.
+
+### 🏆 Insight 4 — Copiers & Technology Are the Stars
+Copiers deliver a **37.2% margin** — the best in the business.
+Technology earns **$145K profit on $836K sales**. Expanding this category is the fastest margin recovery path.
+
+### 🗺️ Insight 5 — Texas & Ohio Drag National Numbers
+These two states alone lose **$42,710 per year**. No regional pricing strategy appears to be active.
+
+### 📦 Insight 6 — Furniture Is Near-Breakeven at Scale
+With **$741K in revenue** and only **$18,422 in profit**, Furniture consumes operational resources (warehouse, logistics, support) while returning almost nothing financially.
+
+---
+
+## 📖 Task 5 — Business Storytelling
+
+### Chapter 1: Sales Rose. Profits Didn't Follow.
+The company achieved $2.3M in total sales — a number leadership celebrated. But beneath the headline, only $286K in profit remained. Of 9,977 orders, **1,869 (18.7%) lost money**. For nearly 1 in 5 transactions, the company was paying to serve its customers.
+
+### Chapter 2: The Discount Trap
+To maintain sales momentum, the team leaned on discounting. But the data reveals a brutal truth: discounts above 30% guarantee cumulative losses. The 51%+ discount bucket alone destroyed **$76,553 in annual profit**. Discounting was used as a volume lever — but it was actually a profit accelerant in reverse.
+
+### Chapter 3: Furniture — The Category Anchor
+Furniture is the company's second-largest revenue category at $741K — yet it contributes just **$18.4K in profit**. Tables alone lose $17,725. The category is a strategic dead weight: it consumes space, logistics cost, and attention while delivering near-zero financial return.
+
+### Chapter 4: Geography Compounds the Problem
+The Central region's 7.9% margin is less than half that of the West. States like Texas (−$25.7K), Ohio (−$16.9K), and Pennsylvania (−$15.5K) are not just underperforming — they are actively destroying national profitability. No regional pricing or discount guardrails appear to be in place.
+
+---
+
+## ✅ Task 6 — Recommendations
+
+| # | Recommendation | Expected Impact |
+|---|---|---|
+| 01 | **Cap all discounts at 25%** — require VP approval for exceptions | Recover $76K+ from 51%+ bucket |
+| 02 | **Reprice or discontinue Tables** — 15–20% price increase or SKU rationalization | Eliminate $17.7K annual loss |
+| 03 | **Shift marketing investment to Technology** — especially Copiers & Accessories | Scale highest-margin category (37%+) |
+| 04 | **Introduce regional price floors in TX, OH, PA** — target the $58K loss cluster | Recover losses at state level |
+| 05 | **Quarterly discount audits** — flag sub-categories where avg discount >20% and margin <10% | Systematic guardrails |
+| 06 | **Review Bookcases & Supplies supplier contracts** — bundling or renegotiation | Convert two loss subs to breakeven |
+
+---
+
+## 📁 Project Structure
+
+```
+Day43_Ecommerce_Analysis/
+│
+├── 📄 README.md                        ← This file
+├── 📊 Day43_Ecommerce_Dashboard.html   ← Interactive dashboard (Chart.js)
+├── 📋 SampleSuperstore.csv             ← Cleaned dataset
+└── 🐍 Day43_Analysis.py               ← Python EDA script (optional)
+```
+
+---
+
+## 🛠️ Tools & Technologies
+
+| Tool | Purpose |
+|---|---|
+| Python 3.x | Data cleaning & EDA |
+| Pandas | Data manipulation |
+| Chart.js | Interactive visualizations |
+| HTML / CSS | Dashboard layout & styling |
+| GitHub | Version control & portfolio |
+
+---
+
+## 📈 Key Takeaways
+
+```
+✅ Clean data first — 17 duplicates were silently distorting every metric
+✅ Revenue without margin context is meaningless — Furniture proved this
+✅ Discount strategy needs data guardrails — not just sales intuition
+✅ Geography matters — same products perform very differently by region
+✅ A single bad sub-category (Tables) can anchor an entire category's P&L
+```
+
+---
+
+## 🔗 Connect
+
+**Author:** Upendrachary
+**GitHub:** [omsaib064-rgb](https://github.com/omsaib064-rgb)
+**Repository:** [daily-coding-challenge](https://github.com/omsaib064-rgb/daily-coding-challenge)
+**Challenge:** 50-Day Real-Time Data Analyst Coding Challenge
+
+---
+
+*Day 43 of 50 — E-Commerce Sales Analysis | Sample Superstore | 2025*
