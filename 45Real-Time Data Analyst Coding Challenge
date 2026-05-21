@@ -1,0 +1,164 @@
+🎬 OTT Streaming Platform Churn Analysis
+📌 Project Overview
+
+This project analyzes user behavior on an OTT streaming platform to understand why subscribers cancel their subscriptions. The analysis focuses on watch time, subscription plans, genres, engagement levels, and churn patterns.
+
+The goal is to generate business insights and recommend retention strategies that help reduce customer churn and improve user engagement.
+
+📂 Dataset Information
+
+Dataset includes:
+
+User ID
+Watch Time
+Subscription Type
+Genre Watched
+Monthly Charges
+Cancellation Status
+
+Dataset Source:
+Netflix Userbase Dataset
+
+🎯 Project Objectives
+Handle missing watch history data
+Analyze viewing behavior
+Identify churn patterns
+Segment users by engagement
+Discover high retention genres
+Find ideal watch time range
+Create executive level business insights
+🛠️ Technologies Used
+Python
+Pandas
+NumPy
+Matplotlib
+Seaborn
+SQL
+Power BI
+Jupyter Notebook
+📊 Exploratory Data Analysis
+Key Analysis Performed
+✅ Churn Analysis
+Total cancelled users
+Churn percentage
+Churn by subscription plan
+✅ Genre Popularity Analysis
+Most watched genres
+Genre wise retention analysis
+✅ Watch Time Analysis
+Watch time distribution
+Watch time vs churn relationship
+✅ Engagement Segmentation
+
+Users categorized into:
+
+Low Engagement
+Medium Engagement
+High Engagement
+📈 Visualizations
+
+Project includes:
+
+Churn Analysis Dashboard
+Genre Popularity Chart
+Watch Time Distribution
+Subscription Plan Analysis
+Engagement Level Charts
+Cancellation Trends
+🔍 Key Insights
+📌 Subscription Plans
+Certain subscription plans show higher cancellation rates
+Premium users demonstrate better retention
+📌 Watch Time
+Users with lower watch time are more likely to cancel
+Moderate to high watch time users retain longer
+📌 Genre Retention
+Some genres significantly improve user retention
+Entertainment preference impacts churn behavior
+📌 Engagement
+Low engagement users are high risk customers
+💡 Business Recommendations
+✅ Personalized Recommendations
+
+Recommend content based on viewing behavior.
+
+✅ Improve User Engagement
+Push notifications
+Trending recommendations
+Personalized emails
+✅ Subscription Optimization
+
+Enhance features for high churn plans.
+
+✅ Retention Campaigns
+
+Target low engagement users with offers and promotions.
+
+🧠 Machine Learning Extension
+
+This project can be extended using machine learning models to predict churn:
+
+Logistic Regression
+Random Forest
+XGBoost
+Decision Tree
+📁 Project Structure
+OTT-Churn-Analysis/
+│
+├── data/
+│   └── netflix_user_behavior_churn_50000.csv
+│
+├── notebooks/
+│   └── ott_churn_analysis.ipynb
+│
+├── dashboard/
+│   └── powerbi_dashboard.pbix
+│
+├── visuals/
+│   └── charts_images
+│
+├── README.md
+│
+└── requirements.txt
+▶️ How to Run the Project
+1️⃣ Clone Repository
+git clone https://github.com/yourusername/OTT-Churn-Analysis.git
+2️⃣ Install Libraries
+pip install pandas numpy matplotlib seaborn
+3️⃣ Run Jupyter Notebook
+jupyter notebook
+📌 Sample Python Libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+📊 Power BI Dashboard
+
+Dashboard contains:
+
+KPI Cards
+Churn Rate
+Genre Analysis
+Subscription Insights
+Engagement Segmentation
+Watch Time Analytics
+🚀 Future Improvements
+Real time streaming analytics
+Advanced churn prediction
+Recommendation system integration
+User sentiment analysis
+Time series forecasting
+👨‍💻 Author
+
+OTT Streaming Platform Churn Analysis Project
+Data Analyst Portfolio Project
+
+⭐ Conclusion
+
+This project demonstrates how data analytics can help OTT platforms improve customer retention, reduce churn, and enhance user experience through data driven decision making.
+
+
+🎯🎯🎯LINK☸️☸️☸️
+
+https://docs.google.com/spreadsheets/d/1MdVTugkKmxGKZrEOh7XeV738KMLM2NmgATRxV_8NQNk/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1QSJbZikUrCf6LkKfsiHpP-Ab_aDBHtfqRJCa5io_Ans/edit?usp=sharing
