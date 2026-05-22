@@ -1,0 +1,256 @@
+# ✈️ Day 23 — Airline Delay Analysis
+
+> **30-Day Data Analytics Challenge** · Day 23 of 30  
+> `#DataAnalytics` `#Python` `#Excel` `#BTS` `#FlightDelay` `#EDA`
+
+---
+
+## 📌 Project Overview
+
+A comprehensive end-to-end analysis of **U.S. airline flight delays** using 11 years of data (2013–2023) sourced from the Bureau of Transportation Statistics (BTS). The project identifies the root causes of flight delays, ranks airports and carriers by delay volume, uncovers seasonal patterns, and delivers actionable delay-reduction recommendations.
+
+---
+
+## 🎯 Problem Statement
+
+An airline company faces frequent flight delays. The goal is to:
+
+- ✅ Identify the **root causes** of delays (carrier, weather, NAS, late aircraft, security)
+- ✅ Rank **airports** by delay severity and volume
+- ✅ Analyze **carrier performance** across all 23 U.S. airlines
+- ✅ Detect **seasonal and time-based** delay patterns
+- ✅ Present **data-driven recommendations** to reduce delays
+
+---
+
+## 📂 Repository Structure
+
+```
+Day23-Airline-Delay-Analysis/
+│
+├── 📄 README.md                                  ← This file
+│
+├── 📁 data/
+│   └── Airline_Delay_Cause.csv                   ← Source dataset (BTS, 171,666 records)
+│
+├── 📁 outputs/
+│   ├── Airline_Delay_Analysis_Workbook.xlsx       ← 6-sheet Excel workbook
+│   └── Airline_Delay_Dashboard.html              ← Interactive HTML dashboard
+│
+└── 📁 docs/
+    └── Airline_Delay_Analysis.pdf                ← Project brief / scenario
+```
+
+---
+
+## 📊 Dataset Details
+
+| Attribute       | Value                                |
+|----------------|--------------------------------------|
+| **Source**      | U.S. Bureau of Transportation Statistics (BTS) |
+| **Records**     | 171,666 rows                         |
+| **Time Period** | 2013 – 2023 (11 years)               |
+| **Airports**    | 395 unique airports                  |
+| **Carriers**    | 23 airlines                          |
+| **Null Values** | ~240 rows (handled by dropping NaN)  |
+
+### Key Columns
+
+| Column | Description |
+|--------|-------------|
+| `year`, `month` | Time dimension |
+| `carrier`, `carrier_name` | Airline code and name |
+| `airport`, `airport_name` | Airport code and full name |
+| `arr_flights` | Total arriving flights |
+| `arr_del15` | Flights delayed ≥ 15 minutes |
+| `arr_delay` | Total arrival delay in minutes |
+| `carrier_delay` | Minutes due to carrier issues |
+| `weather_delay` | Minutes due to weather |
+| `nas_delay` | Minutes due to National Airspace System |
+| `security_delay` | Minutes due to security |
+| `late_aircraft_delay` | Minutes due to late incoming aircraft |
+| `arr_cancelled` | Number of cancelled flights |
+
+---
+
+## 📈 Key Findings
+
+### 🔢 KPIs at a Glance
+
+| Metric | Value |
+|--------|-------|
+| Total Flights Analyzed | 62,144,776 |
+| Total Delayed Flights (≥15 min) | 11,375,095 |
+| **Overall Delay Rate** | **18.3%** — 1 in 5 flights is late |
+| Total Delay Time | 726,758,355 minutes (~1,382 years!) |
+| Average Delay per Delayed Flight | 63.9 minutes |
+| Total Cancellations | 1,288,913 (2.1%) |
+
+---
+
+### 🏙️ Which Airports Delay Most?
+
+| Rank | Airport | City | Total Delay (M min) |
+|------|---------|------|-------------------|
+| 1 | **ORD** | Chicago O'Hare | 40.51 |
+| 2 | **DFW** | Dallas/Fort Worth | 36.40 |
+| 3 | **ATL** | Atlanta Hartsfield-Jackson | 34.96 |
+| 4 | DEN | Denver International | 28.01 |
+| 5 | SFO | San Francisco International | 23.69 |
+| 6 | LAX | Los Angeles International | 23.41 |
+| 7 | EWR | Newark Liberty | 21.36 |
+| 8 | LGA | LaGuardia, New York | 19.60 |
+| 9 | MCO | Orlando International | 17.62 |
+| 10 | BOS | Boston Logan | 17.35 |
+
+> 🔴 **ORD + DFW + ATL alone = 31% of all U.S. delay minutes**, despite being < 1% of airports.
+
+---
+
+### 🌩️ Which Delay Cause Impacts Flights Most?
+
+| Cause | Total Minutes (M) | Share | Nature |
+|-------|------------------|-------|--------|
+| **Late Aircraft** | 283.14 | **39.0%** | Operational Cascade |
+| **Carrier Issues** | 246.37 | **33.9%** | Controllable |
+| **NAS / ATC** | 157.82 | **21.7%** | External / Partial |
+| Weather | 38.15 | 5.2% | External |
+| Security | 1.27 | 0.2% | External |
+
+> 🔑 **73% of all delays are either controllable (Carrier) or preventable (Late Aircraft cascade)**
+
+---
+
+### 📅 What Time Has the Highest Delays?
+
+| Month | Delay Volume (M min) | Pattern |
+|-------|---------------------|---------|
+| **July** | **83.78** | ⬆️ Peak — Summer travel surge |
+| August | 79.87 | ⬆️ High — Summer |
+| June | 79.83 | ⬆️ High — Summer |
+| December | 67.76 | ⬆️ Holiday + Winter storms |
+| **September** | **42.23** | ⬇️ Lowest — Off-peak |
+
+---
+
+### ✈️ Top Carriers by Total Delay
+
+| Rank | Carrier | Total Delay (M min) |
+|------|---------|---------------------|
+| 1 | Southwest Airlines | 124.29 |
+| 2 | American Airlines | 103.76 |
+| 3 | SkyWest Airlines | 87.08 |
+| 4 | Delta Air Lines | 79.05 |
+| 5 | United Air Lines | 70.29 |
+
+---
+
+## 💡 Delay Reduction Recommendations
+
+| # | Recommendation | Cause Addressed | Est. Impact |
+|---|---------------|----------------|-------------|
+| 1 | **Schedule buffer at hub airports** (ORD, DFW, ATL) to prevent cascade | Late Aircraft (39%) | ↓ 39% of volume |
+| 2 | **Predictive maintenance + crew scheduling AI** for carrier delays | Carrier (34%) | ↓ 34% controllable |
+| 3 | **NextGen ATC automation** + slot coordination upgrades | NAS (22%) | ↓ 22% NAS delays |
+| 4 | **Seasonal capacity adjustment** — reduce density in Jun–Aug & Dec | Seasonal spikes | ↓ 20% peak delays |
+| 5 | **Hub decongestion strategy** at top 3 airports via FAA collaboration | System-wide | ↓ 30%+ system-wide |
+| 6 | **Weather intelligence integration** for real-time re-routing | Weather (5%) | ↓ 15–30% impact |
+
+---
+
+## 🗂️ Excel Workbook — Sheet Guide
+
+| Sheet | Contents |
+|-------|----------|
+| `📋 Raw Data` | 5,000-row formatted sample from full dataset |
+| `📊 KPI Summary` | 6 KPI cards + delay cause breakdown with percentages |
+| `🏙️ Airport Analysis` | Top 50 airports ranked by delay volume with all metrics |
+| `📅 Time Trends` | Monthly aggregations + Year-over-Year trend with % change |
+| `✈️ Carrier Analysis` | All 23 carriers with full delay type breakdown |
+| `💡 Recommendations` | 6 detailed delay-reduction strategies with impact estimates |
+
+---
+
+## 🌐 HTML Dashboard — Visualizations
+
+The interactive dashboard (`Airline_Delay_Dashboard.html`) includes:
+
+- 📊 **Monthly Delay Trend** — Bar chart with peak highlighting
+- 🥧 **Delay Cause Donut Chart** — 5-category breakdown
+- 🏙️ **Top 10 Airports** — Horizontal bar chart
+- ✈️ **Top 8 Carriers** — Horizontal bar chart
+- 📈 **Year-over-Year Line Chart** — 2013–2023 trend
+- 📋 **Airport Ranking Table** — Top 10 with mini bar indicators
+- 💡 **6 Recommendation Cards** — With priority and impact labels
+
+> Built with **Chart.js** · Single-file HTML · No external dependencies (except CDN)
+
+---
+
+## 🛠️ Tools & Technologies
+
+| Tool | Usage |
+|------|-------|
+| **Python 3** | Data loading, cleaning, aggregation |
+| **Pandas** | EDA, groupBy analysis, null handling |
+| **OpenPyXL** | Excel workbook creation with full formatting |
+| **Chart.js** | Interactive dashboard charts (HTML) |
+| **Excel** | Multi-sheet workbook output |
+
+---
+
+## 🚀 How to Run
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/omsaib064-rgb/daily-coding-challenge.git
+cd daily-coding-challenge/Day23-Airline-Delay-Analysis
+
+# 2. Install dependencies
+pip install pandas openpyxl
+
+# 3. Open the HTML dashboard (no server needed)
+# Just double-click: outputs/Airline_Delay_Dashboard.html
+
+# 4. Open the Excel workbook
+# outputs/Airline_Delay_Analysis_Workbook.xlsx
+```
+
+---
+
+## 📁 Data Source
+
+- **Dataset:** `Airline_Delay_Cause.csv`
+- **Provider:** [U.S. Bureau of Transportation Statistics (BTS)](https://www.bts.gov/)
+- **Coverage:** January 2013 – August 2023
+- **Records:** 171,666 rows × 21 columns
+
+---
+
+## 🗓️ Challenge Progress
+
+| Day | Project | Status |
+|-----|---------|--------|
+| Day 20 | Medical Insurance Cost Analysis (MySQL) | ✅ Done |
+| Day 21 | Insurance Claims — SQL Subqueries | ✅ Done |
+| Day 22 | Customer Segmentation — RFM Analysis | ✅ Done |
+| **Day 23** | **Airline Delay Analysis** | ✅ **Today** |
+| Day 24 | Coming Soon... | 🔜 |
+
+---
+
+## 👤 Author
+
+**Upendrachary**  
+🎯 Sales & Marketing → Data Analytics Career Transition  
+🎓 MBA Finance, Osmania University, Hyderabad  
+🔧 Skills: Python · SQL · Excel · Power BI  
+📁 GitHub: [@omsaib064-rgb](https://github.com/omsaib064-rgb)
+
+---
+
+🎯🎯🎯🎯LINK🎯🎯🎯🎯
+
+https://docs.google.com/spreadsheets/d/1LXMQHF98BBPUUQE9cZ8rHI1gP4aIw3xF87IlsHfkxY8/edit?usp=sharing
+
+*Part of the 30-Day Data Analytics Coding Challenge — building one end-to-end project every day.*
