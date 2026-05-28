@@ -1,0 +1,142 @@
+
+<h2 class="sr-only">Uber NYC ride analytics dashboard with KPI cards, hourly demand, fare distribution, passenger breakdown, day-of-week, and yearly trends.</h2>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.db { padding: 1rem 0; }
+.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.kpi { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; }
+.kpi-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; }
+.kpi-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); line-height: 1; }
+.kpi-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px; }
+.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.chart-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 16px; }
+.chart-card.full { grid-column: 1/-1; }
+.chart-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 14px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; font-size: 11px; color: var(--color-text-secondary); }
+.legend span { display: flex; align-items: center; gap: 5px; }
+.legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.insight { background: var(--color-background-secondary); border-left: 3px solid #378ADD; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 10px 14px; margin-top: 12px; font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+</style>
+
+<div class="db">
+  <div class="section-label">Uber NYC · 2009–2015 · 196k rides</div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">Total rides</div><div class="kpi-val">196k</div><div class="kpi-sub">cleaned dataset</div></div>
+    <div class="kpi"><div class="kpi-label">Total revenue</div><div class="kpi-val">$2.2M</div><div class="kpi-sub">fare sum</div></div>
+    <div class="kpi"><div class="kpi-label">Avg fare</div><div class="kpi-val">$11.35</div><div class="kpi-sub">median $8.50</div></div>
+    <div class="kpi"><div class="kpi-label">Avg distance</div><div class="kpi-val">2.1 mi</div><div class="kpi-sub">~$6.15/mile</div></div>
+    <div class="kpi"><div class="kpi-label">Peak hour</div><div class="kpi-val">7 PM</div><div class="kpi-sub">12,348 rides</div></div>
+    <div class="kpi"><div class="kpi-label">Solo riders</div><div class="kpi-val">69%</div><div class="kpi-sub">of all trips</div></div>
+  </div>
+
+  <div class="chart-card full" style="margin-bottom:14px">
+    <div class="chart-title">Ride demand & avg fare by hour of day</div>
+    <div class="legend">
+      <span><i style="background:#378ADD"></i> Rides (thousands)</span>
+      <span><i style="background:#EF9F27; border-radius:50%"></i> Avg fare ($)</span>
+    </div>
+    <div style="position:relative; height:220px"><canvas id="hourChart" role="img" aria-label="Combined line chart showing ride volume peaks at 7pm with 12,348 rides, and avg fare peaks at 5am with $16.02.">Peak rides at 7 PM (12,348); highest avg fare at 5 AM ($16.02).</canvas></div>
+    <div class="insight">Early-morning hours (4–5 AM) command the highest fares ($14–16) despite low volume — likely airport runs. Evening rush (6–9 PM) dominates demand with 10k+ rides/hour.</div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Fare distribution</div>
+      <div style="position:relative; height:200px"><canvas id="fareChart" role="img" aria-label="Bar chart of fare buckets. Most rides fall in the $5–$10 range (92,082 rides).">Most rides: $5–10 range, 92k rides.</canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Rides by day of week</div>
+      <div style="position:relative; height:200px"><canvas id="dowChart" role="img" aria-label="Bar chart showing Friday as busiest day with 30,228 rides.">Busiest: Friday 30,228, Saturday 29,640.</canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Passenger count breakdown</div>
+      <div class="legend">
+        <span><i style="background:#378ADD"></i> 1 pax 69%</span>
+        <span><i style="background:#1D9E75"></i> 2 pax 15%</span>
+        <span><i style="background:#EF9F27"></i> 3–4 pax 9%</span>
+        <span><i style="background:#D4537E"></i> 5–6 pax 7%</span>
+      </div>
+      <div style="position:relative; height:170px"><canvas id="paxChart" role="img" aria-label="Doughnut chart: 1 passenger 69%, 2 passengers 15%, 3-4 passengers 9%, 5-6 passengers 7%.">Solo riders dominate at 69%.</canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Yearly ride volume trend</div>
+      <div style="position:relative; height:200px"><canvas id="yearChart" role="img" aria-label="Line chart showing ride volumes from 2009 to 2015. 2012 had peak at 31,573 rides.">Peak year 2012 with 31,573 rides; 2015 data partial.</canvas></div>
+    </div>
+  </div>
+
+  <div class="insight" style="margin-top:4px">
+    <strong>Key findings:</strong> Weekend and Friday evenings drive the highest demand. Early-morning rides (4–6 AM) generate premium fares — likely airport/long-distance trips. 69% of rides are solo, suggesting mostly commuter use. The $5–$10 fare band accounts for 47% of all trips, pointing to short urban hops as the core use case.
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const gridColor = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
+const textColor = isDark ? '#aaa' : '#888';
+const baseOpts = { responsive:true, maintainAspectRatio:false };
+
+const hours = Array.from({length:24},(_,i)=>i===0?'12am':i<12?i+'am':i===12?'12pm':(i-12)+'pm');
+const ridesByHour = [7679,5779,4327,3188,2312,1922,4055,7078,8900,9150,8780,9222,9734,9806,9575,9402,8117,9523,11831,12348,11502,11218,10794,9586];
+const fareByHour = [11.6,11.61,11.35,11.68,14.04,16.02,11.94,11.11,10.89,10.97,10.99,11.2,11.17,11.46,11.97,11.91,11.8,11.47,10.94,10.55,10.74,10.94,11.3,11.56];
+
+new Chart(document.getElementById('hourChart'), {
+  data: {
+    labels: hours,
+    datasets: [
+      { type:'bar', label:'Rides', data: ridesByHour.map(v=>+(v/1000).toFixed(1)), backgroundColor: isDark?'rgba(55,138,221,0.55)':'rgba(55,138,221,0.4)', borderColor:'#378ADD', borderWidth:1, yAxisID:'y', order:2 },
+      { type:'line', label:'Avg fare', data: fareByHour, borderColor:'#EF9F27', backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:'#EF9F27', borderWidth:2, tension:0.4, yAxisID:'y2', order:1 }
+    ]
+  },
+  options: { ...baseOpts, plugins:{ legend:{display:false} }, scales:{
+    x:{ ticks:{color:textColor,font:{size:10},maxRotation:0}, grid:{color:gridColor} },
+    y:{ ticks:{color:textColor,font:{size:10}, callback:v=>v+'k'}, grid:{color:gridColor}, title:{display:true,text:'Rides (k)',color:textColor,font:{size:10}} },
+    y2:{ position:'right', ticks:{color:textColor,font:{size:10},callback:v=>'$'+v}, grid:{display:false}, title:{display:true,text:'Avg fare',color:textColor,font:{size:10}}, min:8, max:18 }
+  }}
+});
+
+const fareLabels = ['$0–5','$5–10','$10–15','$15–20','$20–30','$30–50','$50–100','$100+'];
+const fareData = [30425,92082,39016,14544,10027,7408,2445,78];
+new Chart(document.getElementById('fareChart'), {
+  type:'bar',
+  data:{ labels:fareLabels, datasets:[{ data:fareData.map(v=>+(v/1000).toFixed(1)), backgroundColor: fareData.map((_,i)=>i===1?'#378ADD':isDark?'rgba(55,138,221,0.35)':'rgba(55,138,221,0.28)'), borderWidth:0 }] },
+  options:{ ...baseOpts, plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>(c.raw*1000).toLocaleString()+' rides'}}}, scales:{
+    x:{ticks:{color:textColor,font:{size:10},maxRotation:35},grid:{display:false}},
+    y:{ticks:{color:textColor,font:{size:10},callback:v=>v+'k'},grid:{color:gridColor}}
+  }}
+});
+
+const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const dowData = [24728,27569,28382,29400,30228,29640,25881];
+new Chart(document.getElementById('dowChart'), {
+  type:'bar',
+  data:{ labels:days, datasets:[{ data:dowData.map(v=>+(v/1000).toFixed(1)), backgroundColor: dowData.map((v,i)=>v===Math.max(...dowData)?'#1D9E75':isDark?'rgba(29,158,117,0.35)':'rgba(29,158,117,0.3)'), borderWidth:0 }] },
+  options:{ ...baseOpts, plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>(c.raw*1000).toLocaleString()+' rides'}}}, scales:{
+    x:{ticks:{color:textColor,font:{size:10}},grid:{display:false}},
+    y:{ticks:{color:textColor,font:{size:10},callback:v=>v+'k'},grid:{color:gridColor}}
+  }}
+});
+
+new Chart(document.getElementById('paxChart'), {
+  type:'doughnut',
+  data:{ labels:['1 passenger','2 passengers','3–4 passengers','5–6 passengers'], datasets:[{ data:[135514,28843,8698+5000,13721+4184], backgroundColor:['#378ADD','#1D9E75','#EF9F27','#D4537E'], borderWidth:isDark?2:1, borderColor:isDark?'#2a2a2a':'#fff' }] },
+  options:{ ...baseOpts, cutout:'62%', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>{const t=c.dataset.data.reduce((a,b)=>a+b,0);return c.label+': '+Math.round(c.raw/t*100)+'%'}}}}}
+});
+
+const years = [2009,2010,2011,2012,2013,2014,2015];
+const yearData = [30167,29546,31200,31573,30530,29286,13526];
+new Chart(document.getElementById('yearChart'), {
+  type:'line',
+  data:{ labels:years, datasets:[{ data:yearData.map(v=>+(v/1000).toFixed(1)), borderColor:'#D4537E', backgroundColor:isDark?'rgba(212,83,126,0.12)':'rgba(212,83,126,0.08)', fill:true, tension:0.35, pointRadius:4, pointBackgroundColor:'#D4537E', borderWidth:2 }] },
+  options:{ ...baseOpts, plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>(c.raw*1000).toLocaleString()+' rides'}}}, scales:{
+    x:{ticks:{color:textColor,font:{size:11}},grid:{color:gridColor}},
+    y:{ticks:{color:textColor,font:{size:10},callback:v=>v+'k'},grid:{color:gridColor},min:10,max:35}
+  }}
+});
+</script>
