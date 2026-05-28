@@ -1,0 +1,262 @@
+# 🚖 Ola/Uber Ride Cancellation & Surge Pricing Analysis
+
+## 📌 Project Overview
+
+This project focuses on analyzing ride cancellation patterns, surge pricing behavior, customer dissatisfaction, and driver performance in ride sharing platforms like Ola and Uber.
+
+The objective is to identify:
+- Why rides are getting cancelled
+- Peak booking demand hours
+- High surge pricing locations
+- Driver availability issues
+- Revenue generating areas
+- Customer dissatisfaction causes
+
+The project is developed using:
+- Excel
+- SQL
+- Python
+- Power BI
+
+---
+
+# 🎯 Business Problem
+
+Ride sharing companies face operational challenges such as:
+- High ride cancellation rates
+- Driver shortages
+- Traffic delays
+- Peak hour demand imbalance
+- Customer dissatisfaction
+- Surge pricing complaints
+
+This analysis helps improve:
+- Ride completion rate
+- Customer experience
+- Driver allocation
+- Revenue optimization
+
+---
+
+# 📂 Dataset Information
+
+Dataset contains:
+
+| Column Name | Description |
+|---|---|
+| Ride ID | Unique ride identifier |
+| Pickup Location | Ride start location |
+| Drop Location | Ride destination |
+| Booking Time | Booking timestamp |
+| Pickup Time | Pickup timestamp |
+| Cancellation Status | Ride completed/cancelled |
+| Driver Rating | Driver rating |
+| Customer Rating | Customer feedback |
+| Surge Multiplier | Dynamic pricing factor |
+| Traffic Condition | Traffic level |
+| Fare Amount | Ride fare |
+| Payment Type | Payment mode |
+
+---
+
+# 🧹 Data Cleaning
+
+Performed:
+- Removed duplicate rides
+- Handled missing values
+- Converted datetime columns
+- Standardized location names
+- Removed fare outliers
+- Cleaned inconsistent records
+
+---
+
+# ⚙️ Feature Engineering
+
+Created new columns:
+- Ride Duration
+- Delay Time
+- Booking Hour
+- Peak Hour Indicator
+- Cancellation Flag
+- Revenue
+
+---
+
+# 📊 Analysis Tasks
+
+## Customer Analysis
+- Locations with maximum cancellations
+- Highest booking demand hours
+- Surge pricing impact on cancellations
+
+## Driver Analysis
+- Drivers with poor ratings
+- Areas with low driver availability
+- Longest ride routes
+
+## Business Analysis
+- Highest revenue generating locations
+- Customer dissatisfaction causes
+- Traffic impact on cancellation rate
+
+---
+
+# 📈 Dashboard Features
+
+## Executive Dashboard
+- Total Rides
+- Revenue
+- Cancellation Rate
+- Avg Ride Duration
+
+## Customer Analysis Dashboard
+- Booking Demand by Hour
+- Cancellation Trends
+- Customer Ratings
+
+## Driver Dashboard
+- Driver Ratings
+- Driver Availability
+- Route Delay Analysis
+
+## Surge Pricing Dashboard
+- Surge Heatmap
+- Surge vs Cancellation
+
+## Geo Analysis Dashboard
+- Pickup Hotspot Map
+- Revenue by Area
+
+---
+
+# 📌 KPI Metrics
+
+Built KPI cards for:
+- Total Rides
+- Cancellation Rate
+- Average Fare
+- Average Surge Multiplier
+- Average Ride Duration
+- Driver Rating Score
+- Peak Booking Hour
+
+---
+
+# 🐍 Python Libraries Used
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+SQL Concepts Used
+GROUP BY
+ORDER BY
+Aggregate Functions
+CASE WHEN
+HAVING Clause
+Subqueries
+📊 Sample Visualizations
+Ride demand by hour
+Surge pricing heatmap
+Cancellation trend analysis
+Driver rating dashboard
+Fare distribution
+Traffic vs Ride Delay analysis
+Pickup hotspot map
+🔍 Root Cause Analysis
+
+Major reasons for ride cancellations:
+
+High surge pricing
+Long waiting time
+Driver unavailability
+Traffic congestion
+Poor ETA accuracy
+💡 Business Recommendations
+Improve Driver Allocation
+
+Use predictive demand forecasting during peak hours.
+
+Optimize Surge Pricing
+
+Reduce extreme surge multipliers.
+
+Traffic Based Routing
+
+Implement smart navigation systems.
+
+Driver Incentives
+
+Provide bonuses during high demand periods.
+
+Customer Retention
+
+Offer rewards and loyalty benefits.
+
+📉 Revenue Impact
+
+Ride cancellations affect:
+
+Company revenue
+Driver earnings
+Customer retention
+Operational efficiency
+
+Reducing cancellation rates can significantly improve profitability.
+
+🚀 Tools & Technologies
+Tool	Purpose
+Excel	Data Cleaning
+SQL	Data Analysis
+Python	EDA & Visualization
+Power BI	Dashboard Development
+📁 Project Structure
+Ola-Uber-Analysis/
+│
+├── Dataset/
+│   └── uber.csv
+│
+├── SQL Queries/
+│   └── analysis.sql
+│
+├── Python Scripts/
+│   └── analysis.py
+│
+├── Power BI Dashboard/
+│   └── ola_uber_dashboard.pbix
+│
+├── Images/
+│   └── dashboard.png
+│
+└── README.md
+📷 Dashboard Preview
+
+Add dashboard screenshots inside Images folder.
+
+![Dashboard](Images/dashboard.png)
+📌 Final Conclusion
+
+The analysis shows that ride cancellations are mainly caused by:
+
+Surge pricing
+Traffic congestion
+Driver shortages during peak hours
+
+Improving driver allocation, traffic prediction, and surge pricing management can significantly improve:
+
+Ride completion rate
+Customer satisfaction
+Driver productivity
+Revenue growth
+👨‍💻 Author
+Om Sai Baba
+
+Aspiring Data Analyst
+
+Skills
+Excel
+SQL
+Python
+Power BI
