@@ -1,0 +1,147 @@
+Day50 Social Media Addiction Analysis
+📌 Project Overview
+
+This project focuses on analyzing Social Media Addiction patterns using Excel, SQL, Python, and Power BI.
+The objective is to identify user behavior, screen time trends, addiction levels, mental health impact, and platform usage patterns.
+
+The dataset contains user activity records such as daily usage hours, preferred platforms, sleep impact, productivity loss, age groups, and addiction scores.
+
+🎯 Project Objectives
+
+✔ Analyze daily social media usage trends
+✔ Identify highly addictive platforms
+✔ Find relationship between screen time and productivity
+✔ Analyze sleep impact due to excessive usage
+✔ Compare addiction levels across age groups
+✔ Build interactive dashboards for insights
+
+🛠 Tools & Technologies Used
+Tool	Purpose
+Excel	Data Cleaning
+SQL	Data Querying
+Python	Data Analysis
+Power BI	Dashboard Visualization
+📂 Dataset Information
+
+Dataset Name: Day50_Social_Media_Addiction_Analysis.xlsx
+
+Important Columns
+Column Name	Description
+User_ID	Unique user identifier
+Age	User age
+Gender	Male/Female
+Platform	Social media platform used
+Daily_Usage_Hours	Average daily usage
+Sleep_Hours	Daily sleep duration
+Productivity_Score	Productivity level
+Addiction_Level	Low / Medium / High
+Mental_Health_Score	Mental wellness score
+Country	User location
+🧹 Data Cleaning Process
+
+Performed the following cleaning steps:
+
+✔ Removed duplicate records
+✔ Handled missing/null values
+✔ Standardized platform names
+✔ Converted data types properly
+✔ Removed abnormal outliers
+✔ Fixed inconsistent entries
+
+📊 Analysis Tasks
+User Behavior Analysis
+Find:
+Which age group spends most time on social media
+Which platform has highest addiction rate
+Average daily usage hours
+Gender wise addiction comparison
+Mental Health Analysis
+Find:
+Does higher usage reduce sleep hours?
+Which users show lower productivity?
+Relationship between addiction and mental health
+Impact of screen time on wellness
+Platform Analysis
+Find:
+Most used social media platform
+Platform with maximum daily usage
+Platform wise addiction distribution
+User engagement trends
+🐍 Python Analysis
+
+Used Python libraries:
+
+pandas
+numpy
+matplotlib
+seaborn
+Python Tasks
+Data preprocessing
+Exploratory Data Analysis
+Correlation analysis
+Visualization charts
+Trend analysis
+🗄 SQL Queries Used
+SELECT Platform, AVG(Daily_Usage_Hours)
+FROM social_media
+GROUP BY Platform;
+SELECT Addiction_Level, COUNT(*)
+FROM social_media
+GROUP BY Addiction_Level;
+SELECT Age_Group, AVG(Productivity_Score)
+FROM social_media
+GROUP BY Age_Group;
+📈 Power BI Dashboard Features
+
+✔ KPI Cards
+✔ Platform Usage Analysis
+✔ Addiction Level Distribution
+✔ Age Group Analysis
+✔ Mental Health Insights
+✔ Interactive Filters & Slicers
+
+🔍 Key Insights
+
+📌 Young users spend more time on social media
+📌 Higher screen time affects sleep quality
+📌 Productivity decreases with increased addiction
+📌 Certain platforms show higher addiction rates
+📌 Mental health scores decline with excessive usage
+
+🚀 Project Workflow
+Raw Dataset
+   ↓
+Data Cleaning
+   ↓
+SQL Analysis
+   ↓
+Python EDA
+   ↓
+Power BI Dashboard
+   ↓
+Final Insights
+📷 Dashboard Preview
+
+Add Power BI dashboard screenshots here.
+
+📁 Project Structure
+Social_Media_Addiction_Analysis/
+│
+├── Dataset/
+├── SQL Queries/
+├── Python Analysis/
+├── Power BI Dashboard/
+├── Dashboard Screenshots/
+└── README.md
+✅ Conclusion
+
+This project helps understand how social media addiction impacts users’ productivity, sleep, and mental health. The analysis provides meaningful insights that can help individuals and organizations promote healthier digital habits.
+
+⭐ Future Improvements
+Real time social media tracking
+Machine learning addiction prediction
+Advanced sentiment analysis
+User recommendation system
+🙌 Author
+
+Developed by Om Sai Baba
