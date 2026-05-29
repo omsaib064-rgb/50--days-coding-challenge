@@ -1,0 +1,120 @@
+Cyberbullying & Toxic Comment Analysis 🚨📊
+📌 Project Overview
+
+This project focuses on analyzing toxic comments and cyberbullying behavior on social media platforms using Data Analytics techniques.
+The goal is to identify harmful content, detect high risk users, and improve online community safety.
+
+🎯 Objectives
+Detect toxic comments
+Identify cyberbullying patterns
+Analyze harmful user behavior
+Find high risk platforms
+Improve moderation strategies
+🛠️ Technologies Used
+Tool	Purpose
+Excel	Data Cleaning
+SQL	Data Querying
+Python	Data Analysis
+Pandas	Data Processing
+Matplotlib	Visualization
+Power BI	Dashboard Creation
+📂 Dataset Information
+
+Dataset contains:
+
+Comment ID
+Comment Text
+Toxicity Score
+Cyberbullying Type
+Platform
+User Age
+Gender
+Timestamp
+
+Dataset Source:
+
+Kaggle Toxic Comment Dataset
+
+🧹 Data Cleaning Process
+
+Performed:
+
+Removed duplicate comments
+Handled null values
+Cleaned emojis and special characters
+Standardized platform names
+Converted timestamps
+Removed unwanted spaces
+📊 Analysis Performed
+Platform Analysis
+Platform with highest toxic comments
+Platform wise toxicity comparison
+User Analysis
+Age groups facing cyberbullying
+Gender based analysis
+Time Analysis
+Peak toxic activity hours
+Trend analysis over time
+Text Analysis
+Most common toxic words
+Frequent bullying categories
+📈 Power BI Dashboard
+
+Dashboard Includes:
+
+KPI Cards
+Toxicity Trend
+Platform Wise Analysis
+Word Cloud
+Heatmap
+Gender Comparison
+High Risk User Insights
+📌 KPI Metrics
+Toxic Comment Percentage
+High Risk User Count
+Most Harmful Platform
+Peak Toxic Hours
+Cyberbullying Frequency
+💻 SQL Query Example
+Second Highest Salary Style Query Example
+SELECT MAX(salary)
+FROM Employees
+WHERE salary < (
+    SELECT MAX(salary)
+    FROM Employees
+);
+🐍 Python Example
+import pandas as pd
+
+df = pd.read_csv("cyberbullying.csv")
+
+# Remove duplicates
+df.drop_duplicates(inplace=True)
+
+# Remove null comments
+df.dropna(subset=['comment_text'], inplace=True)
+
+# Toxic comments by platform
+platform = df.groupby('platform').size()
+
+print(platform)
+📊 Sample Insights
+Teen users face more cyberbullying
+Toxic activity increases during night hours
+Certain platforms contain higher toxic behavior
+Abusive language patterns repeat frequently
+🚀 Future Improvements
+Real time toxicity detection
+AI based moderation system
+Sentiment analysis integration
+Automated harmful user flagging
+📌 Final Conclusion
+
+This project helps understand how cyberbullying affects social media users and provides insights for implementing better moderation strategies to improve online safety.
+
+👨‍💻 Author
+
+Your Name :G.upendrachary
+
+Data Analyst Fresher
+Passionate about Data Analytics, SQL, Python, and Power BI 🚀
