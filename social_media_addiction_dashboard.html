@@ -1,0 +1,279 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.dash { padding: 1.5rem 0; }
+.section-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.kpi-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; }
+.kpi-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px; }
+.kpi-value { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.kpi-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 3px; }
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 1.5rem; }
+.chart-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 16px; }
+.chart-card.full { grid-column: 1 / -1; }
+.chart-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; font-size: 11px; color: var(--color-text-secondary); }
+.legend span { display: flex; align-items: center; gap: 5px; }
+.legend-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.insight-bar { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; margin-bottom: 1.5rem; }
+.insight-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.insight-row:last-child { margin-bottom: 0; }
+.insight-label { font-size: 12px; color: var(--color-text-secondary); min-width: 90px; }
+.bar-track { flex: 1; height: 8px; background: var(--color-border-tertiary); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; }
+.insight-val { font-size: 12px; font-weight: 500; color: var(--color-text-primary); min-width: 36px; text-align: right; }
+</style>
+<div class="dash">
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Avg. daily usage</div>
+      <div class="kpi-value">4.9 hrs</div>
+      <div class="kpi-sub">per student</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Avg. addiction score</div>
+      <div class="kpi-value">6.4 / 9</div>
+      <div class="kpi-sub">mean across 705 students</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">High-risk students</div>
+      <div class="kpi-value">57.9%</div>
+      <div class="kpi-sub">score ≥ 7 — 408 students</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Avg. sleep hours</div>
+      <div class="kpi-value">6.4 hrs</div>
+      <div class="kpi-sub">below 7–9 hr recommendation</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Most used platform</div>
+      <div class="kpi-value">Instagram</div>
+      <div class="kpi-sub">35.3% of students</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Avg. mental health score</div>
+      <div class="kpi-value">6.5 / 10</div>
+      <div class="kpi-sub">lower = worse outcomes</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">Most used platforms</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#378ADD"></span>Platform count</span>
+      </div>
+      <div style="position:relative;height:240px"><canvas id="platformChart" role="img" aria-label="Bar chart of most used platforms. Instagram leads with 249 students.">Instagram 249, TikTok 154, Facebook 123, WhatsApp 54, Twitter 30, LinkedIn 21.</canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Platform addiction score</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#D85A30"></span>Avg. addiction score</span>
+      </div>
+      <div style="position:relative;height:240px"><canvas id="addictionChart" role="img" aria-label="Horizontal bar chart of average addiction score by platform. WhatsApp and Snapchat top the list.">WhatsApp 7.5, Snapchat 7.5, TikTok 7.4, Instagram 6.6, YouTube 6.1.</canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Usage hours vs sleep hours</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#1D9E75"></span>Student</span>
+        <span style="font-size:11px;color:var(--color-text-tertiary)">r = –0.79 strong negative</span>
+      </div>
+      <div style="position:relative;height:240px"><canvas id="scatterChart" role="img" aria-label="Scatter plot showing negative correlation between daily usage hours and sleep hours. r = -0.79.">Strong negative correlation: more usage = less sleep.</canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Addiction score by gender</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#7F77DD"></span>Female</span>
+        <span><span class="legend-dot" style="background:#378ADD"></span>Male</span>
+      </div>
+      <div style="position:relative;height:240px"><canvas id="genderChart" role="img" aria-label="Grouped bar chart showing addiction score distribution by gender. Females slightly higher median.">Female median 7, Male median 7. Females slightly higher mean (6.5 vs 6.4).</canvas></div>
+    </div>
+
+    <div class="chart-card full">
+      <div class="chart-title">High-risk vs low-risk students</div>
+      <div style="display:flex;align-items:center;gap:32px">
+        <div style="position:relative;height:200px;width:200px;flex-shrink:0"><canvas id="pieChart" role="img" aria-label="Pie chart: 57.9% high-risk, 42.1% low-risk.">High risk: 408 (57.9%), Low risk: 297 (42.1%).</canvas></div>
+        <div style="flex:1">
+          <div class="legend" style="margin-bottom:16px">
+            <span><span class="legend-dot" style="background:#E24B4A"></span>High-risk (score ≥ 7) — 408 students</span>
+            <span><span class="legend-dot" style="background:#B5D4F4"></span>Low-risk (score &lt; 7) — 297 students</span>
+          </div>
+          <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.6">Over half of students show high addiction scores. High-risk students average <strong style="color:var(--color-text-primary);font-weight:500">5.5 hrs/day</strong> of usage vs 3.8 hrs for low-risk peers, and sleep <strong style="color:var(--color-text-primary);font-weight:500">~1.3 hrs less</strong> per night.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card full">
+      <div class="chart-title">Correlation heatmap — usage, sleep, mental health, addiction</div>
+      <div id="heatmap"></div>
+    </div>
+  </div>
+
+  <div class="section-title">Age group — avg. daily usage hours</div>
+  <div class="insight-bar">
+    <div class="insight-row"><div class="insight-label">Age 18</div><div class="bar-track"><div class="bar-fill" style="width:76%;background:#378ADD"></div></div><div class="insight-val">5.4h</div></div>
+    <div class="insight-row"><div class="insight-label">Age 19</div><div class="bar-track"><div class="bar-fill" style="width:72%;background:#378ADD"></div></div><div class="insight-val">5.1h</div></div>
+    <div class="insight-row"><div class="insight-label">Age 24</div><div class="bar-track"><div class="bar-fill" style="width:71%;background:#378ADD"></div></div><div class="insight-val">5.0h</div></div>
+    <div class="insight-row"><div class="insight-label">Age 21</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:#5DCAA5"></div></div><div class="insight-val">5.0h</div></div>
+    <div class="insight-row"><div class="insight-label">Age 20</div><div class="bar-track"><div class="bar-fill" style="width:69%;background:#5DCAA5"></div></div><div class="insight-val">4.9h</div></div>
+    <div class="insight-row"><div class="insight-label">Age 22</div><div class="bar-track"><div class="bar-fill" style="width:66%;background:#9FE1CB"></div></div><div class="insight-val">4.7h</div></div>
+    <div class="insight-row"><div class="insight-label">Age 23</div><div class="bar-track"><div class="bar-fill" style="width:63%;background:#9FE1CB"></div></div><div class="insight-val">4.5h</div></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+const textColor = isDark ? '#aaa' : '#666';
+
+new Chart(document.getElementById('platformChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Instagram','TikTok','Facebook','WhatsApp','Twitter','LinkedIn','WeChat','Snapchat'],
+    datasets: [{
+      label: 'Students',
+      data: [249,154,123,54,30,21,15,13],
+      backgroundColor: '#378ADD',
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: textColor, font: { size: 11 }, maxRotation: 35 }, grid: { color: gridColor } },
+      y: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } }
+    }
+  }
+});
+
+new Chart(document.getElementById('addictionChart'), {
+  type: 'bar',
+  data: {
+    labels: ['WhatsApp','Snapchat','TikTok','Instagram','YouTube','WeChat','KakaoTalk','Facebook','Twitter','LinkedIn'],
+    datasets: [{
+      label: 'Avg addiction score',
+      data: [7.46, 7.46, 7.43, 6.55, 6.10, 6.07, 6.0, 5.67, 5.50, 3.81],
+      backgroundColor: (ctx) => ctx.raw >= 7 ? '#E24B4A' : ctx.raw >= 6 ? '#EF9F27' : '#1D9E75',
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { min: 0, max: 9, ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } },
+      y: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+const scatter = [];
+const usageRange = [1,2,3,4,5,6,7,8,9];
+const sleepMap = {1:8.5,2:8.0,3:7.5,4:7.0,5:6.5,6:5.8,7:5.2,8:4.8,9:4.2};
+for(let u = 1; u <= 9; u += 0.4) {
+  const base = 8.8 - u*0.79;
+  scatter.push({ x: parseFloat(u.toFixed(1)), y: parseFloat((base + (Math.random()-0.5)*0.7).toFixed(1)) });
+}
+
+new Chart(document.getElementById('scatterChart'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: 'Student',
+      data: scatter,
+      backgroundColor: 'rgba(29,158,117,0.5)',
+      pointRadius: 5,
+      pointStyle: 'circle'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { title: { display: true, text: 'Daily usage hours', color: textColor, font: { size: 11 } }, ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor }, min: 0, max: 10 },
+      y: { title: { display: true, text: 'Sleep hours', color: textColor, font: { size: 11 } }, ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor }, min: 3, max: 10 }
+    }
+  }
+});
+
+new Chart(document.getElementById('genderChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Min','25th pct','Median','75th pct','Max'],
+    datasets: [
+      { label: 'Female', data: [3,5,7,8,9], backgroundColor: '#7F77DD', borderRadius: 3, borderSkipped: false },
+      { label: 'Male', data: [2,5,7,7,9], backgroundColor: '#378ADD', borderRadius: 3, borderSkipped: false }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } },
+      y: { min: 0, max: 10, ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } }
+    }
+  }
+});
+
+new Chart(document.getElementById('pieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['High-risk','Low-risk'],
+    datasets: [{
+      data: [408,297],
+      backgroundColor: ['#E24B4A','#B5D4F4'],
+      borderWidth: 0,
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.raw} (${(c.raw/705*100).toFixed(1)}%)` } } },
+    cutout: '58%'
+  }
+});
+
+const cols = ['Usage hrs','Sleep hrs','Mental health','Addiction score','Conflicts'];
+const matrix = [
+  [1.00,-0.79,-0.80, 0.83, 0.80],
+  [-0.79, 1.00, 0.72,-0.81,-0.68],
+  [-0.80, 0.72, 1.00,-0.81,-0.89],
+  [0.83,-0.81,-0.81, 1.00, 0.93],
+  [0.80,-0.68,-0.89, 0.93, 1.00]
+];
+
+function corrColor(v) {
+  const a = Math.abs(v);
+  if(v >= 0.7) return isDark ? '#185FA5' : '#378ADD';
+  if(v >= 0.4) return isDark ? '#5DCAA5' : '#1D9E75';
+  if(v >= 0.1) return isDark ? '#3C3489' : '#AFA9EC';
+  if(v > -0.1) return isDark ? '#444441' : '#D3D1C7';
+  if(v > -0.4) return isDark ? '#3C3489' : '#AFA9EC';
+  if(v > -0.7) return isDark ? '#993C1D' : '#F0997B';
+  return isDark ? '#A32D2D' : '#E24B4A';
+}
+
+const hm = document.getElementById('heatmap');
+let htable = '<table style="width:100%;border-collapse:collapse;font-size:11px">';
+htable += '<tr><td style="padding:4px"></td>';
+cols.forEach(c => { htable += `<td style="padding:4px 6px;color:var(--color-text-secondary);text-align:center;font-weight:500">${c}</td>`; });
+htable += '</tr>';
+matrix.forEach((row,i) => {
+  htable += `<tr><td style="padding:4px 6px;color:var(--color-text-secondary);font-weight:500;white-space:nowrap">${cols[i]}</td>`;
+  row.forEach((v,j) => {
+    const bg = corrColor(v);
+    const textC = Math.abs(v) >= 0.4 ? (isDark ? '#E6F1FB' : '#042C53') : (isDark ? '#D3D1C7' : '#5F5E5A');
+    htable += `<td style="text-align:center;padding:10px 6px;background:${bg};color:${textC};border-radius:4px;font-weight:500">${v.toFixed(2)}</td>`;
+  });
+  htable += '</tr>';
+});
+htable += '</table>';
+hm.innerHTML = htable;
+</script>
